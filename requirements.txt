@@ -16,9 +16,9 @@ accelerate==0.30.0
     #   diffusers
 aiohappyeyeballs==2.6.1
     # via aiohttp
-aiohttp==3.11.14
+aiohttp==3.12.14
     # via fsspec
-aiosignal==1.3.2
+aiosignal==1.4.0
     # via aiohttp
 altair==4.2.2
     # via -r requirements.in
@@ -343,6 +343,7 @@ triton==2.1.0
     # via torch
 typing-extensions==4.5.0
     # via
+    #   aiosignal
     #   huggingface-hub
     #   lightning-utilities
     #   multidict
