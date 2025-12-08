@@ -4,25 +4,32 @@ on:
   push:
     branches:
       - main
-  release:
-    types:
-      - created
-  workflow_dispatch:
 
-env:
-  IMAGE_NAME: aoirint/sd_scripts
-  IMAGE_TAG: ${{ github.event.release.tag_name != '' && github.event.release.tag_name || 'latest' }}
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  docker-build-and-push:
+  build-docker:
     runs-on: ubuntu-latest
+
+    outputs:
+      git_version: ${{ steps.generate-version.outputs.git_version }}
+      release_mode: ${{ steps.generate-version.outputs.release_mode }}
+
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Free disk space
-        run: |-
+        run: |
+          df -h /
+
           # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832
           # Remove software and language runtimes we're not using
           sudo rm -rf \
-            "$AGENT_TOOLSDIRECTORY" \
+            "${AGENT_TOOLSDIRECTORY}" \
             /opt/google/chrome \
             /opt/microsoft/msedge \
             /opt/microsoft/powershell \
@@ -35,31 +42,92 @@ jobs:
             /usr/local/share/powershell \
             /usr/share/dotnet \
             /usr/share/swift
+
           df -h /
 
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
       - name: Setup Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
 
-      - name: Login to Docker Registry
-        uses: docker/login-action@v3
+      - name: Setup Python and uv
+        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
+        with:
+          python-version: '3.12'
+          enable-cache: true
+          cache-suffix: -${{ runner.os }}
+
+      - name: Install Python dependencies
+        run: uv sync --frozen --only-group ci
+
+      # NOTE: Replace version in pyproject.toml
+      - name: Generate version
+        id: generate-version
+        uses: ./.github/actions/generate-version
+        with:
+          pyproject_file: './pyproject.toml'
+
+      - name: Generate Docker metadata
+        id: meta
+        uses: ./.github/actions/generate-docker-metadata
+        with:
+          repository: |
+            ghcr.io/aoirint/sd_scripts
+            aoirint/sd_scripts
+          buildcache_repository: ghcr.io/${{ github.repository }}
+          release_mode: ${{ steps.generate-version.outputs.release_mode }}
+          version: ${{ steps.generate-version.outputs.app_version }}
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Deploy Docker image
-        uses: docker/build-push-action@v5
-        env:
-          IMAGE_NAME_AND_TAG: ${{ format('{0}:{1}', env.IMAGE_NAME, env.IMAGE_TAG) }}
-          IMAGE_CACHE_FROM: ${{ format('type=registry,ref={0}:latest-buildcache', env.IMAGE_NAME) }}
-          IMAGE_CACHE_TO: ${{ env.IMAGE_TAG == 'latest' && format('type=registry,ref={0}:latest-buildcache,mode=max', env.IMAGE_NAME) || '' }}
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
-          context: .
           builder: ${{ steps.buildx.outputs.name }}
+          context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.IMAGE_NAME_AND_TAG }}
-          cache-from: ${{ env.IMAGE_CACHE_FROM }}
-          cache-to: ${{ env.IMAGE_CACHE_TO }} 
+          platforms: 'linux/amd64'
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: ${{ steps.meta.outputs.cache-from }}
+          cache-to: ${{ steps.meta.outputs.cache-to }}
+          labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+
+  publish-release:
+    needs:
+      - build-docker
+
+    if: needs.build-docker.outputs.release_mode != 'edge'
+
+    runs-on: ubuntu-slim
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Publish release
+        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
+        with:
+          tag: ${{ needs.build-docker.outputs.git_version }}
+          commit: ${{ github.sha }}
+          immutableCreate: true
+          prerelease: ${{ needs.build-docker.outputs.release_mode != 'latest' }}
+          makeLatest: ${{ needs.build-docker.outputs.release_mode == 'latest' }}
+          generateReleaseNotes: true

@@ -1,0 +1,138 @@
+name: Generate Docker metadata
+description: Generate Docker metadata
+
+inputs:
+  repository:
+    description: 'Docker repository (Multiple repositories can be separated by lines)'
+    required: true
+  buildcache_repository:
+    description: 'Docker build cache repository'
+    required: true
+  release_mode:
+    description: 'Release mode (edge, prerelease, latest)'
+    required: true
+  version:
+    description: 'Application version'
+    required: true
+  suffix:
+    description: 'Suffix to append to tags'
+    required: false
+    default: ''
+
+outputs:
+  tags:
+    value: ${{ steps.meta.outputs.tags }}
+    description: 'Generated Docker tags'
+  labels:
+    value: ${{ steps.meta.outputs.labels }}
+    description: 'Generated Docker labels'
+  annotations:
+    value: ${{ steps.meta.outputs.annotations }}
+    description: 'Generated Docker annotations'
+  cache-from:
+    value: ${{ steps.meta-buildcache-vars.outputs.cache-from }}
+    description: 'Generated Docker build cache sources'
+  cache-to:
+    value: ${{ steps.meta-buildcache-vars.outputs.cache-to }}
+    description: 'Generated Docker build cache destinations'
+
+runs:
+  using: "composite"
+
+  steps:
+      - name: Get Docker repository
+        id: docker-repository
+        shell: bash
+        run: |
+          {
+            echo "repository<<EOF"
+            for repo in "${{ inputs.repository }}"; do
+              echo "${repo}" | tr '[:upper:]' '[:lower:]'
+            done
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Get Docker buildcache repository
+        id: docker-buildcache-repository
+        shell: bash
+        run: |
+          {
+            echo "repository<<EOF"
+            for repo in "${{ inputs.buildcache_repository }}"; do
+              echo "${repo}" | tr '[:upper:]' '[:lower:]'
+            done
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Get Docker tags
+        id: tags
+        shell: bash
+        run: |
+          RELEASE_MODE="${{ inputs.release_mode }}"
+          VERSION="${{ inputs.version }}"
+
+          TAGS=()
+          if [ "${RELEASE_MODE}" = "latest" ]; then
+            TAGS+=("type=raw,value=${VERSION},suffix=${{ inputs.suffix }}")
+            TAGS+=("type=raw,value=latest,suffix=${{ inputs.suffix }}")
+            TAGS+=("type=raw,value=edge,suffix=${{ inputs.suffix }}")
+
+          elif [ "${RELEASE_MODE}" = "prerelease" ]; then
+            TAGS+=("type=raw,value=${VERSION},suffix=${{ inputs.suffix }}")
+            TAGS+=("type=raw,value=edge,suffix=${{ inputs.suffix }}")
+
+          elif [ "${RELEASE_MODE}" = "edge" ]; then
+            TAGS+=("type=raw,value=edge,suffix=${{ inputs.suffix }}")
+
+          else
+            echo "Unsupported release_mode: ${RELEASE_MODE}"
+            exit 1
+          fi
+
+          {
+            echo "tags<<EOF"
+            for tag in "${TAGS[@]}"; do
+              echo "${tag}"
+            done
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Generate Docker metadata
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          images: ${{ steps.docker-repository.outputs.repository }}
+          tags: ${{ steps.tags.outputs.tags }}
+
+      - name: Generate Docker buildcache metadata
+        id: meta-buildcache
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
+        with:
+          images: ${{ steps.docker-buildcache-repository.outputs.repository }}
+          tags: type=raw,value=edge,suffix=${{ inputs.suffix }}-buildcache
+
+      - name: Generate Docker build cache metadata vars
+        id: meta-buildcache-vars
+        shell: bash
+        env:
+          DOCKER_METADATA_BUILDCACHE_OUTPUT_JSON: ${{ steps.meta-buildcache.outputs.json }}
+        run: |
+          {
+            echo "cache-from<<EOF"
+
+            for tag in $(jq -r '.tags[]' <<< "${DOCKER_METADATA_BUILDCACHE_OUTPUT_JSON}"); do
+              echo "type=registry,ref=${tag}"
+            done
+
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+          {
+            echo "cache-to<<EOF"
+
+            for tag in $(jq -r '.tags[]' <<< "${DOCKER_METADATA_BUILDCACHE_OUTPUT_JSON}"); do
+              echo "type=registry,ref=${tag},mode=max"
+            done
+
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
