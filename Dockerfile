@@ -36,7 +36,7 @@ SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
     apt-get update
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         git
 EOF
 
@@ -83,7 +83,7 @@ FROM "${BASE_RUNTIME_IMAGE}" AS runtime
 RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
     apt-get update
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         tk \
         libglib2.0-0
 EOF
