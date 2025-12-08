@@ -1,0 +1,117 @@
+name: Generate Version
+description: "Generate application and git version based on pyproject.toml version and git tags."
+
+inputs:
+  pyproject_file:
+    description: "Path to pyproject.toml file"
+    type: string
+    required: true
+  git_version_prefix:
+    description: "Prefix for git tag version"
+    type: string
+    required: false
+    default: 'v'
+
+outputs:
+  release_mode:
+    description: 'latest, prerelease, edge'
+    value: ${{ steps.release-mode.outputs.mode }}
+  app_version:
+    description: 'Application version'
+    value: ${{ steps.app-version.outputs.version }}
+  git_version:
+    description: 'Git tag version'
+    value: ${{ steps.git-version.outputs.version }}
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Extract version from pyproject.toml
+      id: pyproject-version
+      shell: bash
+      run: |
+        cd "$(dirname "${{ inputs.pyproject_file }}")"
+
+        PYPROJECT_VERSION=$(uv version --short)
+
+        NORMALIZED_PYPROJECT_VERSION=$(
+          echo "${PYPROJECT_VERSION}" | \
+          uv run python -c "import sys; from packaging.version import Version; print(Version(sys.stdin.read().strip()))"
+        )
+
+        if [ "${PYPROJECT_VERSION}" != "${NORMALIZED_PYPROJECT_VERSION}" ]; then
+          echo "Version in pyproject.toml is not PEP 440 compliant: '${PYPROJECT_VERSION}'. Expected: '${NORMALIZED_PYPROJECT_VERSION}'."
+          exit 1
+        fi
+
+        echo "version=${NORMALIZED_PYPROJECT_VERSION}" >> "${GITHUB_OUTPUT}"
+
+    - name: Check release mode
+      id: release-mode
+      shell: bash
+      run: |
+        # New version: Latest mode
+        # Known version: Edge mode
+
+        PYPROJECT_VERSION="${{ steps.pyproject-version.outputs.version }}"
+        GIT_VERSION="${{ inputs.git_version_prefix }}${PYPROJECT_VERSION}"
+
+        git fetch --tags
+        if git rev-parse "refs/tags/${GIT_VERSION}" >/dev/null 2>&1; then
+          echo "mode=edge" >> "${GITHUB_OUTPUT}"
+        elif [[ "${PYPROJECT_VERSION}" == "0.0.0" ]]; then
+          # Early development version
+          echo "mode=edge" >> "${GITHUB_OUTPUT}"
+        elif [[ "${PYPROJECT_VERSION}" == *"a"* || "${PYPROJECT_VERSION}" == *"b"* || "${PYPROJECT_VERSION}" == *"rc"* || "${PYPROJECT_VERSION}" == *"dev"* ]]; then
+          echo "mode=prerelease" >> "${GITHUB_OUTPUT}"
+        else
+          echo "mode=latest" >> "${GITHUB_OUTPUT}"
+        fi
+
+    - name: Generate app version
+      id: app-version
+      shell: bash
+      run: |
+        # Edge mode: {pyproject_version}.dev0+edge.d{YYYYmmDDHHMMSS}.s{short_sha}
+        # Prerelease mode: {pyproject_version}
+        # Latest mode: {pyproject_version}
+        PYPROJECT_VERSION="${{ steps.pyproject-version.outputs.version }}"
+        RELEASE_MODE="${{ steps.release-mode.outputs.mode }}"
+
+        if [ "${RELEASE_MODE}" = "edge" ]; then
+          DATE_STRING=$(date --utc "+%Y%m%d%H%M%S")
+          SHA_SHORT="${GITHUB_SHA:0:7}"
+          APP_VERSION="${PYPROJECT_VERSION}.dev0+edge.d${DATE_STRING}.s${SHA_SHORT}"
+        else
+          APP_VERSION="${PYPROJECT_VERSION}"
+        fi
+
+        NORMALIZED_APP_VERSION=$(
+          echo "${APP_VERSION}" | \
+          uv run python -c "import sys; from packaging.version import Version; print(Version(sys.stdin.read().strip()))"
+        )
+
+        if [ "${APP_VERSION}" != "${NORMALIZED_APP_VERSION}" ]; then
+          echo "App version is not PEP 440 compliant: '${APP_VERSION}'. Expected: '${NORMALIZED_APP_VERSION}'."
+          exit 1
+        fi
+
+        echo "version=${APP_VERSION}" >> "${GITHUB_OUTPUT}"
+
+    - name: Generate git version
+      id: git-version
+      shell: bash
+      run: |
+        APP_VERSION="${{ steps.app-version.outputs.version }}"
+        GIT_VERSION="${{ inputs.git_version_prefix }}${APP_VERSION}"
+
+        echo "version=${GIT_VERSION}" >> "${GITHUB_OUTPUT}"
+
+    - name: Replace version in pyproject.toml
+      shell: bash
+      run: |
+        cd "$(dirname "${{ inputs.pyproject_file }}")"
+
+        APP_VERSION="${{ steps.app-version.outputs.version }}"
+        uv version "${APP_VERSION}"
