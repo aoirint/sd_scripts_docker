@@ -149,7 +149,7 @@ EOT
     chown -R "1000:1000" /huggingface
 EOF
 
-WORKDIR /opt/sd-scripts/sd-scripts
+WORKDIR /opt/sd-scripts
 USER "1000:1000"
 
 ENTRYPOINT [ "accelerate", "launch" ]
