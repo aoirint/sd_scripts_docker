@@ -1181,6 +1181,11 @@ dependencies = [
     { name = "xformers" },
 ]
 
+[package.dev-dependencies]
+ci = [
+    { name = "packaging" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "accelerate", specifier = "==0.30.0" },
@@ -1213,6 +1218,9 @@ requires-dist = [
     { name = "voluptuous", specifier = "==0.13.1" },
     { name = "xformers", specifier = "==0.0.23.post1", index = "https://download.pytorch.org/whl/cu118" },
 ]
+
+[package.metadata.requires-dev]
+ci = [{ name = "packaging", specifier = "==25.0" }]
 
 [[package]]
 name = "sentencepiece"
