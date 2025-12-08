@@ -1,6 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=ubuntu:22.04
-ARG BASE_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+ARG BASE_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
 ARG PYTHON_VERSION=3.10
 ARG UV_VERSION=0.9
 
@@ -79,7 +78,7 @@ EOF
 
 
 # Runtime stage
-FROM "${BASE_RUNTIME_IMAGE}" AS runtime
+FROM uv-python-base AS runtime
 
 RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
