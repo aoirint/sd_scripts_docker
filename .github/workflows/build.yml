@@ -79,7 +79,7 @@ jobs:
           repository: |
             ghcr.io/aoirint/sd_scripts
             aoirint/sd_scripts
-          buildcache_repository: ghcr.io/${{ github.repository }}
+          buildcache_repository: ghcr.io/aoirint/sd_scripts
           release_mode: ${{ steps.generate-version.outputs.release_mode }}
           version: ${{ steps.generate-version.outputs.app_version }}
 
