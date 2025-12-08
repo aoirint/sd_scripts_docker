@@ -31,8 +31,9 @@ dependencies = [
   "requests==2.32.4",
   "timm==0.6.12",
   "fairscale==0.4.13",
-  # for WD14 captioning (tensorflow)
-  "tensorflow==2.12.1",
+  # for WD14 captioning (onnx)
+  "onnx==1.15.0",
+  "onnxruntime-gpu==1.17.1",
   # open clip for SDXL
   "open-clip-torch==2.20.0",
   # For logging
