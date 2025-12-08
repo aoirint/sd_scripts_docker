@@ -95,7 +95,7 @@ sudo docker run --rm --gpus all \
   --v_parameterization
 ```
 
-### Example: WD14 Captioning (Tensorflow)
+### Example: WD14 Captioning (ONNX)
 
 ```shell
 mkdir -p "./cache/wd14_tagger_model_cache"
