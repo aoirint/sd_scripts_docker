@@ -104,7 +104,7 @@ COPY --from=download-sd-scripts /opt/sd-scripts /opt/sd-scripts
 RUN <<EOF
     cd /opt/sd-scripts
 
-    pip3 install --no-deps .
+    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv pip install --editable .
 
     python -m compileall .
 EOF
