@@ -39,7 +39,7 @@ dependencies = [
   # For logging
   "rich==13.7.0",
   # PyTorch
-  "torch==2.1.2+cu118",
+  "torch==2.8.0",
   "torchvision==0.16.2+cu118",
   "xformers==0.0.23.post1",
   "dadaptation==3.2",
