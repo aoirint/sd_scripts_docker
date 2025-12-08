@@ -37,7 +37,8 @@ RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
     apt-get update
     apt-get install -y --no-install-recommends \
-        git
+        git \
+        ca-certificates
 EOF
 
 ARG SD_SCRIPTS_URL=https://github.com/aoirint/sd-scripts
