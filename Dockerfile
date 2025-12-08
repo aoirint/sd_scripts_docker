@@ -104,7 +104,7 @@ COPY --from=download-sd-scripts /opt/sd-scripts /opt/sd-scripts
 RUN <<EOF
     cd /opt/sd-scripts
 
-    pip install --no-deps .
+    pip3 install --no-deps .
 
     python -m compileall .
 EOF
