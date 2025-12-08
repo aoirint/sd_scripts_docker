@@ -1,98 +1,43 @@
-# syntax=docker/dockerfile:1.12
-ARG BASE_IMAGE=ubuntu:22.04
-ARG BASE_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+# syntax=docker/dockerfile:1
+ARG BASE_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+ARG PYTHON_VERSION=3.10
+ARG UV_VERSION=0.9
 
-FROM ${BASE_IMAGE} AS build-python-stage
+# Download uv binary stage
+FROM "ghcr.io/astral-sh/uv:${UV_VERSION}" AS uv-reference
 
-ARG DEBIAN_FRONTEND=noninteractive
-ENV PYTHONUNBUFFERED=1
-ARG PIP_NO_CACHE_DIR=1
-ARG PYENV_VERSION=v2.5.0
-ARG PYTHON_VERSION=3.10.16
-
-RUN <<EOF
-    set -eu
-
-    apt-get update
-
-    apt-get install -y \
-        build-essential \
-        libssl-dev \
-        zlib1g-dev \
-        libbz2-dev \
-        libreadline-dev \
-        libsqlite3-dev \
-        curl \
-        libncursesw5-dev \
-        xz-utils \
-        tk-dev \
-        libxml2-dev \
-        libxmlsec1-dev \
-        libffi-dev \
-        liblzma-dev \
-        git
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
-EOF
-
-RUN <<EOF
-    set -eu
-
-    git clone https://github.com/pyenv/pyenv.git /opt/pyenv
-    cd /opt/pyenv
-    git checkout "${PYENV_VERSION}"
-
-    PREFIX=/opt/python-build /opt/pyenv/plugins/python-build/install.sh
-    /opt/python-build/bin/python-build -v "${PYTHON_VERSION}" /opt/python
-
-    rm -rf /opt/python-build /opt/pyenv
-EOF
-
-FROM ${BASE_RUNTIME_IMAGE} AS build-python-venv-stage
+# Build uv and Python base stage
+FROM "${BASE_IMAGE}" AS uv-python-base
 
 ARG DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
 ENV PYTHONUNBUFFERED=1
 
-RUN <<EOF
-    set -eu
+ARG UV_VERSION
+COPY --from=uv-reference /uv /uvx /bin/
 
+ENV UV_PYTHON_CACHE_DIR="/uv_python_cache"
+ENV UV_PYTHON_INSTALL_DIR="/opt/python"
+ENV PATH="${UV_PYTHON_INSTALL_DIR}/bin:${PATH}"
+
+ARG PYTHON_VERSION
+RUN --mount=type=cache,target=/uv_python_cache <<EOF
+    uv python install "${PYTHON_VERSION}"
+EOF
+
+# Download sd-scripts source code stage
+FROM "${BASE_IMAGE}" AS download-sd-scripts
+
+ARG DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
+RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
+    --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
     apt-get update
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
         git \
-        gosu
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
-EOF
-
-ARG VENV_BUILDER_UID=999
-ARG VENV_BUILDER_GID=999
-RUN <<EOF
-    set -eu
-
-    groupadd --non-unique --gid "${VENV_BUILDER_GID}" venvbuilder
-    useradd --non-unique --uid "${VENV_BUILDER_UID}" --gid "${VENV_BUILDER_GID}" --create-home venvbuilder
-EOF
-
-COPY --from=build-python-stage --chown=root:root /opt/python /opt/python
-ENV PATH="/opt/python/bin:${PATH}"
-
-RUN <<EOF
-    set -eu
-
-    mkdir -p /opt/python_venv
-    chown -R "${VENV_BUILDER_UID}:${VENV_BUILDER_GID}" /opt/python_venv
-
-    gosu venvbuilder python -m venv /opt/python_venv
-EOF
-ENV PATH="/opt/python_venv/bin:${PATH}"
-
-COPY --chown=root:root ./requirements.txt /python_venv_tmp/
-RUN --mount=type=cache,uid=${VENV_BUILDER_UID},gid=${VENV_BUILDER_GID},target=/home/venvbuilder/.cache/pip <<EOF
-    set -eu
-
-    gosu venvbuilder pip install -r /python_venv_tmp/requirements.txt
+        ca-certificates
 EOF
 
 ARG SD_SCRIPTS_URL=https://github.com/aoirint/sd-scripts
@@ -103,67 +48,73 @@ ARG SD_SCRIPTS_URL=https://github.com/aoirint/sd-scripts
 ARG SD_SCRIPTS_VERSION=4c98c0787bb79c8a7fa8c1f74db0fd18b0f031c1
 
 RUN <<EOF
-    set -eu
-
     mkdir -p /opt/sd-scripts
-    chown -R "${VENV_BUILDER_UID}:${VENV_BUILDER_GID}" /opt/sd-scripts
 
-    gosu venvbuilder git clone "${SD_SCRIPTS_URL}" /opt/sd-scripts
     cd /opt/sd-scripts
-    gosu venvbuilder git checkout "${SD_SCRIPTS_VERSION}"
-    gosu venvbuilder git submodule update --init
-EOF
-
-RUN --mount=type=cache,uid=${VENV_BUILDER_UID},gid=${VENV_BUILDER_GID},target=/home/venvbuilder/.cache/pip <<EOF
-    set -eu
-
-    cd /opt/sd-scripts/
-    gosu venvbuilder python -m compileall .
-    gosu venvbuilder pip install --no-deps --editable .
+    git init
+    git remote add origin "${SD_SCRIPTS_URL}"
+    git fetch --depth 1 origin "${SD_SCRIPTS_VERSION}"
+    git checkout FETCH_HEAD
+    git submodule update --init --recursive
 EOF
 
 
-FROM ${BASE_RUNTIME_IMAGE} AS runtime-env
+# Build Python virtual environment stage
+FROM uv-python-base AS build-venv
 
-ARG DEBIAN_FRONTEND=noninteractive
-ENV PYTHONUNBUFFERED=1
+#  uv configuration
+# - Generate bytecodes
+# - Copy packages into virtual environment
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
 
-RUN <<EOF
-    set -eu
+# Install Python dependencies
+COPY ./pyproject.toml uv.lock /opt/sd-scripts-venv-build/
+RUN --mount=type=cache,target=/root/.cache/uv <<EOF
+    cd /opt/sd-scripts-venv-build/
 
+    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv sync --frozen --no-dev --no-editable --no-install-project
+EOF
+
+
+# Runtime stage
+FROM uv-python-base AS runtime
+
+RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
+    --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
     apt-get update
-    apt-get install -y \
-        git \
+    apt-get install -y --no-install-recommends \
         tk \
-        libglib2.0-0
-
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
+        libglib2.0-0 \
+        libgl1-mesa-glx
 EOF
 
 # libnvrtc.so workaround
 # https://github.com/aoirint/sd-scripts-docker/issues/19
 RUN <<EOF
-    set -eu
-
     ln -s \
         /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so.11.2 \
         /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so
 EOF
 
-COPY --from=build-python-stage --chown=root:root /opt/python /opt/python
-COPY --from=build-python-venv-stage --chown=root:root /opt/python_venv /opt/python_venv
-COPY --from=build-python-venv-stage --chown=root:root /opt/sd-scripts /opt/sd-scripts
+# Copy Python virtual environment from build stage
+COPY --from=build-venv /opt/python_venv /opt/python_venv
 ENV PATH="/opt/python_venv/bin:${PATH}"
 
-WORKDIR /opt/sd-scripts
+# Copy application code
+COPY --from=download-sd-scripts /opt/sd-scripts /opt/sd-scripts
+
+# Pre-compile Python bytecode
+RUN <<EOF
+    cd /opt/sd-scripts
+
+    python -m compileall .
+EOF
 
 # huggingface cache dir
 ENV HF_HOME=/huggingface
 
 RUN <<EOF
-    set -eu
-
     # create huggingface cache dir
     mkdir -p /huggingface
 
@@ -199,5 +150,7 @@ EOT
     chown -R "1000:1000" /huggingface
 EOF
 
+WORKDIR /opt/sd-scripts
 USER "1000:1000"
+
 ENTRYPOINT [ "accelerate", "launch" ]
