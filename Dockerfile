@@ -85,7 +85,8 @@ RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
     apt-get update
     apt-get install -y --no-install-recommends \
         tk \
-        libglib2.0-0
+        libglib2.0-0 \
+        libgl1-mesa-glx
 EOF
 
 # libnvrtc.so workaround
