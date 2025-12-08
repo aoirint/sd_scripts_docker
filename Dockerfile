@@ -40,12 +40,8 @@ RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
         ca-certificates
 EOF
 
-ARG SD_SCRIPTS_URL=https://github.com/aoirint/sd-scripts
-# Based on kohya-ss/sd-scripts@v0.9.1
-# https://github.com/kohya-ss/sd-scripts/commit/8f4ee8fc343b047965cd8976fca65c3a35b7593a
-# Patched for https://github.com/kohya-ss/sd-scripts/issues/937
-# https://github.com/aoirint/sd-scripts/pull/1
-ARG SD_SCRIPTS_VERSION=4c98c0787bb79c8a7fa8c1f74db0fd18b0f031c1
+ARG SD_SCRIPTS_URL=https://github.com/kohya-ss/sd-scripts
+ARG SD_SCRIPTS_VERSION=206adb643848ff27894f1e72b6987fa66db99378
 
 RUN <<EOF
     mkdir -p /opt/sd-scripts

@@ -1,12 +1,6 @@
 # sd-scripts-docker
 
-Dockerfile for [aoirint/sd-scripts](https://github.com/aoirint/sd-scripts), a personal fork of [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
-
-## Differences from the original repository
-
-This patch is applied. Technical validity is not guaranteed.
-
-- https://github.com/aoirint/sd-scripts/pull/1
+Dockerfile for [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
 
 ## Requirements
 
