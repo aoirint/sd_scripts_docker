@@ -110,5 +110,6 @@ sudo docker run --rm --gpus all \
   aoirint/sd_scripts \
   finetune/tag_images_by_wd14_tagger.py \
   --model_dir "/wd14_tagger_model_cache/wd14_tagger_model" \
+  --onnx \
   /work/my_dataset-20230715.1/img
 ```
