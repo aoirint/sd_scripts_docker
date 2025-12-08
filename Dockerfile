@@ -100,9 +100,11 @@ ENV PATH="/opt/python_venv/bin:${PATH}"
 # Copy application code
 COPY --from=download-sd-scripts /opt/sd-scripts /opt/sd-scripts
 
-# Pre-compile Python bytecode
+# Install project and Pre-compile Python bytecode
 RUN <<EOF
     cd /opt/sd-scripts
+
+    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv pip install --editable .
 
     python -m compileall .
 EOF
