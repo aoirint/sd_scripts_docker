@@ -31,7 +31,7 @@ sudo docker run --rm --gpus all \
   /work/my_dataset-20230715.1/img
 ```
 
-### Training LoRA-LierLa with `DreamBooth、キャプション方式` for Animagine XL 4.0 Zero (Stable Diffusion XL)
+### Training LoRA-LierLa U-Net only with `DreamBooth、キャプション方式` for Animagine XL 4.0 Zero (Stable Diffusion XL)
 
 Create permanent directories to mount on container.
 
