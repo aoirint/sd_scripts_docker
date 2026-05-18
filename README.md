@@ -4,8 +4,12 @@ Dockerfile for [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
 
 ## Requirements
 
-- Docker Engine >= 27.0
-- [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+- Ubuntu 24.04 or later
+- [Docker Engine](https://docs.docker.com/engine/install/ubuntu/) 29 or later
+- [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
+- NVIDIA GeForce RTX 4000 series, 5000 series
+  - 1000 series does not work due to CUDA compatibility.
+  - 2000 series and 3000 series might work, but untested.
 
 ## Usage
 
