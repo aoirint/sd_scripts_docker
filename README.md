@@ -6,6 +6,18 @@ Dockerfile for [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
 
 - [Updating sd-scripts](docs/update-sd-scripts.md)
 
+## License
+
+This repository's Dockerfile, documentation, and project-specific files are
+licensed under the MIT License. See [LICENSE](LICENSE).
+
+The published Docker image bundles
+[kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts) at the commit
+specified by `SD_SCRIPTS_VERSION` in the Dockerfile. sd-scripts is primarily
+licensed under the Apache License 2.0, with some portions under separate license
+terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the upstream
+license information for details.
+
 ## Requirements
 
 - Ubuntu 24.04 or later
