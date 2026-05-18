@@ -7,6 +7,10 @@ resolution-markers = [
     "(platform_machine != 'aarch64' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')",
 ]
 
+[options]
+exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
+exclude-newer-span = "P7D"
+
 [[package]]
 name = "absl-py"
 version = "2.3.1"
@@ -1293,8 +1297,8 @@ dependencies = [
     { name = "typing-extensions" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu118/torch-2.1.2%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:60396358193f238888540f4a38d78485f161e28ec17fa445f0373b5350ef21f0" },
-    { url = "https://download.pytorch.org/whl/cu118/torch-2.1.2%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:0ddfa0336d678316ff4c35172d85cddab5aa5ded4f781158e725096926491db9" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torch-2.1.2%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:60396358193f238888540f4a38d78485f161e28ec17fa445f0373b5350ef21f0", upload-time = "2024-01-29T18:38:38Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torch-2.1.2%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:0ddfa0336d678316ff4c35172d85cddab5aa5ded4f781158e725096926491db9", upload-time = "2024-01-29T18:40:05Z" },
 ]
 
 [[package]]
@@ -1323,8 +1327,8 @@ dependencies = [
     { name = "torch" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu118/torchvision-0.16.2%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:18470aef0bbde73f5a6a96135cd457f4d8be31f60be7ceae4ef5174f02f73add" },
-    { url = "https://download.pytorch.org/whl/cu118/torchvision-0.16.2%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:689f2458e8924c47b7ba9f50dca353423b75214184b905d540f69d9b962b2fdf" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torchvision-0.16.2%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:18470aef0bbde73f5a6a96135cd457f4d8be31f60be7ceae4ef5174f02f73add", upload-time = "2024-01-29T19:09:38Z" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torchvision-0.16.2%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:689f2458e8924c47b7ba9f50dca353423b75214184b905d540f69d9b962b2fdf", upload-time = "2024-01-29T19:09:39Z" },
 ]
 
 [[package]]
@@ -1446,8 +1450,8 @@ dependencies = [
     { name = "torch" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu118/xformers-0.0.23.post1%2Bcu118-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:dc5f828dbe187c1bf69d41853a55170d2506ff4c40fc0dfbea3bc7e18daed2e5" },
-    { url = "https://download.pytorch.org/whl/cu118/xformers-0.0.23.post1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:bb845f1dfe21dec3ccaf2c94adabf46bd604ac5bbfb35379340816914b1ce00a" },
+    { url = "https://download.pytorch.org/whl/cu118/xformers-0.0.23.post1%2Bcu118-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:dc5f828dbe187c1bf69d41853a55170d2506ff4c40fc0dfbea3bc7e18daed2e5", upload-time = "2024-01-29T19:10:51Z" },
+    { url = "https://download.pytorch.org/whl/cu118/xformers-0.0.23.post1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:bb845f1dfe21dec3ccaf2c94adabf46bd604ac5bbfb35379340816914b1ce00a", upload-time = "2024-01-29T19:11:01Z" },
 ]
 
 [[package]]

@@ -1,9 +1,7 @@
 [project]
 name = "sd-scripts-docker"
 version = "20251209.2"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.10,<3.11"
+requires-python = "==3.10.*"
 
 # Originally copied from kohya-ss/sd-scripts
 # https://github.com/kohya-ss/sd-scripts/blob/8f4ee8fc343b047965cd8976fca65c3a35b7593a/requirements.txt
@@ -48,17 +46,21 @@ dependencies = [
   "lycoris-lora==3.1.1.post1",
 ]
 
-[tool.uv.sources]
-torch = { index = "pytorch" }
-torchvision = { index = "pytorch" }
-xformers = { index = "pytorch" }
-
-[[tool.uv.index]]
-name = "pytorch"
-url = "https://download.pytorch.org/whl/cu118"
-explicit = true
-
 [dependency-groups]
 ci = [
   "packaging==25.0",
 ]
+
+[tool.uv]
+package = false
+exclude-newer = "P7D"
+
+[[tool.uv.index]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu118" }
+torchvision = { index = "pytorch-cu118" }
+xformers = { index = "pytorch-cu118" }
