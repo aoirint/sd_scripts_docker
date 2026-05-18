@@ -330,32 +330,9 @@ the same lightweight upstream pytest set that CI uses:
 
 ```shell
 docker run --rm --user root --entrypoint bash \
-  -v "${PWD}/pyproject.toml:/tmp/release-test-project/pyproject.toml:ro" \
-  -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
-  sd-scripts:update-test -lc '
-  set -euo pipefail
-  uv sync --project /tmp/release-test-project --frozen --only-group dev --inexact --no-install-project
-  cd /opt/sd-scripts
-  pytest -q \
-    tests/test_custom_offloading_utils.py \
-    tests/test_expand_unet_to_inpainting.py \
-    tests/test_fine_tune.py \
-    tests/test_flux_train.py \
-    tests/test_flux_train_network.py \
-    tests/test_lumina_train_network.py \
-    tests/test_mask_generator.py \
-    tests/test_sd3_train.py \
-    tests/test_sd3_train_network.py \
-    tests/test_sdxl_train.py \
-    tests/test_sdxl_train_leco.py \
-    tests/test_sdxl_train_network.py \
-    tests/test_train.py \
-    tests/test_train_leco.py \
-    tests/test_train_network.py \
-    tests/test_train_textual_inversion.py \
-    tests/test_validation.py \
-    tests/library
-'
+  -v "${PWD}:/tmp/release-test-project:ro" \
+  sd-scripts:update-test \
+  /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh
 ```
 
 This set intentionally excludes upstream tests and scripts that need model

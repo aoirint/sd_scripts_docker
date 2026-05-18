@@ -55,10 +55,12 @@ jobs:
             release_mode=latest
           fi
 
-          echo "tag_exists=${tag_exists}" >> "$GITHUB_OUTPUT"
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
-          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
-          echo "release_mode=${release_mode}" >> "$GITHUB_OUTPUT"
+          {
+            echo "tag_exists=${tag_exists}"
+            echo "version=${version}"
+            echo "tag=${tag}"
+            echo "release_mode=${release_mode}"
+          } >> "$GITHUB_OUTPUT"
 
   release:
     needs:
@@ -236,29 +238,6 @@ jobs:
       - name: Run upstream sd-scripts pytest release tests
         run: |-
           docker run --rm --user root --entrypoint bash \
-            -v "${PWD}/pyproject.toml:/tmp/release-test-project/pyproject.toml:ro" \
-            -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
-            "${{ steps.image.outputs.image }}" -lc '
-            set -euo pipefail
-            uv sync --project /tmp/release-test-project --frozen --only-group dev --inexact --no-install-project
-            cd /opt/sd-scripts
-            pytest -q \
-              tests/test_custom_offloading_utils.py \
-              tests/test_expand_unet_to_inpainting.py \
-              tests/test_fine_tune.py \
-              tests/test_flux_train.py \
-              tests/test_flux_train_network.py \
-              tests/test_lumina_train_network.py \
-              tests/test_mask_generator.py \
-              tests/test_sd3_train.py \
-              tests/test_sd3_train_network.py \
-              tests/test_sdxl_train.py \
-              tests/test_sdxl_train_leco.py \
-              tests/test_sdxl_train_network.py \
-              tests/test_train.py \
-              tests/test_train_leco.py \
-              tests/test_train_network.py \
-              tests/test_train_textual_inversion.py \
-              tests/test_validation.py \
-              tests/library
-          '
+            -v "${PWD}:/tmp/release-test-project:ro" \
+            "${{ steps.image.outputs.image }}" \
+            /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh
