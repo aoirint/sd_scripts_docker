@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
 
-ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04@sha256:85fb7ac694079fff1061a0140fd5b5a641997880e12112d92589c3bbb1e8b7ca
+ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04@sha256:d02c4310b6d57ca0b16cd80298bdb33a74187baafe2eccd8a6a16180ddc90802
 ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.11.13@sha256:841c8e6fe30a8b07b4478d12d0c608cba6de66102d29d65d1cc423af86051563
 ARG PYTHON_VERSION=3.10.19
 ARG SD_SCRIPTS_URL=https://github.com/kohya-ss/sd-scripts
-ARG SD_SCRIPTS_VERSION=206adb643848ff27894f1e72b6987fa66db99378
+ARG SD_SCRIPTS_VERSION=a1b48df430a3690aeb5c9b6e7b19025afe8fb518
 
 FROM ${UV_IMAGE} AS uv
 
@@ -30,8 +30,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update
 
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203~22.04.1 \
-        git=1:2.34.1-1ubuntu1.17
+        ca-certificates=20240203 \
+        git=1:2.43.0-1ubuntu7.3
 SH
 
 COPY --from=uv /uv /usr/local/bin/uv
@@ -74,10 +74,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update
 
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203~22.04.1 \
-        libgl1-mesa-glx=23.0.4-0ubuntu1~22.04.1 \
-        libglib2.0-0=2.72.4-0ubuntu2.9 \
-        tk=8.6.11+1build2
+        ca-certificates=20240203 \
+        libgl1=1.7.0-1build1 \
+        libglib2.0-0t64=2.80.0-6ubuntu3.8 \
+        tk=8.6.14build1
 SH
 
 COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
@@ -91,8 +91,8 @@ WORKDIR /opt/sd-scripts
 # https://github.com/aoirint/sd-scripts-docker/issues/19
 RUN <<'SH'
     ln -s \
-        /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so.11.2 \
-        /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so
+        /usr/local/cuda-12.9/targets/x86_64-linux/lib/libnvrtc.so.12 \
+        /usr/local/cuda-12.9/targets/x86_64-linux/lib/libnvrtc.so
 SH
 
 # Install project and Pre-compile Python bytecode
