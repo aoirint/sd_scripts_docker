@@ -133,3 +133,16 @@ sudo docker run \
   --network_module="networks.lora" \
   --network_train_unet_only
 ```
+
+## Release procedure
+
+Releases are driven by the root `VERSION` file and the Git tags on GitHub.
+
+1. Update `VERSION` to the version to publish.
+   - Stable releases use SemVer without a prerelease suffix, such as `0.1.0`.
+   - Prereleases use SemVer with a prerelease suffix, such as `0.1.0-rc.1`.
+2. Commit the `VERSION` change and merge it to `main`.
+3. The build workflow checks whether `v<VERSION>` already exists on GitHub.
+   - If the tag does not exist and `VERSION` is stable, it creates a latest GitHub Release and publishes Docker images tagged `v<VERSION>` and `latest`.
+   - If the tag does not exist and `VERSION` is a prerelease, it creates a prerelease GitHub Release and publishes the Docker image tagged `edge`.
+   - If the tag already exists, the push is treated as an edge build and only the `edge` Docker image is updated.

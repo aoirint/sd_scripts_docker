@@ -1065,7 +1065,7 @@ wheels = [
 
 [[package]]
 name = "sd-scripts-docker"
-version = "20251209.2"
+version = "0.0.0"
 source = { virtual = "." }
 dependencies = [
     { name = "accelerate" },
@@ -1098,11 +1098,6 @@ dependencies = [
     { name = "transformers" },
     { name = "voluptuous" },
     { name = "xformers" },
-]
-
-[package.dev-dependencies]
-ci = [
-    { name = "packaging" },
 ]
 
 [package.metadata]
@@ -1138,9 +1133,6 @@ requires-dist = [
     { name = "voluptuous", specifier = "==0.13.1" },
     { name = "xformers", specifier = "==0.0.23.post1", index = "https://download.pytorch.org/whl/cu118" },
 ]
-
-[package.metadata.requires-dev]
-ci = [{ name = "packaging", specifier = "==25.0" }]
 
 [[package]]
 name = "sentencepiece"
