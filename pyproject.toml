@@ -61,3 +61,8 @@ explicit = true
 torch = { index = "pytorch-cu129" }
 torchvision = { index = "pytorch-cu129" }
 xformers = { index = "pytorch-cu129" }
+
+[dependency-groups]
+dev = [
+  "pytest>=9.0.3",
+]
