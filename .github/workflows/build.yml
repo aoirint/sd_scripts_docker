@@ -1,9 +1,6 @@
 name: Build
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
@@ -137,9 +134,16 @@ jobs:
 
       - name: Run upstream sd-scripts pytest release tests
         run: |-
-          docker run --rm --user root --entrypoint bash sd-scripts:release-test -lc '
+          docker run --rm --user root --entrypoint bash \
+            -v "${PWD}/pyproject.toml:/tmp/release-test-project/pyproject.toml:ro" \
+            -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
+            sd-scripts:release-test -lc '
             set -euo pipefail
-            uv pip install pytest
+            cd /tmp/release-test-project
+            uv export --frozen --only-group dev --no-emit-project --format requirements.txt \
+              --output-file /tmp/release-test-requirements.txt
+            uv pip install --requirement /tmp/release-test-requirements.txt
+            cd /opt/sd-scripts
             pytest -q \
               tests/test_custom_offloading_utils.py \
               tests/test_expand_unet_to_inpainting.py \

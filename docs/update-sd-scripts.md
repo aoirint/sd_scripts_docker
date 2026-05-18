@@ -324,14 +324,21 @@ workflow before merging when practical.
 ## 11. Run Upstream Release Tests
 
 The Docker image includes the selected upstream sd-scripts checkout under
-`/opt/sd-scripts`, including the upstream `tests/` directory. Install `pytest`
-temporarily in a disposable container and run the same lightweight upstream
-pytest set that CI uses:
+`/opt/sd-scripts`, including the upstream `tests/` directory. Install the
+uv-managed dev test dependencies temporarily in a disposable container and run
+the same lightweight upstream pytest set that CI uses:
 
 ```shell
-docker run --rm --user root --entrypoint bash sd-scripts:update-test -lc '
+docker run --rm --user root --entrypoint bash \
+  -v "${PWD}/pyproject.toml:/tmp/release-test-project/pyproject.toml:ro" \
+  -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
+  sd-scripts:update-test -lc '
   set -euo pipefail
-  uv pip install pytest
+  cd /tmp/release-test-project
+  uv export --frozen --only-group dev --no-emit-project --format requirements.txt \
+    --output-file /tmp/release-test-requirements.txt
+  uv pip install --requirement /tmp/release-test-requirements.txt
+  cd /opt/sd-scripts
   pytest -q \
     tests/test_custom_offloading_utils.py \
     tests/test_expand_unet_to_inpainting.py \
