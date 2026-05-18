@@ -85,10 +85,15 @@ jobs:
           generateReleaseNotes: true
 
   test-docker:
+    needs:
+      - version
+      - build-docker
+
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
+      packages: read
 
     steps:
       - name: Free disk space
@@ -113,27 +118,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
-
-      - name: Build release test image
-        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+      - name: Login to ghcr.io
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: ./Dockerfile
-          load: true
-          push: false
-          tags: sd-scripts:release-test
-          cache-from: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull built Docker image
+        id: image
+        run: |-
+          if [[ "${{ needs.version.outputs.release_mode }}" == "latest" ]]; then
+            image="${{ env.GHCR_IMAGE_NAME }}:${{ needs.version.outputs.tag }}"
+          else
+            image="${{ env.GHCR_IMAGE_NAME }}:edge"
+          fi
+
+          docker pull "${image}"
+          echo "image=${image}" >> "$GITHUB_OUTPUT"
 
       - name: Run upstream sd-scripts pytest release tests
         run: |-
           docker run --rm --user root --entrypoint bash \
             -v "${PWD}/pyproject.toml:/tmp/release-test-project/pyproject.toml:ro" \
             -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
-            sd-scripts:release-test -lc '
+            "${{ steps.image.outputs.image }}" -lc '
             set -euo pipefail
             uv sync --project /tmp/release-test-project --frozen --only-group dev --inexact --no-install-project
             cd /opt/sd-scripts
@@ -161,9 +170,6 @@ jobs:
   build-docker:
     needs:
       - version
-      - test-docker
-      - release
-    if: ${{ always() && needs.version.result == 'success' && needs.test-docker.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
 
     runs-on: ubuntu-latest
 
