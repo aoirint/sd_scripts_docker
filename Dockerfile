@@ -1,122 +1,110 @@
 # syntax=docker/dockerfile:1
-ARG BASE_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
-ARG PYTHON_VERSION=3.10
-ARG UV_VERSION=0.9
 
-# Download uv binary stage
-FROM "ghcr.io/astral-sh/uv:${UV_VERSION}" AS uv-reference
-
-# Build uv and Python base stage
-FROM "${BASE_IMAGE}" AS uv-python-base
-
-ARG DEBIAN_FRONTEND=noninteractive
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
-
-ENV PYTHONUNBUFFERED=1
-
-ARG UV_VERSION
-COPY --from=uv-reference /uv /uvx /bin/
-
-ENV UV_PYTHON_CACHE_DIR="/uv_python_cache"
-ENV UV_PYTHON_INSTALL_DIR="/opt/python"
-ENV PATH="${UV_PYTHON_INSTALL_DIR}/bin:${PATH}"
-
-ARG PYTHON_VERSION
-RUN --mount=type=cache,target=/uv_python_cache <<EOF
-    uv python install "${PYTHON_VERSION}"
-EOF
-
-# Download sd-scripts source code stage
-FROM "${BASE_IMAGE}" AS download-sd-scripts
-
-ARG DEBIAN_FRONTEND=noninteractive
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
-
-RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
-    --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
-    apt-get update
-    apt-get install -y --no-install-recommends \
-        git \
-        ca-certificates
-EOF
-
+ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04@sha256:85fb7ac694079fff1061a0140fd5b5a641997880e12112d92589c3bbb1e8b7ca
+ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.11.13@sha256:841c8e6fe30a8b07b4478d12d0c608cba6de66102d29d65d1cc423af86051563
+ARG PYTHON_VERSION=3.10.19
 ARG SD_SCRIPTS_URL=https://github.com/kohya-ss/sd-scripts
 ARG SD_SCRIPTS_VERSION=206adb643848ff27894f1e72b6987fa66db99378
 
-RUN <<EOF
-    mkdir -p /opt/sd-scripts
+FROM ${UV_IMAGE} AS uv
 
-    cd /opt/sd-scripts
+FROM ${CUDA_RUNTIME_IMAGE} AS builder
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
+ARG PYTHON_VERSION
+ARG SD_SCRIPTS_URL
+ARG SD_SCRIPTS_VERSION
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_PROGRESS=1 \
+    UV_CACHE_DIR=/root/.cache/uv \
+    UV_PYTHON_INSTALL_DIR=/opt/python \
+    UV_PROJECT_ENVIRONMENT=/opt/python-venv \
+    PATH=/opt/python-venv/bin:/opt/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked <<'SH'
+    apt-get update
+
+    apt-get install -y --no-install-recommends \
+        ca-certificates=20240203~22.04.1 \
+        git=1:2.34.1-1ubuntu1.17
+SH
+
+COPY --from=uv /uv /usr/local/bin/uv
+
+WORKDIR /opt/sd-scripts-venv-build
+
+COPY pyproject.toml uv.lock ./
+
+RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked <<SH
+    uv python install "${PYTHON_VERSION}"
+    uv sync --frozen --no-dev --no-editable --no-install-project --python "${PYTHON_VERSION}"
+SH
+
+WORKDIR /opt/sd-scripts
+
+RUN <<SH
     git init
     git remote add origin "${SD_SCRIPTS_URL}"
     git fetch --depth 1 origin "${SD_SCRIPTS_VERSION}"
-    git checkout FETCH_HEAD
+    git checkout --detach FETCH_HEAD
     git submodule update --init --recursive
-EOF
+SH
 
 
-# Build Python virtual environment stage
-FROM uv-python-base AS build-venv
+FROM ${CUDA_RUNTIME_IMAGE} AS runtime
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
-#  uv configuration
-# - Generate bytecodes
-# - Copy packages into virtual environment
-ENV UV_COMPILE_BYTECODE=1
-ENV UV_LINK_MODE=copy
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONUNBUFFERED=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_PROGRESS=1 \
+    UV_CACHE_DIR=/root/.cache/uv \
+    UV_PYTHON_INSTALL_DIR=/opt/python \
+    UV_PROJECT_ENVIRONMENT=/opt/python-venv \
+    PATH=/opt/python-venv/bin:/opt/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+    HF_HOME=/huggingface
 
-# Install Python dependencies
-COPY ./pyproject.toml uv.lock /opt/sd-scripts-venv-build/
-RUN --mount=type=cache,target=/root/.cache/uv <<EOF
-    cd /opt/sd-scripts-venv-build/
-
-    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv sync --frozen --no-dev --no-editable --no-install-project
-EOF
-
-
-# Runtime stage
-FROM uv-python-base AS runtime
-
-RUN --mount=type=cache,sharing=private,target=/var/cache/apt \
-    --mount=type=cache,sharing=private,target=/var/lib/apt/lists <<EOF
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked <<'SH'
     apt-get update
+
     apt-get install -y --no-install-recommends \
-        tk \
-        libglib2.0-0 \
-        libgl1-mesa-glx
-EOF
+        ca-certificates=20240203~22.04.1 \
+        libgl1-mesa-glx=23.0.4-0ubuntu1~22.04.1 \
+        libglib2.0-0=2.72.4-0ubuntu2.9 \
+        tk=8.6.11+1build2
+SH
+
+COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
+COPY --from=builder /opt/python /opt/python
+COPY --from=builder /opt/python-venv /opt/python-venv
+COPY --from=builder /opt/sd-scripts /opt/sd-scripts
+
+WORKDIR /opt/sd-scripts
 
 # libnvrtc.so workaround
 # https://github.com/aoirint/sd-scripts-docker/issues/19
-RUN <<EOF
+RUN <<'SH'
     ln -s \
         /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so.11.2 \
         /usr/local/cuda-11.8/targets/x86_64-linux/lib/libnvrtc.so
-EOF
-
-# Copy Python virtual environment from build stage
-COPY --from=build-venv /opt/python_venv /opt/python_venv
-ENV PATH="/opt/python_venv/bin:${PATH}"
-
-# Copy application code
-COPY --from=download-sd-scripts /opt/sd-scripts /opt/sd-scripts
+SH
 
 # Install project and Pre-compile Python bytecode
-RUN <<EOF
-    cd /opt/sd-scripts
-
-    UV_PROJECT_ENVIRONMENT="/opt/python_venv" uv pip install --editable .
-
+RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked <<'SH'
+    uv pip install --editable .
     python -m compileall .
-EOF
+SH
 
-# huggingface cache dir
-ENV HF_HOME=/huggingface
-
-RUN <<EOF
-    # create huggingface cache dir
+RUN <<'SH'
+    groupadd -o -g 1000 trainer
+    useradd -m -o -u 1000 -g 1000 -s /bin/bash trainer
     mkdir -p /huggingface
-
-    # create accelerate cache dir
     mkdir -p /huggingface/accelerate
 
     tee /huggingface/accelerate/default_config.yaml <<EOT
@@ -144,11 +132,9 @@ tpu_zone: null
 use_cpu: false
 EOT
 
-    # writable by default execution user
-    chown -R "1000:1000" /huggingface
-EOF
+    chown -R trainer:trainer /huggingface /opt/sd-scripts
+SH
 
-WORKDIR /opt/sd-scripts
-USER "1000:1000"
+USER trainer
 
-ENTRYPOINT [ "accelerate", "launch" ]
+ENTRYPOINT ["accelerate", "launch"]
