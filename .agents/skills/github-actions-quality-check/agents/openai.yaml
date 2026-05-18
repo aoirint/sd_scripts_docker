@@ -1,0 +1,7 @@
+interface:
+  display_name: "GitHub Actions Quality Check"
+  short_description: "Quality-check GitHub Actions workflows, pins, permissions, and CI linting."
+  default_prompt: >-
+    Quality-check this GitHub Actions change for workflow syntax, action
+    pinning, permissions, runner labels, triggers, concurrency, secrets, and
+    verification coverage.

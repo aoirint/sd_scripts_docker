@@ -1,0 +1,6 @@
+interface:
+  display_name: "Code Quality Check"
+  short_description: "Review code quality, maintainability, verification, and supply-chain-sensitive changes."
+  default_prompt: >-
+    Review this change for readability, maintainability, design intent,
+    verification discipline, and supply-chain-sensitive updates.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit Message Quality Check"
+  short_description: "Quality-check repository commit messages."
+  default_prompt: "Quality-check this commit message against the repository's Conventional Commits guidance."

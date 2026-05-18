@@ -1,0 +1,4 @@
+interface:
+  display_name: "Document Quality Check"
+  short_description: "Quality-check explanatory prose."
+  default_prompt: "Quality-check this prose for readability, structure, audience fit, and preserved nuance."

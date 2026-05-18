@@ -1,0 +1,6 @@
+interface:
+  display_name: "Changelog Workflow"
+  short_description: "Update a canonical developer changelog."
+  default_prompt: >-
+    Update the canonical Keep a Changelog-style release history, preserving
+    developer-facing version, prerelease, compatibility, and maintainer context.
