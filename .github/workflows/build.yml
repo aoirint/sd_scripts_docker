@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -65,7 +64,7 @@ jobs:
     needs:
       - version
       - test-docker
-    if: ${{ github.event_name == 'push' && needs.version.outputs.release_mode != 'edge' }}
+    if: ${{ needs.version.outputs.release_mode != 'edge' }}
 
     runs-on: ubuntu-slim
 
@@ -86,9 +85,6 @@ jobs:
           generateReleaseNotes: true
 
   test-docker:
-    needs:
-      - version
-
     runs-on: ubuntu-latest
 
     permissions:
@@ -167,7 +163,7 @@ jobs:
       - version
       - test-docker
       - release
-    if: ${{ github.event_name == 'push' && always() && needs.version.result == 'success' && needs.test-docker.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
+    if: ${{ always() && needs.version.result == 'success' && needs.test-docker.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
 
     runs-on: ubuntu-latest
 
