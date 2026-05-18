@@ -89,6 +89,10 @@ jobs:
     needs:
       - version
       - release
+    # Keep the original release flow: create the GitHub release first, then
+    # publish Docker tags for that commit. Edge builds intentionally skip the
+    # release job, so the Docker publish path must accept either success or
+    # skipped here.
     if: ${{ always() && needs.version.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
 
     runs-on: ubuntu-latest
@@ -226,6 +230,9 @@ jobs:
       - name: Pull built Docker image
         id: image
         run: |-
+          # Test the image tag that build-docker just pushed, not a second local
+          # build. Latest releases are immutable version tags; edge builds reuse
+          # the moving edge tag because VERSION either already exists or is 0.0.0.
           if [[ "${{ needs.version.outputs.release_mode }}" == "latest" ]]; then
             image="${{ env.GHCR_IMAGE_NAME }}:${{ needs.version.outputs.tag }}"
           else
@@ -237,6 +244,9 @@ jobs:
 
       - name: Run upstream sd-scripts pytest release tests
         run: |-
+          # Mount the repository read-only so the tested image supplies
+          # /opt/sd-scripts, while this repository supplies the locked pytest
+          # dev dependency group and the shared release-test script.
           docker run --rm --user root --entrypoint bash \
             -v "${PWD}:/tmp/release-test-project:ro" \
             "${{ steps.image.outputs.image }}" \
