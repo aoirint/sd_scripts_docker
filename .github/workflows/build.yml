@@ -140,9 +140,7 @@ jobs:
             sd-scripts:release-test -lc '
             set -euo pipefail
             cd /tmp/release-test-project
-            uv export --frozen --only-group dev --no-emit-project --format requirements.txt \
-              --output-file /tmp/release-test-requirements.txt
-            uv pip install --requirement /tmp/release-test-requirements.txt
+            uv sync --frozen --only-group dev --inexact --no-install-project
             cd /opt/sd-scripts
             pytest -q \
               tests/test_custom_offloading_utils.py \
