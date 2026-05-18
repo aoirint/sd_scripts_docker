@@ -2,22 +2,6 @@
 
 Dockerfile for [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
 
-## Maintainer documentation
-
-- [Updating sd-scripts](docs/update-sd-scripts.md)
-
-## License
-
-This repository's Dockerfile, documentation, and project-specific files are
-licensed under the MIT License. See [LICENSE](LICENSE).
-
-The published Docker image bundles
-[kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts) at the commit
-specified by `SD_SCRIPTS_VERSION` in the Dockerfile. sd-scripts is primarily
-licensed under the Apache License 2.0, with some portions under separate license
-terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the upstream
-license information for details.
-
 ## Requirements
 
 - Ubuntu 24.04 or later
@@ -154,7 +138,11 @@ sudo docker run \
   --network_train_unet_only
 ```
 
-## Release procedure
+## Maintenance
+
+- [Updating sd-scripts](docs/update-sd-scripts.md)
+
+### Release procedure
 
 Releases are driven by the root `VERSION` file and the Git tags on GitHub.
 To update the bundled sd-scripts version before a release, follow
@@ -169,3 +157,15 @@ To update the bundled sd-scripts version before a release, follow
    - If the tag does not exist and `VERSION` is a prerelease, it creates a prerelease GitHub Release and publishes the Docker image tagged `edge`.
    - If `VERSION` is `0.0.0`, it is treated as an edge build and only the `edge` Docker image is updated.
    - If the tag already exists, the push is treated as an edge build and only the `edge` Docker image is updated.
+
+## License
+
+This repository's Dockerfile, documentation, and project-specific files are
+licensed under the MIT License. See [LICENSE](LICENSE).
+
+The published Docker image bundles
+[kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts) at the commit
+specified by `SD_SCRIPTS_VERSION` in the Dockerfile. sd-scripts is primarily
+licensed under the Apache License 2.0, with some portions under separate license
+terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the upstream
+license information for details.
