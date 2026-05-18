@@ -1,6 +1,6 @@
 [project]
 name = "sd-scripts-docker"
-version = "20251209.2"
+version = "0.0.0"
 requires-python = "==3.10.*"
 
 # Originally copied from kohya-ss/sd-scripts
@@ -44,11 +44,6 @@ dependencies = [
   # Additional bundle
   # https://github.com/KohakuBlueleaf/LyCORIS
   "lycoris-lora==3.1.1.post1",
-]
-
-[dependency-groups]
-ci = [
-  "packaging==25.0",
 ]
 
 [tool.uv]

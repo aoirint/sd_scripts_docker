@@ -5,17 +5,91 @@ on:
     branches:
       - main
 
-defaults:
-  run:
-    shell: bash
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: aoirint/sd_scripts
+  GHCR_IMAGE_NAME: ghcr.io/aoirint/sd_scripts
 
 jobs:
-  build-docker:
-    runs-on: ubuntu-latest
+  version:
+    runs-on: ubuntu-slim
+
+    permissions:
+      contents: read
 
     outputs:
-      git_version: ${{ steps.generate-version.outputs.git_version }}
-      release_mode: ${{ steps.generate-version.outputs.release_mode }}
+      release_mode: ${{ steps.version.outputs.release_mode }}
+      tag: ${{ steps.version.outputs.tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Read release version
+        id: version
+        run: |-
+          version="$(tr -d '[:space:]' < VERSION)"
+
+          if [[ ! "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "VERSION must be stable SemVer like 0.1.0 or prerelease SemVer like 0.1.0-rc.1" >&2
+            exit 1
+          fi
+
+          tag="v${version}"
+          tag_exists=false
+
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" > /dev/null 2>&1; then
+            tag_exists=true
+          fi
+
+          if [[ "${tag_exists}" == "true" ]]; then
+            release_mode=edge
+          elif [[ "${version}" == "0.0.0" ]]; then
+            release_mode=edge
+          elif [[ "${version}" == *-* ]]; then
+            release_mode=prerelease
+          else
+            release_mode=latest
+          fi
+
+          echo "tag_exists=${tag_exists}" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "release_mode=${release_mode}" >> "$GITHUB_OUTPUT"
+
+  release:
+    needs:
+      - version
+    if: ${{ needs.version.outputs.release_mode != 'edge' }}
+
+    runs-on: ubuntu-slim
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Publish release
+        # Create immutable releases so an already-published version cannot be
+        # silently replaced by a later workflow run for the same tag.
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
+        with:
+          tag: ${{ needs.version.outputs.tag }}
+          commit: ${{ github.sha }}
+          immutableCreate: true
+          prerelease: ${{ needs.version.outputs.release_mode == 'prerelease' }}
+          makeLatest: ${{ needs.version.outputs.release_mode == 'latest' }}
+          generateReleaseNotes: true
+
+  build-docker:
+    needs:
+      - version
+      - release
+    if: ${{ always() && needs.version.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
+
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
@@ -23,13 +97,10 @@ jobs:
 
     steps:
       - name: Free disk space
-        run: |
-          df -h /
-
+        run: |-
           # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832
-          # Remove software and language runtimes we're not using
           sudo rm -rf \
-            "${AGENT_TOOLSDIRECTORY}" \
+            "$AGENT_TOOLSDIRECTORY" \
             /opt/google/chrome \
             /opt/microsoft/msedge \
             /opt/microsoft/powershell \
@@ -42,56 +113,56 @@ jobs:
             /usr/local/share/powershell \
             /usr/share/dotnet \
             /usr/share/swift
-
           df -h /
 
       - name: Checkout
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
 
-      - name: Setup Python and uv
-        uses: astral-sh/setup-uv@1e862dfacbd1d6d858c55d9b792c756523627244 # v7.1.4
-        with:
-          python-version: '3.10'
-          enable-cache: true
-          cache-suffix: -${{ runner.os }}
-
-      - name: Install Python dependencies
-        run: uv sync --frozen --only-group ci
-
-      # NOTE: Replace version in pyproject.toml
-      - name: Generate version
-        id: generate-version
-        uses: ./.github/actions/generate-version
-        with:
-          pyproject_file: './pyproject.toml'
-
-      - name: Generate Docker metadata
+      - name: Docker metadata
         id: meta
-        uses: ./.github/actions/generate-docker-metadata
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         with:
-          repository: |
-            ghcr.io/aoirint/sd_scripts
-            aoirint/sd_scripts
-          buildcache_repository: ghcr.io/aoirint/sd_scripts
-          release_mode: ${{ steps.generate-version.outputs.release_mode }}
-          version: ${{ steps.generate-version.outputs.app_version }}
+          images: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.GHCR_IMAGE_NAME }}
+          flavor: |
+            latest=false
+          tags: |
+            type=raw,value=edge,enable=${{ needs.version.outputs.release_mode != 'latest' }}
+            type=raw,value=${{ needs.version.outputs.tag }},enable=${{ needs.version.outputs.release_mode == 'latest' }}
+            type=raw,value=latest,enable=${{ needs.version.outputs.release_mode == 'latest' }}
+
+      - name: Derive build cache refs
+        id: cache
+        run: |-
+          if [[ "${{ needs.version.outputs.release_mode }}" == "latest" ]]; then
+            {
+              echo "cache_from<<EOF"
+              echo "type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache"
+              echo "type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache"
+              echo "EOF"
+              echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:buildcache,mode=max"
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              echo "cache_from=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache"
+              echo "cache_to=type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache,mode=max"
+            } >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Login to ghcr.io
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ github.token }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to Docker Hub
-        uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -103,31 +174,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          platforms: 'linux/amd64'
           tags: ${{ steps.meta.outputs.tags }}
-          cache-from: ${{ steps.meta.outputs.cache-from }}
-          cache-to: ${{ steps.meta.outputs.cache-to }}
+          cache-from: ${{ steps.cache.outputs.cache_from }}
+          cache-to: ${{ steps.cache.outputs.cache_to }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
-
-  publish-release:
-    needs:
-      - build-docker
-
-    if: needs.build-docker.outputs.release_mode != 'edge'
-
-    runs-on: ubuntu-slim
-
-    permissions:
-      contents: write
-
-    steps:
-      - name: Publish release
-        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
-        with:
-          tag: ${{ needs.build-docker.outputs.git_version }}
-          commit: ${{ github.sha }}
-          immutableCreate: true
-          prerelease: ${{ needs.build-docker.outputs.release_mode != 'latest' }}
-          makeLatest: ${{ needs.build-docker.outputs.release_mode == 'latest' }}
-          generateReleaseNotes: true
