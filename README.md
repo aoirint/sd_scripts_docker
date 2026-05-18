@@ -145,4 +145,5 @@ Releases are driven by the root `VERSION` file and the Git tags on GitHub.
 3. The build workflow checks whether `v<VERSION>` already exists on GitHub.
    - If the tag does not exist and `VERSION` is stable, it creates a latest GitHub Release and publishes Docker images tagged `v<VERSION>` and `latest`.
    - If the tag does not exist and `VERSION` is a prerelease, it creates a prerelease GitHub Release and publishes the Docker image tagged `edge`.
+   - If `VERSION` is `0.0.0`, it is treated as an edge build and only the `edge` Docker image is updated.
    - If the tag already exists, the push is treated as an edge build and only the `edge` Docker image is updated.

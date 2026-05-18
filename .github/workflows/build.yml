@@ -47,6 +47,8 @@ jobs:
 
           if [[ "${tag_exists}" == "true" ]]; then
             release_mode=edge
+          elif [[ "${version}" == "0.0.0" ]]; then
+            release_mode=edge
           elif [[ "${version}" == *-* ]]; then
             release_mode=prerelease
           else
