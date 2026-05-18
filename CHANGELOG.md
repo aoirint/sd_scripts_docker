@@ -65,21 +65,21 @@ releases.
 - Correct the GitHub Container Registry build-cache repository.
 - Correct the Python version used by CI.
 
-## [20250322.1] - 2025-03-22 UTC
+## [v20250322.1] - 2025-03-22 UTC
 
 ### Changed
 
 - Update the bundled sd-scripts base to v0.9.1.
 - Refresh CI disk cleanup before checkout.
 
-## [20241230.3] - 2024-12-30 UTC
+## [v20241230.3] - 2024-12-30 UTC
 
 ### Changed
 
 - Document Docker Engine 27.0 or later as the runtime requirement.
 - Clarify README wording and project fork context.
 
-## [20241230.2] - 2024-12-30 UTC
+## [v20241230.2] - 2024-12-30 UTC
 
 ### Changed
 
@@ -90,7 +90,7 @@ releases.
 
 - This release was published as a prerelease on GitHub.
 
-## [20241230.1] - 2024-12-30 UTC
+## [v20241230.1] - 2024-12-30 UTC
 
 ### Changed
 
@@ -110,13 +110,13 @@ releases.
 
 - This release was published as a prerelease on GitHub.
 
-## [20231108.3] - 2023-11-08 UTC
+## [v20231108.3] - 2023-11-08 UTC
 
 ### Changed
 
 - Document mounting the WD14 tagger model cache directory.
 
-## [20231108.2] - 2023-11-08 UTC
+## [v20231108.2] - 2023-11-08 UTC
 
 ### Added
 
@@ -131,14 +131,14 @@ releases.
 
 - This release was published as a prerelease on GitHub.
 
-## [20231108.1] - 2023-11-07 UTC
+## [v20231108.1] - 2023-11-07 UTC
 
 ### Changed
 
 - Update the bundled sd-scripts checkout to v0.7.0.
 - Update Python dependencies, including requests and urllib3.
 
-## [20231105.1] - 2023-11-05 UTC
+## [v20231105.1] - 2023-11-05 UTC
 
 ### Changed
 
@@ -148,7 +148,7 @@ releases.
 - Install Python libraries before cloning sd-scripts.
 - Update bitsandbytes to 0.41.1.
 
-## [20231103.1] - 2023-11-02 UTC
+## [v20231103.1] - 2023-11-02 UTC
 
 ### Added
 
@@ -158,13 +158,13 @@ releases.
 
 - Rename `requirements-torch.txt` to `requirements-pre.txt`.
 
-## [20231005.2] - 2023-10-05 UTC
+## [v20231005.2] - 2023-10-05 UTC
 
 ### Changed
 
 - Update the Dockerfile syntax image to 1.6.
 
-## [20231005.1] - 2023-10-05 UTC
+## [v20231005.1] - 2023-10-05 UTC
 
 ### Changed
 
@@ -177,7 +177,7 @@ releases.
 
 - This release was published as a prerelease on GitHub.
 
-## [20230731.1] - 2023-07-31 UTC
+## [v20230731.1] - 2023-07-31 UTC
 
 ### Added
 
@@ -190,7 +190,7 @@ releases.
 - Update Python to 3.10.12 and pyenv to 2.3.23.
 - Update Python dependencies.
 
-## [20230706.1] - 2023-07-06 UTC
+## [v20230706.1] - 2023-07-06 UTC
 
 ### Added
 
@@ -201,16 +201,16 @@ releases.
 [Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v20251209.2...HEAD
 [v20251209.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.2
 [v20251209.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.1
-[20250322.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20250322.1
-[20241230.3]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20241230.3
-[20241230.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20241230.2
-[20241230.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20241230.1
-[20231108.3]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231108.3
-[20231108.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231108.2
-[20231108.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231108.1
-[20231105.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231105.1
-[20231103.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231103.1
-[20231005.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231005.2
-[20231005.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231005.1
-[20230731.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20230731.1
-[20230706.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20230706.1
+[v20250322.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20250322.1
+[v20241230.3]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20241230.3
+[v20241230.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20241230.2
+[v20241230.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20241230.1
+[v20231108.3]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231108.3
+[v20231108.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231108.2
+[v20231108.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231108.1
+[v20231105.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231105.1
+[v20231103.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231103.1
+[v20231005.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231005.2
+[v20231005.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20231005.1
+[v20230731.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20230731.1
+[v20230706.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20230706.1
