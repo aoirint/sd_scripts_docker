@@ -5,16 +5,14 @@ usage() {
     cat <<'USAGE'
 Usage:
   scripts/run-sd-scripts-release-tests.sh --image IMAGE
-  scripts/run-sd-scripts-release-tests.sh --in-container
+  scripts/run-sd-scripts-release-tests.sh
 
 Options:
   --image IMAGE     Run the release tests inside the given Docker image.
-  --in-container    Run the pytest release test body inside the container.
 USAGE
 }
 
 image=""
-in_container=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -25,10 +23,6 @@ while [[ $# -gt 0 ]]; do
                 exit 1
             fi
             shift 2
-            ;;
-        --in-container)
-            in_container=true
-            shift
             ;;
         -h|--help)
             usage
@@ -53,13 +47,8 @@ if [[ -n "${image}" ]]; then
     docker run --rm --user root --entrypoint bash \
         -v "${repo_dir}:/tmp/release-test-project:ro" \
         "${image}" \
-        /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh --in-container
+        /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh
     exit 0
-fi
-
-if [[ "${in_container}" != "true" ]]; then
-    usage >&2
-    exit 1
 fi
 
 project_dir="${PROJECT_DIR:-/tmp/release-test-project}"
