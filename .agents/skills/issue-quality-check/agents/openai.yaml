@@ -1,0 +1,6 @@
+interface:
+  display_name: "Issue Quality Check"
+  short_description: "Quality-check repository issues and issue replies."
+  default_prompt: >-
+    Quality-check this GitHub issue or issue reply for clarity, structure,
+    repository style, and required LLM disclosure.

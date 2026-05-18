@@ -1,0 +1,8 @@
+interface:
+  display_name: "Security Check"
+  short_description: "Review repository work for practical security and supply-chain-sensitive risks."
+  default_prompt: >-
+    Review this repository work for practical security risks, including
+    secrets, permissions, unsafe defaults, supply-chain-sensitive artifacts,
+    ad hoc executable tools, dependencies, CI actions, containers, and
+    reviewer-visible blockers or residual risk.
