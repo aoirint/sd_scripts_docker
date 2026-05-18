@@ -9,6 +9,8 @@ releases.
 
 ## [Unreleased]
 
+## [v0.1.0] - 2026-05-18 UTC
+
 ### Added
 
 - Add a canonical changelog with backfilled release history.
@@ -30,11 +32,6 @@ releases.
   GitHub Releases, and Docker image tags derived from release mode.
 - Document release procedure, maintenance links, bundled license context, and
   Docker Engine 29 or later as the current requirement.
-
-### Notes
-
-- The next stable release material is intentionally kept under `Unreleased`
-  until the release PR sets the final version and release date.
 
 ## [v20251209.2] - 2025-12-09 UTC
 
@@ -198,7 +195,8 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v20251209.2...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...HEAD
+[v0.1.0]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v0.1.0
 [v20251209.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.2
 [v20251209.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.1
 [v20250322.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/20250322.1
