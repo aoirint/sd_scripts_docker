@@ -27,7 +27,7 @@ dependencies = [
   "imagesize==1.4.1",
   "numpy",
   # for BLIP captioning
-  "requests==2.32.4",
+  "requests==2.33.0",
   "timm==0.6.12",
   "fairscale==0.4.13",
   # for WD14 captioning (onnx)
