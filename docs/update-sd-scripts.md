@@ -321,7 +321,63 @@ For a release that changes PyTorch, CUDA, xformers, or sd-scripts training
 behavior, run at least one small project-specific training or captioning
 workflow before merging when practical.
 
-## 11. Review And Record The Change
+## 11. Run Upstream Release Tests
+
+The Docker image includes the selected upstream sd-scripts checkout under
+`/opt/sd-scripts`, including the upstream `tests/` directory. Install `pytest`
+temporarily in a disposable container and run the same lightweight upstream
+pytest set that CI uses:
+
+```shell
+docker run --rm --user root --entrypoint bash sd-scripts:update-test -lc '
+  set -euo pipefail
+  uv pip install pytest
+  pytest -q \
+    tests/test_custom_offloading_utils.py \
+    tests/test_expand_unet_to_inpainting.py \
+    tests/test_fine_tune.py \
+    tests/test_flux_train.py \
+    tests/test_flux_train_network.py \
+    tests/test_lumina_train_network.py \
+    tests/test_mask_generator.py \
+    tests/test_sd3_train.py \
+    tests/test_sd3_train_network.py \
+    tests/test_sdxl_train.py \
+    tests/test_sdxl_train_leco.py \
+    tests/test_sdxl_train_network.py \
+    tests/test_train.py \
+    tests/test_train_leco.py \
+    tests/test_train_network.py \
+    tests/test_train_textual_inversion.py \
+    tests/test_validation.py \
+    tests/library
+'
+```
+
+This set intentionally excludes upstream tests and scripts that need model
+checkpoints, local datasets, or dependencies this image does not bundle, such
+as `tests/test_optimizer.py` requiring `dadaptation`.
+
+When an NVIDIA GPU and compatible test checkpoint are available, also run at
+least one upstream inpainting training smoke test. The scripts generate
+synthetic image data automatically when `--data` is omitted:
+
+```shell
+docker run --rm --gpus all --entrypoint bash \
+  -v /path/to/models:/models:ro \
+  sd-scripts:update-test \
+  tests/run_sd15_inpainting_test.sh --mode ft --model /models/sd15-inpainting.safetensors --steps 1
+
+docker run --rm --gpus all --entrypoint bash \
+  -v /path/to/models:/models:ro \
+  sd-scripts:update-test \
+  tests/run_sdxl_inpainting_test.sh --mode ft --model /models/sdxl-base-or-inpainting.safetensors --steps 1
+```
+
+If GPU or checkpoint coverage is skipped, record the exact reason in the pull
+request.
+
+## 12. Review And Record The Change
 
 Review the diff:
 
@@ -340,9 +396,12 @@ Confirm:
 - Apt package versions were checked inside the selected CUDA image.
 - `uv.lock` resolves the selected PyTorch CUDA index.
 - Local extras are intentionally kept, updated, or removed.
+- Upstream sd-scripts pytest release tests passed in the built image.
+- Upstream inpainting shell tests were run, or GPU/checkpoint coverage was
+  explicitly skipped.
 - Verification commands and any skipped GPU tests are documented in the PR.
 
-## 12. Open The Pull Request
+## 13. Open The Pull Request
 
 Create a focused commit, push the branch, and open a pull request.
 
@@ -351,7 +410,9 @@ The PR body should include:
 - The selected sd-scripts version and commit SHA.
 - Any CUDA, Ubuntu, PyTorch, xformers, or local-extra dependency changes.
 - The checks run locally.
-- Whether runtime GPU training was tested or skipped.
+- Whether upstream pytest release tests passed in the built image.
+- Whether runtime GPU and upstream inpainting training tests were tested or
+  skipped.
 
 Do not update `VERSION` as part of the sd-scripts update unless the same PR is
 also intentionally publishing a Docker image release. Follow the README release

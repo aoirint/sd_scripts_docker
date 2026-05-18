@@ -1,9 +1,13 @@
 name: Build
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -63,7 +67,8 @@ jobs:
   release:
     needs:
       - version
-    if: ${{ needs.version.outputs.release_mode != 'edge' }}
+      - test-docker
+    if: ${{ github.event_name == 'push' && needs.version.outputs.release_mode != 'edge' }}
 
     runs-on: ubuntu-slim
 
@@ -83,11 +88,85 @@ jobs:
           makeLatest: ${{ needs.version.outputs.release_mode == 'latest' }}
           generateReleaseNotes: true
 
+  test-docker:
+    needs:
+      - version
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Free disk space
+        run: |-
+          # https://github.com/actions/runner-images/issues/2840#issuecomment-2272410832
+          sudo rm -rf \
+            "$AGENT_TOOLSDIRECTORY" \
+            /opt/google/chrome \
+            /opt/microsoft/msedge \
+            /opt/microsoft/powershell \
+            /opt/pipx \
+            /usr/lib/mono \
+            /usr/local/julia* \
+            /usr/local/lib/android \
+            /usr/local/lib/node_modules \
+            /usr/local/share/chromium \
+            /usr/local/share/powershell \
+            /usr/share/dotnet \
+            /usr/share/swift
+          df -h /
+
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+
+      - name: Build release test image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          load: true
+          push: false
+          tags: sd-scripts:release-test
+          cache-from: type=registry,ref=${{ env.GHCR_IMAGE_NAME }}:edge-buildcache
+
+      - name: Run upstream sd-scripts pytest release tests
+        run: |-
+          docker run --rm --user root --entrypoint bash sd-scripts:release-test -lc '
+            set -euo pipefail
+            uv pip install pytest
+            pytest -q \
+              tests/test_custom_offloading_utils.py \
+              tests/test_expand_unet_to_inpainting.py \
+              tests/test_fine_tune.py \
+              tests/test_flux_train.py \
+              tests/test_flux_train_network.py \
+              tests/test_lumina_train_network.py \
+              tests/test_mask_generator.py \
+              tests/test_sd3_train.py \
+              tests/test_sd3_train_network.py \
+              tests/test_sdxl_train.py \
+              tests/test_sdxl_train_leco.py \
+              tests/test_sdxl_train_network.py \
+              tests/test_train.py \
+              tests/test_train_leco.py \
+              tests/test_train_network.py \
+              tests/test_train_textual_inversion.py \
+              tests/test_validation.py \
+              tests/library
+          '
+
   build-docker:
     needs:
       - version
+      - test-docker
       - release
-    if: ${{ always() && needs.version.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
+    if: ${{ github.event_name == 'push' && always() && needs.version.result == 'success' && needs.test-docker.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
 
     runs-on: ubuntu-latest
 
