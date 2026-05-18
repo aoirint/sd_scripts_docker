@@ -63,7 +63,6 @@ jobs:
   release:
     needs:
       - version
-      - test-docker
     if: ${{ needs.version.outputs.release_mode != 'edge' }}
 
     runs-on: ubuntu-slim
@@ -170,6 +169,8 @@ jobs:
   build-docker:
     needs:
       - version
+      - release
+    if: ${{ always() && needs.version.result == 'success' && (needs.release.result == 'success' || needs.release.result == 'skipped') }}
 
     runs-on: ubuntu-latest
 
