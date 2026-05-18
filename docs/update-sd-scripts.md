@@ -334,8 +334,7 @@ docker run --rm --user root --entrypoint bash \
   -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
   sd-scripts:update-test -lc '
   set -euo pipefail
-  cd /tmp/release-test-project
-  uv sync --frozen --only-group dev --inexact --no-install-project
+  uv sync --project /tmp/release-test-project --frozen --only-group dev --inexact --no-install-project
   cd /opt/sd-scripts
   pytest -q \
     tests/test_custom_offloading_utils.py \

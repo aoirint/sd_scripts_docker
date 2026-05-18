@@ -139,8 +139,7 @@ jobs:
             -v "${PWD}/uv.lock:/tmp/release-test-project/uv.lock:ro" \
             sd-scripts:release-test -lc '
             set -euo pipefail
-            cd /tmp/release-test-project
-            uv sync --frozen --only-group dev --inexact --no-install-project
+            uv sync --project /tmp/release-test-project --frozen --only-group dev --inexact --no-install-project
             cd /opt/sd-scripts
             pytest -q \
               tests/test_custom_offloading_utils.py \
