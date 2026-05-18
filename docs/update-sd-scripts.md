@@ -329,10 +329,7 @@ uv-managed dev test dependencies temporarily in a disposable container and run
 the same lightweight upstream pytest set that CI uses:
 
 ```shell
-docker run --rm --user root --entrypoint bash \
-  -v "${PWD}:/tmp/release-test-project:ro" \
-  sd-scripts:update-test \
-  /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh
+scripts/run-sd-scripts-release-tests.sh --image sd-scripts:update-test
 ```
 
 This set intentionally excludes upstream tests and scripts that need model

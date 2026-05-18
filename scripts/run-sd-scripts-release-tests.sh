@@ -1,6 +1,67 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+    cat <<'USAGE'
+Usage:
+  scripts/run-sd-scripts-release-tests.sh --image IMAGE
+  scripts/run-sd-scripts-release-tests.sh --in-container
+
+Options:
+  --image IMAGE     Run the release tests inside the given Docker image.
+  --in-container    Run the pytest release test body inside the container.
+USAGE
+}
+
+image=""
+in_container=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --image)
+            image="${2:-}"
+            if [[ -z "${image}" ]]; then
+                echo "Error: --image requires a Docker image tag" >&2
+                exit 1
+            fi
+            shift 2
+            ;;
+        --in-container)
+            in_container=true
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Error: unknown argument: $1" >&2
+            usage >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -n "${image}" ]]; then
+    script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+    repo_dir="$(cd -- "${script_dir}/.." && pwd)"
+
+    # Run the same checked-in script inside the image under test. The
+    # repository mount is read-only because the image should provide the
+    # sd-scripts checkout, while this repository only provides locked test
+    # tooling and the selected pytest target list.
+    docker run --rm --user root --entrypoint bash \
+        -v "${repo_dir}:/tmp/release-test-project:ro" \
+        "${image}" \
+        /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh --in-container
+    exit 0
+fi
+
+if [[ "${in_container}" != "true" ]]; then
+    usage >&2
+    exit 1
+fi
+
 project_dir="${PROJECT_DIR:-/tmp/release-test-project}"
 sd_scripts_dir="${SD_SCRIPTS_DIR:-/opt/sd-scripts}"
 

@@ -244,10 +244,4 @@ jobs:
 
       - name: Run upstream sd-scripts pytest release tests
         run: |-
-          # Mount the repository read-only so the tested image supplies
-          # /opt/sd-scripts, while this repository supplies the locked pytest
-          # dev dependency group and the shared release-test script.
-          docker run --rm --user root --entrypoint bash \
-            -v "${PWD}:/tmp/release-test-project:ro" \
-            "${{ steps.image.outputs.image }}" \
-            /tmp/release-test-project/scripts/run-sd-scripts-release-tests.sh
+          scripts/run-sd-scripts-release-tests.sh --image "${{ steps.image.outputs.image }}"
