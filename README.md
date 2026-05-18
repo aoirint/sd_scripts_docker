@@ -2,6 +2,10 @@
 
 Dockerfile for [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
 
+## Maintainer documentation
+
+- [Updating sd-scripts](docs/update-sd-scripts.md)
+
 ## Requirements
 
 - Ubuntu 24.04 or later
@@ -141,6 +145,8 @@ sudo docker run \
 ## Release procedure
 
 Releases are driven by the root `VERSION` file and the Git tags on GitHub.
+To update the bundled sd-scripts version before a release, follow
+[Updating sd-scripts](docs/update-sd-scripts.md) first.
 
 1. Update `VERSION` to the version to publish.
    - Stable releases use SemVer without a prerelease suffix, such as `0.1.0`.
