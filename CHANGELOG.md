@@ -9,11 +9,26 @@ releases.
 
 ## [Unreleased]
 
+## [v0.2.0] - 2026-05-19 UTC
+
 ### Changed
 
 - Update the Hugging Face dependency stack for the bundled sd-scripts v0.10.5
   image: `transformers` 5.8.0, `diffusers` 0.38.0, `huggingface-hub` 1.14.0,
   and the `safetensors` 0.8.0rc0 prerelease required by diffusers.
+- Update `onnx` from 1.18.0 to 1.21.0 for the bundled WD14 captioning
+  dependency set.
+- Update `requests` from 2.32.4 to 2.33.0.
+
+### Notes
+
+- This release uses a minor version bump even though the bundled sd-scripts
+  checkout remains v0.10.5. The runtime dependency surface changes more than a
+  patch release should imply: `transformers` moves from 4.x to 5.x,
+  `diffusers` advances across several minor releases, and `diffusers` now
+  requires the `safetensors` 0.8.0rc0 prerelease. Those changes can affect
+  training, captioning, model loading, and Hugging Face Hub integration behavior
+  without changing the sd-scripts source revision.
 
 ## [v0.1.0] - 2026-05-18 UTC
 
@@ -201,7 +216,8 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v0.1.0
 [v20251209.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.2
 [v20251209.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.1
