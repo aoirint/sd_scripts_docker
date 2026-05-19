@@ -21,13 +21,11 @@ releases.
   - `safetensors` 0.4.5 to the 0.8.0rc0 prerelease required by diffusers.
 - Update the WD14 captioning dependency `onnx` from 1.18.0 to 1.21.0.
 - Update the HTTP client dependency `requests` from 2.32.4 to 2.33.0.
-- Update pinned Docker GitHub Actions to newer commit-pinned releases after
-  the repository 7-day cooldown.
+- Update pinned Docker GitHub Actions.
 
 ### Fixed
 
-- Fix the Docker release-test workflow so `test-docker` runs after edge builds
-  where the `release` job is intentionally skipped.
+- Fix the Docker release-test workflow so `test-docker` runs after edge builds.
 
 ### Notes
 
