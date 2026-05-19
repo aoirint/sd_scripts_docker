@@ -9,6 +9,14 @@ releases.
 
 ## [Unreleased]
 
+## [v0.1.1] - 2026-05-19 UTC
+
+### Changed
+
+- Update `onnx` from 1.18.0 to 1.21.0 for the bundled WD14 captioning
+  dependency set.
+- Update `requests` from 2.32.4 to 2.33.0.
+
 ## [v0.1.0] - 2026-05-18 UTC
 
 ### Added
@@ -195,7 +203,8 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.1...HEAD
+[v0.1.1]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...v0.1.1
 [v0.1.0]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v0.1.0
 [v20251209.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.2
 [v20251209.1]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.1
