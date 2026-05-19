@@ -13,22 +13,31 @@ releases.
 
 ### Changed
 
-- Update the Hugging Face dependency stack for the bundled sd-scripts v0.10.5
-  image: `transformers` 5.8.0, `diffusers` 0.38.0, `huggingface-hub` 1.14.0,
-  and the `safetensors` 0.8.0rc0 prerelease required by diffusers.
-- Update `onnx` from 1.18.0 to 1.21.0 for the bundled WD14 captioning
-  dependency set.
-- Update `requests` from 2.32.4 to 2.33.0.
+- Update the bundled Hugging Face runtime stack while keeping sd-scripts at
+  v0.10.5:
+  - `transformers` 4.54.1 to 5.8.0.
+  - `diffusers` 0.32.1 to 0.38.0.
+  - `huggingface-hub` 0.34.3 to 1.14.0.
+  - `safetensors` 0.4.5 to the 0.8.0rc0 prerelease required by diffusers.
+- Update the WD14 captioning dependency `onnx` from 1.18.0 to 1.21.0.
+- Update the HTTP client dependency `requests` from 2.32.4 to 2.33.0.
+- Update pinned Docker GitHub Actions to newer commit-pinned releases after
+  the repository 7-day cooldown.
+
+### Fixed
+
+- Fix the Docker release-test workflow so `test-docker` runs after edge builds
+  where the `release` job is intentionally skipped.
 
 ### Notes
 
 - This release uses a minor version bump even though the bundled sd-scripts
-  checkout remains v0.10.5. The runtime dependency surface changes more than a
-  patch release should imply: `transformers` moves from 4.x to 5.x,
-  `diffusers` advances across several minor releases, and `diffusers` now
-  requires the `safetensors` 0.8.0rc0 prerelease. Those changes can affect
-  training, captioning, model loading, and Hugging Face Hub integration behavior
-  without changing the sd-scripts source revision.
+  checkout remains v0.10.5. The release changes the runtime dependency surface
+  more than a patch release should imply: `transformers` moves from 4.x to 5.x,
+  `diffusers` advances across several minor releases, and `diffusers` now needs
+  the `safetensors` 0.8.0rc0 prerelease. Those changes can affect training,
+  captioning, model loading, and Hugging Face Hub integration behavior without
+  changing the sd-scripts source revision.
 
 ## [v0.1.0] - 2026-05-18 UTC
 
