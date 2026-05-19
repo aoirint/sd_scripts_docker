@@ -9,6 +9,12 @@ releases.
 
 ## [Unreleased]
 
+### Changed
+
+- Update the Hugging Face dependency stack for the bundled sd-scripts v0.10.5
+  image: `transformers` 5.8.0, `diffusers` 0.38.0, `huggingface-hub` 1.14.0,
+  and the `safetensors` 0.8.0rc0 prerelease required by diffusers.
+
 ## [v0.1.0] - 2026-05-18 UTC
 
 ### Added
