@@ -1,20 +1,13 @@
 ---
 name: skill-quality-check
 description: >-
-  Quality-check Agent Skills for trigger clarity, scope, structure, progressive
-  disclosure, domain separation, validation, and scenario-readiness. Use when
-  creating, updating, reviewing, or splitting Agent Skills, SKILL.md files, skill
-  references, bundled scripts, or skill metadata.
+  Review Agent Skills for trigger clarity, focused scope, metadata alignment,
+  progressive disclosure, and validation readiness. Use when creating, updating,
+  reviewing, or splitting a skill's SKILL.md, references, scripts, assets, or
+  agents/openai.yaml metadata.
 ---
 
 # Skill Quality Check
-
-## When to Use
-
-- Use this skill when creating, updating, or reviewing an Agent Skill.
-- Use this skill before committing changes to any `SKILL.md`, `references/`, `scripts/`,
-  `assets/`, or `agents/openai.yaml` file inside a skill folder.
-- Use this skill with scenario-based validation after creating or substantially revising a skill.
 
 ## Goals
 
@@ -22,6 +15,8 @@ description: >-
 - Make `description` concise, specific, and useful for implicit skill selection.
 - Keep `SKILL.md` lean: core workflow in the body, detailed variants in directly linked
   `references/`, deterministic helpers in `scripts/`, reusable output materials in `assets/`.
+- For skills that produce visual or rendered artifacts, make the canonical source, required
+  derivatives, intended consumers, and validation boundary explicit.
 - Separate project-specific or domain-specific knowledge into dedicated domain skills or reference
   files instead of mixing it into general workflow skills.
 - Use `security-check` when a skill describes security-sensitive behavior, external
@@ -33,7 +28,9 @@ description: >-
 
 ## Workflow
 
-1. Read the changed skill files and nearby related skills.
+1. Read the changed skill files, nearby related skills, and
+   [authoring best practices](references/authoring-best-practices.md) when the change affects
+   triggers, structure, resources, domain separation, or scenario validation.
 2. Check description/body consistency before scenario validation:
    - Compare the `description` trigger promise with the scope actually covered by `SKILL.md`.
    - Reconcile any mismatch before treating scenario results as reliable.
@@ -41,7 +38,13 @@ description: >-
      are in scope, guidance-only, or require explicit confirmation.
 3. Check frontmatter:
    - `name` uses lowercase letters, digits, and hyphens.
-   - `description` states what the skill does and when to use it.
+   - When the skill has a clear target, put that target before the action or
+     workflow in `name` (for example, `lethal-company-analyze` or
+     `apm-usage`).
+   - `description` uses the smallest capability-and-trigger statement that
+     reliably selects the skill.
+   - Move workflow details, supported variants, and boundaries that do not
+     change skill selection into the body or omit them.
    - Trigger words are front-loaded enough to survive shortened skill lists.
 4. Check scope:
    - One primary job per skill.
@@ -55,7 +58,7 @@ description: >-
    - Keep required steps explicit, ordered, and written as imperatives.
    - Match specificity to risk: flexible guidance for judgment-heavy work, exact commands or scripts
      for fragile operations.
-   - Use `document-quality-check` for explanatory prose. Preserve
+   - Use `prose-quality-check` for explanatory prose. Preserve
      skill-specific nuance such as trigger boundaries, scope, ordering, risk
      level, and domain separation.
 6. Check progressive disclosure:
@@ -67,6 +70,12 @@ description: >-
    - Include `scripts/` only for repeatable or fragile automation, and test representative scripts.
    - Include `assets/` only for files used in outputs.
    - Remove placeholder or auxiliary files that do not directly support the skill.
+   - For a visual or rendered artifact, identify the editable canonical source, each committed
+     derivative, its consumer, and how the derivative is regenerated. Verify that every consumer
+     links to the intended representation.
+   - Keep transient previews and render intermediates out of tracked outputs. Retain a generated
+     binary only when it is required by a consumer or distribution target, and regenerate it when
+     its canonical source or rendering requirement changes.
 8. Check metadata alignment:
    - Check every changed skill folder for `agents/openai.yaml`. For new skills, create it unless
      the repository has an explicit reason to omit app metadata for that skill.
@@ -78,6 +87,9 @@ description: >-
 9. Validate and iterate:
    - Run the available skill validator, if the project has one.
    - Run spelling, formatting, or project checks appropriate to Markdown-only changes.
+   - When the skill produces visual or rendered artifacts, validate them in every declared
+     consumer or renderer. Source syntax, file dimensions, and a local preview alone do not
+     establish compatibility or readability.
    - For each new or substantially revised skill, prepare two or three realistic validation
      scenarios before evaluation, including at least one median case and one edge or out-of-scope
      case.
@@ -87,11 +99,12 @@ description: >-
    - Stop only after convergence, divergence, or a stated resource cutoff. Treat convergence as two
      consecutive rounds with no new unclear points and no meaningful accuracy or effort improvement.
 10. Record verification:
-   - Note external sources consulted, why they were needed, and how their guidance was applied.
-   - Note that each changed skill folder has `agents/openai.yaml`, or explain the repository policy
+
+- Note external sources consulted, why they were needed, and how their guidance was applied.
+- Note that each changed skill folder has `agents/openai.yaml`, or explain the repository policy
      that intentionally omits it.
-   - Note whether `security-check` was used for security-sensitive skill content.
-   - Note whether docs, changelog, PR notes, or follow-up domain skills are needed.
+- Note whether `security-check` was used for security-sensitive skill content.
+- Note whether docs, changelog, PR notes, or follow-up domain skills are needed.
 
 When validating with scenarios, keep the report categories separate:
 
@@ -102,8 +115,6 @@ When validating with scenarios, keep the report categories separate:
   metadata. Record these as assumptions or blockers.
 - **Skill-quality-check ambiguity**: places where this skill did not say what to inspect or how to
   decide. Only these count as unclear points for improving `skill-quality-check` itself.
-
-## Reference Checks
-
-Read [references/authoring-best-practices.md](references/authoring-best-practices.md) when a change
-touches structure, trigger design, bundled resources, domain separation, or scenario validation.
+- **Unavailable measurements**: evaluation interfaces that do not expose a
+  requested metric, such as tool-use count or duration. Record the metric as
+  unavailable; do not estimate it or treat it as a Skill finding.

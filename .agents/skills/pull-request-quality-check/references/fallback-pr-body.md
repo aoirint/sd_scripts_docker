@@ -2,6 +2,9 @@
 
 Use this fallback only when the repository has no applicable pull request
 template. If a repository template exists, the live template takes precedence.
+Apply repository-specific requirements only when they are present in current
+repository guidance. Do not infer a CLA, checklist, sign-off, or other policy
+from this generic scaffold.
 
 ## Contents
 
@@ -9,9 +12,9 @@ template. If a repository template exists, the live template takes precedence.
 
 ## Fallback Scaffold
 
-Keep the fallback structure aligned with `.github/pull_request_template.md`.
-When a scaffold subsection has no applicable content, write `None` or
-`Not applicable` instead of removing the heading.
+Keep the universal headings below. When a section has no applicable content,
+write `None` or `Not applicable` instead of removing the heading. Add a
+repository-specific section only when current repository guidance requires it.
 
 ````markdown
 <!--
@@ -88,7 +91,7 @@ Optional H3 examples:
 
 <!--
 List the checks you ran and their results.
-Include commands, manual browser checks, screenshots, or videos when relevant.
+Include commands, manual in-game checks, screenshots, or videos when relevant.
 For docs-only changes, mention proofreading, link checks, formatting checks,
 or "Not run - docs only."
 If you did not run a relevant check, explain why.
@@ -106,7 +109,7 @@ Optional testing structure:
 <details>
 
 ```plain
-$ <build or verification command>
+$ DOTNET_CLI_UI_LANGUAGE=en dotnet build
 Paste the relevant output here.
 ```
 
@@ -117,4 +120,5 @@ Paste the relevant output here.
 ### Manual checks
 ### Screenshots / videos
 -->
+
 ````

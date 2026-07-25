@@ -2,5 +2,5 @@ interface:
   display_name: "Pull Request Quality Check"
   short_description: "Quality-check repository pull requests."
   default_prompt: >-
-    Quality-check this pull request title, body, reply, or review for repository
+    Use $pull-request-quality-check to review this pull request title, body, reply, or review for repository
     style, structure, verification notes, and required LLM disclosure.

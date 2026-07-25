@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prose Quality Check"
+  short_description: "Improve prose without changing its meaning"
+  default_prompt: "Use $prose-quality-check to revise this prose for readability, local structure, audience fit, and preserved nuance."
