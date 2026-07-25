@@ -1,21 +1,13 @@
 ---
 name: code-quality-check
 description: >-
-  Quality-check source code, generated code, tests, scripts,
-  configuration-as-code, examples, dependencies, downloaded tools, CI actions,
-  and supply-chain-sensitive changes.
+  Review implementation changes for readability, maintainability, design intent,
+  and verification. Use for source code, tests, scripts, configuration, generated
+  or vendored files, and dependencies; pair with security-check for security- or
+  supply-chain-sensitive changes.
 ---
 
 # Code Quality Check
-
-## When to Use
-
-Use this skill for any implementation change, regardless of language or framework, before
-committing or preparing a pull request.
-
-When the changed implementation is an Agent Skill, use `skill-quality-check` together with this
-skill for trigger design, structure, progressive disclosure, domain separation, and scenario
-validation expectations.
 
 ## Goals
 
@@ -25,20 +17,19 @@ validation expectations.
 - Avoid comment noise that repeats obvious code behavior.
 - Run the smallest meaningful executable checks first, then widen only when needed.
 - Keep verification notes concise and reusable for commit summaries, PR bodies, or handoff notes.
-- Use `security-check` when changes introduce or update security-sensitive behavior,
-  external dependencies, downloaded tools, CI actions, containers, vendored artifacts, or other
+- Pair with `skill-quality-check` for Agent Skill changes and `security-check` for security- or
   supply-chain-sensitive paths.
 
 ## Workflow
 
-1. Re-read the changed files and nearby call sites, not just the patch.
+1. Read the changed files and nearby call sites, not just the patch.
 2. Identify code that is hard to scan, overly nested, duplicated, misleadingly named, or coupled to
    hidden assumptions.
-3. Improve readability directly when a safe local refactor is practical.
+3. Make safe local readability refactors where practical.
 4. Add or update comments only when the design intent is not obvious from the code and cannot be
    made obvious with a small refactor.
-5. Remove stale, redundant, or misleading comments.
-6. Use `document-quality-check` for documentation, comments, release notes, PR text, issue text,
+5. Remove stale, redundant, and misleading comments.
+6. Use `prose-quality-check` for documentation, comments, release notes, PR text, issue text,
    and other explanatory prose that needs readability or wording changes.
 7. Re-run the project's language-specific quality checks after edits.
 8. Summarize which checks ran, which passed, and why any relevant check was skipped.

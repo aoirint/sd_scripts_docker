@@ -1,4 +1,4 @@
 interface:
   display_name: "Commit Message Quality Check"
-  short_description: "Quality-check repository commit messages."
-  default_prompt: "Quality-check this commit message against the repository's Conventional Commits guidance."
+  short_description: "Review Conventional Commit messages."
+  default_prompt: "Use $commit-message-quality-check to draft or review this commit message for Conventional Commits format, accuracy, and required trailers."

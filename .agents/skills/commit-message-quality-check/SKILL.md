@@ -1,16 +1,12 @@
 ---
 name: commit-message-quality-check
 description: >-
-  Quality-check repository commit messages. Use when creating or updating commit
-  messages.
+  Review or draft repository commit messages for Conventional Commits format,
+  accurate change summaries, breaking-change footers, and required attribution
+  trailers. Use before creating, amending, or validating a commit.
 ---
 
 # Commit Message Quality Check
-
-## When to Use
-
-- Use this skill when creating, updating, reviewing, or validating a commit
-  message for this repository.
 
 ## Goals
 
@@ -21,13 +17,14 @@ description: >-
   underlying code or documentation diff.
 
 Reference:
-- Conventional Commits 1.0.0: https://www.conventionalcommits.org/en/v1.0.0/
+
+- Conventional Commits 1.0.0: <https://www.conventionalcommits.org/en/v1.0.0/>
 - GitHub co-authored commits:
-  https://docs.github.com/articles/creating-a-commit-with-multiple-authors
+  <https://docs.github.com/articles/creating-a-commit-with-multiple-authors>
 
 ## Workflow
 
-1. Read the proposed commit message and, when available, the staged diff or
+1. Read the proposed message and, when available, the staged diff or
    commit diff it describes.
 2. Verify the first-line format, blank-line structure, body placement, and
    footer placement.
@@ -37,8 +34,26 @@ Reference:
    of repeating the summary.
 5. Check required footer or trailer metadata, including `BREAKING CHANGE` and
    AI agent `Co-authored-by:` trailers when applicable.
-6. Recommend the smallest correction that makes the message valid and accurate.
-7. If the diff contains multiple unrelated logical changes, recommend splitting
+6. Before an operation creates or rewrites a commit, validate the exact
+   candidate message that the operation will receive:
+   - Build it from the same subject and body file or bytes that will be passed
+     to the command or API.
+   - Reject literal `\n` or `\r\n` text where real line breaks are intended.
+   - Write the exact candidate bytes to a temporary file and pass that file
+     directly to `git interpret-trailers --parse`; do not pipe a shell string
+     that may transform line endings. Require every expected trailer to appear
+     exactly once.
+   - For a structured API payload, apply the literal-escape check before
+     serialization and verify that decoding the serialized payload reproduces
+     the validated subject and body. JSON escaping on the wire is not itself a
+     failure.
+   - In PowerShell, do not assign line-oriented native-command output directly
+     when verifying multiline text. Capture the complete structured response
+     as raw text, decode it, assert that the selected value is a `[string]`,
+     and only then compare it with the candidate.
+   - Do not perform the mutation until the candidate passes.
+7. Recommend the smallest correction that makes the message valid and accurate.
+8. If the diff contains multiple unrelated logical changes, recommend splitting
    the commit when practical.
 
 ## Format
@@ -64,13 +79,13 @@ Verify the blank-line structure:
 
 ## Components
 
-- `type`: required noun that communicates the kind of change.
+- `type`: required token that communicates the kind of change.
 - `scope`: optional noun in parentheses that names the affected area, such as
   `interop`, `build`, `docs`, or `input`.
 - `!`: optional marker immediately before `:` for a breaking change.
-- `description`: required short summary after `: `. Use imperative mood,
-  lowercase after the type unless a proper noun is needed, and no trailing
-  period.
+- `description`: required short summary after `:` and one space. Use imperative
+  mood, lowercase after the type unless a proper noun is needed, and no
+  trailing period.
 - `body`: optional free-form explanation of what changed and why. Start it one
   blank line after the description.
 - `footer`: optional trailer-style metadata. Use tokens such as `Refs`,
@@ -127,6 +142,11 @@ lines between consecutive trailer lines. Keep `BREAKING CHANGE` before ordinary
 metadata when it explains the change, and keep co-author trailers at the end
 unless another project rule says otherwise.
 
+For squash merges or other remote commit creation, do not trust an escaped
+command-line string or a post-merge inspection as the primary check. Validate
+the exact pre-mutation payload as described in the workflow, then verify the
+stored commit message after the operation as a secondary check.
+
 ## Type Selection
 
 Check that the type matches the dominant intent:
@@ -160,11 +180,11 @@ refactor(interop): remove redundant role checks
 ```
 
 ```text
-fix(input): ignore shortcuts while input is disabled
+fix(input): ignore hotkeys while local player is busy
 ```
 
 ```text
-feat!: require current API adapters
+feat!: require current game interop adapters
 
 BREAKING CHANGE: legacy versioned adapters are no longer loaded.
 ```

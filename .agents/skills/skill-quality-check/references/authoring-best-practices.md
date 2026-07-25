@@ -20,12 +20,17 @@ review checklist.
 - Keep exactly one `name` and one `description` in `SKILL.md` frontmatter unless the local platform
   explicitly requires more.
 - Use hyphen-case skill names with lowercase letters, digits, and hyphens.
-- Write `description` in third person, with the main use case and trigger terms early.
-- Include both positive triggers and practical boundaries. The body is loaded only after selection,
-  so do not rely on body-only "When to Use" text for discovery.
+- Write `description` in third person, with the primary capability and trigger
+  terms early.
+- Prefer the shortest description that still selects the skill reliably. A
+  clause earns space only when removing it would change whether an in-scope or
+  adjacent prompt selects the skill.
+- Keep workflow details and supported variants in the body. Include a boundary
+  in `description` only when it distinguishes the skill from an adjacent
+  trigger; the body is loaded too late to correct a wrong selection.
 - Check candidate user prompts against the description:
-  - Obvious in-scope prompts should select the skill.
-  - Adjacent but out-of-scope prompts should not select it unless paired with another skill.
+    - Obvious in-scope prompts should select the skill.
+    - Adjacent but out-of-scope prompts should not select it unless paired with another skill.
 
 ## Scope and Domain Separation
 
@@ -34,9 +39,9 @@ review checklist.
 - Keep general workflow skills free of project-specific paths, product facts, business rules,
   temporary status, or release-specific knowledge.
 - Put domain knowledge in one of these places:
-  - A dedicated domain skill when the knowledge changes how the agent should work.
-  - A directly linked reference file when the knowledge is detailed but optional.
-  - Repository docs when the information is primarily human-maintainer documentation.
+    - A dedicated domain skill when the knowledge changes how the agent should work.
+    - A directly linked reference file when the knowledge is detailed but optional.
+    - Repository docs when the information is primarily human-maintainer documentation.
 - Prefer splitting when a skill starts mixing reusable procedure with volatile facts, provider
   matrices, schemas, or product-specific examples.
 
@@ -58,9 +63,9 @@ review checklist.
   consistently.
 - Use ordered steps for operations where skipping validation changes the result.
 - Match instruction strictness to risk:
-  - Use flexible guidance when multiple approaches are valid.
-  - Use templates when output shape matters.
-  - Use exact commands or scripts when the operation is fragile or easy to perform inconsistently.
+    - Use flexible guidance when multiple approaches are valid.
+    - Use templates when output shape matters.
+    - Use exact commands or scripts when the operation is fragile or easy to perform inconsistently.
 - State required inputs, outputs, and completion criteria.
 - Keep examples short and realistic. Add examples only when they prevent a likely misread.
 - Avoid time-sensitive guidance unless it is framed as historical context or points to a maintained
@@ -81,10 +86,10 @@ review checklist.
 - Run any available structural validator for the skill folder.
 - Review the description/body consistency before scenario evaluation.
 - For each new or substantially revised skill, use scenario-based validation:
-  - Prepare two or three realistic scenarios before dispatching evaluators.
-  - Include at least one critical requirement per scenario.
-  - Use fresh evaluators for each iteration.
-  - Apply one theme of fixes per iteration.
-  - Maintain a failure-pattern ledger.
-  - Stop only at convergence, divergence, or an explicit resource cutoff.
+    - Prepare two or three realistic scenarios before dispatching evaluators.
+    - Include at least one critical requirement per scenario.
+    - Use fresh evaluators for each iteration.
+    - Apply one theme of fixes per iteration.
+    - Maintain a failure-pattern ledger.
+    - Stop only at convergence, divergence, or an explicit resource cutoff.
 - Record what was tested, what was skipped, and why.

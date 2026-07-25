@@ -2,5 +2,5 @@ interface:
   display_name: "Git Worktree Workflow"
   short_description: "Use Git worktrees for repository implementation tasks."
   default_prompt: >-
-    Set up and use a Git worktree for this repository task, then follow the
+    Use $git-worktree-workflow to set up a Git worktree for this repository task, then follow the
     repository's implementation and verification workflow.

@@ -8,6 +8,9 @@
 # Local references used by coding agents
 /.agents/references/
 
+# APM dependencies
+apm_modules/
+
 # https://github.com/github/gitignore/blob/b4105e73e493bb7a20b5d7ea35efd5780ca44938/Python.gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/

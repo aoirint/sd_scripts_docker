@@ -1,86 +1,39 @@
 ---
 name: git-worktree-workflow
-description: Use Git worktrees for repository implementation tasks unless explicitly told not to.
+description:
+  Set up and use an isolated Git worktree for repository implementation tasks. Use unless the user explicitly requests
+  another workspace arrangement.
 ---
 
 # Git Worktree Workflow
 
-## When to Use
+## Work in an isolated checkout
 
-- Use this skill for repository implementation work unless the user explicitly
-  instructs you not to use Git worktrees.
-- Implementation work includes code, tests, build files, documentation,
-  repository guidance, and pull-request preparation.
+1. Inspect the repository state; treat uncommitted and untracked files in the original checkout as user work.
+2. Fetch the requested base branch. Use `main` when no base is specified.
+3. Create a short descriptive branch and worktree under `.agents/worktrees/`, for example:
 
-## Workflow
+    ```powershell
+    git fetch origin main
+    git worktree add -b <branch-name> .agents/worktrees/<branch-name> origin/main
+    ```
 
-1. Check the current repository state.
-2. Fetch the latest base branch.
-3. Create a branch and worktree under `.agents/worktrees/`.
-4. Before editing, split the implementation plan into practical phases.
-5. For each phase, implement only that phase, then run its quality check inside the worktree.
-6. Commit the completed phase immediately using `commit-message-quality-check`.
-7. Repeat steps 5 and 6 until every planned phase is complete.
-8. Before pushing, run the final quality check.
-9. Push the branch.
-10. Create or update the pull request using `pull-request-quality-check`.
+4. Inspect an existing branch or path before reuse; choose a new name if it is not clearly the task workspace.
+5. Make all implementation changes in the new worktree. Do not remove another worktree unless the user explicitly
+   requests it.
 
-## Worktree Setup
+## Implement and verify
 
-Create implementation worktrees under:
+1. Split the work into practical phases.
+2. For each phase, implement the scoped change, run repository-appropriate formatting and verification, then commit it
+   with `commit-message-quality-check`.
+3. Before pushing, review the complete diff, recent commits, scope, and missing verification; run the final relevant
+   checks.
+4. Push and create or update the PR with `pull-request-quality-check` when requested.
+5. Before a PR merge command performs local branch cleanup, check every active worktree. Do not let a hosted-PR CLI
+   switch to the default branch or delete a branch when that branch is checked out by another worktree. Merge first;
+   then perform any safe remote or local branch cleanup as a separate action.
 
-```text
-.agents/worktrees/
-```
-
-Use a short, descriptive branch and directory name, such as:
-
-```text
-.agents/worktrees/fix-state-load
-```
-
-Start from the latest base branch unless the user names a different base.
-The usual base is `main`:
-
-```powershell
-git fetch origin main
-git worktree add -b <branch-name> .agents/worktrees/<branch-name> origin/main
-```
-
-If network access or Git metadata writes require approval, request it and
-continue after approval.
-
-## Safety Rules
-
-- Treat uncommitted or untracked files in the original worktree as user work.
-- After creating the task worktree, make implementation changes there.
-- Do not remove another worktree unless the user explicitly asks.
-- If the branch or worktree path already exists, inspect it before reuse or
-  choose a new descriptive name.
-- Once a branch has been pushed or attached to a pull request, do not amend, rebase, squash,
-  force-push, or otherwise rewrite its history unless the user explicitly asks for history
-  rewriting.
-
-## Quality Check
-
-A quality check means formatting and verification appropriate to the change
-risk and repository conventions. Prefer documented project commands such as
-builds, tests, linters, formatters, or structural validators that cover the
-files changed.
-
-If verification is skipped, state why in the pull request body.
-
-The final quality check also includes reviewing:
-
-- The complete diff.
-- Recent commits.
-- Accidental scope creep.
-- Missing verification.
-- Commit-message quality.
-
-## Pull Request Notes
-
-- Keep pull request titles and bodies consistent with `pull-request-quality-check`.
-- For later corrections on an already-pushed pull request branch, add follow-up commits on top of
-  the branch so review history remains visible.
-- Remove temporary PR body files from the worktree after creating or editing the pull request.
+Use documented builds, tests, linters, formatters, or structural validators appropriate to the change. State skipped
+verification and its reason in the PR body. After a branch is pushed or attached to a PR, add follow-up commits rather
+than rewriting history unless the user explicitly requests a rewrite.

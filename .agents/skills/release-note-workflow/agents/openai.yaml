@@ -1,7 +1,6 @@
 interface:
   display_name: "Release Note Workflow"
-  short_description: "Derive user-facing stable release notes."
+  short_description: "Derive channel-specific public release notes."
   default_prompt: >-
-    Derive or review stable user-facing release notes from canonical changelog
-    entries, then check version, tag, publication-channel, workflow, and
-    verification readiness.
+    Use $release-note-workflow to derive channel-specific user-facing release
+    notes from canonical history and check their publication readiness.
