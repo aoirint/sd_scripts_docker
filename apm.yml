@@ -4,7 +4,7 @@ description: APM-managed Agent Skills for sd-scripts Docker
 author: aoirint
 # Resolution order: --target flag > this field > auto-detect from filesystem.
 targets:
-  - agent-skills
+  - codex
 dependencies:
   apm:
     - git: aoirint/skills
