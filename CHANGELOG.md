@@ -11,6 +11,10 @@ releases.
 
 ### Changed
 
+- Update the pinned uv container image and GitHub Actions dependencies.
+
+### Changed
+
 - Update the bundled sd-scripts checkout to v0.11.1.
 
 ## [v0.2.0] - 2026-05-19 UTC

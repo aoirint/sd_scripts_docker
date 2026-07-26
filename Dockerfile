@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04@sha256:d02c4310b6d57ca0b16cd80298bdb33a74187baafe2eccd8a6a16180ddc90802
-ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.11.13@sha256:841c8e6fe30a8b07b4478d12d0c608cba6de66102d29d65d1cc423af86051563
+ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.11.29@sha256:eb2843a1e56fd9e30c7276ce1a52cba86e64c7b385f5e3279a0e08e02dd058fc
 ARG PYTHON_VERSION=3.10.19
 ARG SD_SCRIPTS_URL=https://github.com/kohya-ss/sd-scripts
 ARG SD_SCRIPTS_VERSION=6721028c79ee85a78b3a06dfd8954dae310a1cce
