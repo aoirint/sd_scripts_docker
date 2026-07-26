@@ -4,7 +4,7 @@ version = "0.0.0"
 requires-python = "==3.10.*"
 
 # Originally copied from kohya-ss/sd-scripts
-# https://github.com/kohya-ss/sd-scripts/blob/a1b48df430a3690aeb5c9b6e7b19025afe8fb518/requirements.txt
+# https://github.com/kohya-ss/sd-scripts/blob/6721028c79ee85a78b3a06dfd8954dae310a1cce/requirements.txt
 dependencies = [
   "accelerate==1.6.0",
   "transformers==5.8.0",
