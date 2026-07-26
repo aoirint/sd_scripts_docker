@@ -1,7 +1,7 @@
 [project]
 name = "sd-scripts-docker"
 version = "0.0.0"
-requires-python = "==3.10.*"
+requires-python = "==3.12.*"
 
 # Originally copied from kohya-ss/sd-scripts
 # https://github.com/kohya-ss/sd-scripts/blob/6721028c79ee85a78b3a06dfd8954dae310a1cce/requirements.txt

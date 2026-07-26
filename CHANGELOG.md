@@ -12,6 +12,7 @@ releases.
 ### Changed
 
 - Update the pinned uv container image and GitHub Actions dependencies.
+- Update the image runtime to Python 3.12.
 
 ### Changed
 
