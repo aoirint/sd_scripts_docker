@@ -74,6 +74,46 @@ generated outputs, packaging concerns,
 or areas that need extra attention for reasons other than AI assistance.
 -->
 
+### Proposed merge attribution
+
+<!--
+Keep every potential squash-merge co-author reviewable from PR creation through
+updates. Include the author of an implemented issue and every material design
+or snippet provider by default; a reviewer must explicitly mark a candidate
+"Not applicable" to exclude them.
+
+For a human candidate, record the public GitHub account and immutable numeric
+user ID, a non-private contribution basis, status, and the resolved trailer:
+- @login (GitHub user ID: 123)
+  - Resolved trailer: Co-authored-by: login <GitHub-provided-noreply@example.com>
+  - Basis: Implemented issue #123 / material design or snippet contribution.
+  - Status: Included / Needs identity / Needs review / Not applicable
+
+Do not add the PR creator or the person who merges merely because of those
+roles. GitHub squash merge records the PR creator as primary Git author, but
+that can differ from the material contributors. If the creator is not material
+to the final diff, mark this `Needs review` and do not merge until a maintainer
+confirms that attribution or selects another authorized integration path. A
+review comment or approval alone is not a candidate. Include every final-diff
+PR-head commit author and existing co-author trailer unless already the PR
+creator's primary Git author. If GitHub applied a review suggestion that remains
+in the final diff, include its suggestion provider and applier unless already
+the PR creator's primary Git author, and record the source commit SHA or review
+URL here.
+
+Use a contributor-supplied GitHub-provided noreply address for every human
+trailer by default; never synthesize one from @login or numeric ID. Use a Public
+Email only when the contributor explicitly directs that choice and GitHub
+currently exposes the exact address; record the choice here. An existing
+trailer is reusable only when its GitHub author association proves the same
+account. If any candidate's contribution, applicability, account, exact email,
+trailer, or status is uncertain, use Needs identity or Needs review and do not
+merge.
+Do not use a legacy LOGIN@users.noreply.github.com fallback. State "None
+proposed" if no candidates apply. Make all candidate/status/identity changes
+reviewable; do not silently remove or replace an entry.
+-->
+
 ### AI disclosure
 
 <!--

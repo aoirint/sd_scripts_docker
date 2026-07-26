@@ -28,8 +28,7 @@ directly.
 
 ### Approved cooldown exception
 
-A maintainer explicitly approved adopting the current direct
-`aoirint/skills` commit
-`8a2bb13afb40cc31dbcd3280b74004834d428b4a` before its normal seven-day
-cooldown. This exception applies only to that direct dependency selection; it
+A maintainer may explicitly waive the normal seven-day wait for the latest
+`aoirint/skills` main commit. Record the waiver and exact full commit SHA in
+the pull request. That waiver applies only to the `aoirint/skills` commit; it
 does not waive review or cooldown requirements for any of its dependencies.
