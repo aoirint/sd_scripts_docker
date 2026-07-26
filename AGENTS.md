@@ -28,6 +28,10 @@ directly.
 
 ### Approved cooldown exception
 
+Use APM CLI 0.26.0 for lock operations. Its normal seven-day cooldown was
+explicitly waived because it fixes virtual-package `config-consistency` audit
+failures. The waiver covers only the CLI release time gate.
+
 A maintainer may explicitly waive the normal seven-day wait for the latest
 `aoirint/skills` main commit. Record the waiver and exact full commit SHA in
 the pull request. That waiver applies only to the `aoirint/skills` commit; it
