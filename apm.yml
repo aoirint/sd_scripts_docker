@@ -8,7 +8,7 @@ targets:
 dependencies:
   apm:
     - git: aoirint/skills
-      ref: 8c671f524fb5df6b9def895f8b60e9a359b07644
+      ref: 4361f1c00e419199803f6f88a760654f486f3ae4
       skills:
         - changelog-workflow
         - code-quality-check
@@ -21,7 +21,6 @@ dependencies:
         - pull-request-quality-check
         - release-note-workflow
         - security-check
-        - skill-quality-check
   mcp: []
 includes: auto
 scripts: {}

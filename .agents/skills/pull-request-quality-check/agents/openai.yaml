@@ -1,6 +1,0 @@
-interface:
-  display_name: "Pull Request Quality Check"
-  short_description: "Quality-check pull requests and squash merges."
-  default_prompt: >-
-    Use $pull-request-quality-check to review this pull request or prepare a GitHub squash merge with verified
-    attribution and commit message.

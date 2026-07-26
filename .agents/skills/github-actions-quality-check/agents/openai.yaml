@@ -1,7 +1,0 @@
-interface:
-  display_name: "GitHub Actions Quality Check"
-  short_description: "Review GitHub Actions security and CI."
-  default_prompt: >-
-    Use $github-actions-quality-check to review this GitHub Actions change for workflow syntax, action
-    pinning, permissions, runner labels, triggers, concurrency, secrets, and
-    verification coverage.
