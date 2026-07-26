@@ -9,13 +9,12 @@ releases.
 
 ## [Unreleased]
 
+## [v0.3.0] - 2026-07-26 UTC
+
 ### Changed
 
 - Update the pinned uv container image and GitHub Actions dependencies.
 - Update the image runtime to Python 3.12.
-
-### Changed
-
 - Update the bundled sd-scripts checkout to v0.11.1.
 
 ## [v0.2.0] - 2026-05-19 UTC
@@ -232,7 +231,8 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v0.1.0
 [v20251209.2]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v20251209.2
