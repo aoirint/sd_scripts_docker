@@ -1,6 +1,0 @@
-interface:
-  display_name: "Skill Quality Check"
-  short_description: "Review Agent Skill quality."
-  default_prompt: >-
-    Use $skill-quality-check to review this Agent Skill for trigger clarity, focused scope, metadata
-    alignment, progressive disclosure, and validation readiness.

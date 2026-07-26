@@ -29,7 +29,7 @@ description:
    with `commit-message-quality-check`.
 3. Before pushing, review the complete diff, recent commits, scope, and missing verification; run the final relevant
    checks.
-4. Push and create or update the PR with `pull-request-quality-check` when requested.
+4. Push and create or update the PR with `github-workflow` when requested.
 5. Before squash-merging a GitHub pull request, obtain its canonical title and number from GitHub. Explicitly set the
    commit subject to `<pull request title> (#<pull request number>)`; do not rely on a CLI default or omit the number.
    Pass that exact subject through the merge command's `--subject` option; constructing it only in a candidate file or
