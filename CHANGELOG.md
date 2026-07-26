@@ -9,6 +9,11 @@ releases.
 
 ## [Unreleased]
 
+### Fixed
+
+- Restore the Python 3.10 runtime for compatibility with the bundled
+  sd-scripts dependency stack.
+
 ## [v0.3.0] - 2026-07-26 UTC
 
 ### Changed
