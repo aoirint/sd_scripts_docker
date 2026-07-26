@@ -332,6 +332,14 @@ the same lightweight upstream pytest set that CI uses:
 scripts/run-sd-scripts-release-tests.sh --image sd-scripts:update-test
 ```
 
+Before relying on that set, compare every path named in
+`scripts/run-sd-scripts-release-tests.sh` with the selected upstream checkout.
+Upstream releases can remove or rename tests; a stale explicit pytest path
+causes the CI release gate to fail before any tests run. Update the selected
+path list in the same pull request as the sd-scripts version change, while
+retaining the documented exclusions below unless the image support contract
+also changes.
+
 This set intentionally excludes upstream tests and scripts that need model
 checkpoints, local datasets, or dependencies this image does not bundle, such
 as `tests/test_optimizer.py` requiring `dadaptation`.
@@ -375,6 +383,8 @@ Confirm:
 - `uv.lock` resolves the selected PyTorch CUDA index.
 - Local extras are intentionally kept, updated, or removed.
 - Upstream sd-scripts pytest release tests passed in the built image.
+- Every explicit pytest path in `scripts/run-sd-scripts-release-tests.sh`
+  exists in the selected upstream checkout.
 - Upstream inpainting shell tests were run, or GPU/checkpoint coverage was
   explicitly skipped.
 - Verification commands and any skipped GPU tests are documented in the PR.
