@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python Quality Check"
+  short_description: "Create or review strict uv-managed Python projects."
+  default_prompt: "Use $python-quality-check to create, align, or review this Python project for locked dependencies, strict tooling, tests, coverage, packaging, and CI parity."

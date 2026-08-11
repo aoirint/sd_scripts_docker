@@ -1,0 +1,4 @@
+interface:
+  display_name: "APM Usage"
+  short_description: "Select APM safely and manage pinned agent dependencies"
+  default_prompt: "Use $apm-usage to select an eligible APM version and safely manage this project's pinned agent dependencies."

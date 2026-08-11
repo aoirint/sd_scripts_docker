@@ -1,0 +1,6 @@
+interface:
+  display_name: "Docker Quality Check"
+  short_description: "Review container build and runtime changes."
+  default_prompt: >-
+    Use $docker-quality-check to review this Dockerfile, Compose, entrypoint, or
+    container CI change for build correctness, runtime safety, pinning, and validation.
