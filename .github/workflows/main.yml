@@ -16,7 +16,8 @@ env:
   GHCR_IMAGE_NAME: ghcr.io/aoirint/sd_scripts
 
 jobs:
-  lint:
+  check:
+    name: Check
     runs-on: ubuntu-slim
     timeout-minutes: 5
     steps:
@@ -24,8 +25,8 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Lint Docker source
-        uses: ./.github/actions/lint-docker
+      - name: Check Docker source
+        uses: ./.github/actions/check-docker-source
 
   plan:
     runs-on: ubuntu-slim
@@ -58,7 +59,7 @@ jobs:
           echo "release_mode=${release_mode}" >> "$GITHUB_OUTPUT"
 
   build:
-    needs: [lint, plan]
+    needs: [check, plan]
     runs-on: ubuntu-24.04
     permissions:
       contents: read

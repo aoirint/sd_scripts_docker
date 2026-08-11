@@ -10,7 +10,7 @@ builds the exact merged commit without publishing it.
 
 | Skill asset | Consumer path | Contract |
 | --- | --- | --- |
-| `assets/github/actions/lint-docker/action.yml` | `.github/actions/lint-docker/action.yml` | Install checksum-verified hadolint and lint the root `Dockerfile`. |
+| `assets/github/actions/check-docker-source/action.yml` | `.github/actions/check-docker-source/action.yml` | Install checksum-verified hadolint and lint the root `Dockerfile`. |
 | `assets/github/workflows/pull-request.yml` | `.github/workflows/pull-request.yml` | Lint pull-request and merge-queue source; cancel superseded runs. |
 | `assets/github/workflows/main.yml` | `.github/workflows/main.yml` | Re-run lint and build the integrated commit; never cancel it. |
 

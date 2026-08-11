@@ -28,7 +28,7 @@ directly.
 
 ### Approved cooldown exception
 
-Use APM CLI 0.26.0 for lock operations. Its normal seven-day cooldown was
+Use APM CLI 0.27.0 for lock operations. Its normal seven-day cooldown was
 explicitly waived because it fixes virtual-package `config-consistency` audit
 failures. The waiver covers only the CLI release time gate.
 

@@ -1,9 +1,9 @@
 ---
-name: apm-usage
+name: apm-workflow
 description: Select a reviewed APM CLI version, then set up, pin, deploy, audit, and update APM-managed agent dependencies safely. Use when creating or editing apm.yml or apm.lock.yaml, choosing or installing APM, adding an Agent Skill, plugin, or MCP dependency, validating a pinned deployment, or preparing a cooldown-aware update proposal.
 ---
 
-# APM Usage
+# APM Workflow
 
 Keep agent context reproducible and reviewable. Select the newest reviewed APM
 release that has completed the seven-day cooldown or has a manifest-recorded
@@ -118,7 +118,7 @@ Do not change the bootstrap manifest automatically. Use this proposal flow:
    release notes, installer and artifact integrity, and compatibility from the
    current official sources. Require explicit maintainer approval.
 3. Run
-   `uv run --no-project --no-config --locked --script <apm-usage-skill>/scripts/propose_bootstrap_update.py`
+   `uv run --no-project --no-config --locked --script <apm-workflow-skill>/scripts/propose_bootstrap_update.py`
    to isolate the locked helper from the consumer repository's uv configuration
    and collect an eligible candidate without changing files. Attach its JSON
    output to the proposal.
@@ -205,21 +205,7 @@ or MCP dependency:
    `apm audit --ci` to the project's existing CI when the user requests CI
    enforcement.
 
-### 3.1 Add the lightweight project-metadata guard
-
-When a repository already has a source-lint composite action, add the
-repository-owned metadata guard described in [CI guards](references/ci-guards.md).
-It verifies the unpublished project version and the lock generator version
-without downloading or executing APM. Keep it in the existing lint job so
-adoption requires one step rather than a new workflow. Do not make consumer CI
-depend on a path inside the deployed Skill; copy the template into the
-repository's own `.github/actions/check-apm-project/` directory.
-
-The metadata guard is not a replacement for `apm install --frozen` or
-`apm audit --ci`. Add those separately when the requested CI policy includes
-dependency replay, deployed-file integrity, or security auditing.
-
-### 3.2 Maintain a packaged Skill collection
+### 3.1 Maintain a packaged Skill collection
 
 Apply this section only when a repository publishes Skill copies in both an
 authoring target such as `.agents/skills/` and a package directory such as
@@ -242,7 +228,7 @@ authoring target such as `.agents/skills/` and a package directory such as
    use `git diff --cached --check` and a content review to distinguish a real
    generated-file delta from line-ending noise.
 
-### 3.3 Rename or remove packaged local Skills
+### 3.2 Rename or remove packaged local Skills
 
 Apply this section when a local packaged Skill is renamed, consolidated, or
 removed. Treat it as a deployment-ledger change, not a documentation-only

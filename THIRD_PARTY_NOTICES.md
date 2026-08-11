@@ -18,7 +18,7 @@ that are present in that checkout.
 - Source: [aoirint/skills](https://github.com/aoirint/skills), selected from
   `.apm/skills/`
 - Pinned commit:
-  [`82fb9ef5149bf59721053fc881e499b7a67ac39b`](https://github.com/aoirint/skills/tree/82fb9ef5149bf59721053fc881e499b7a67ac39b)
-- Deployed paths: `.agents/skills/{apm-usage,changelog-workflow,code-quality-check,commit-message-quality-check,docker-quality-check,git-worktree-workflow,github-workflow,gitignore-workflow,prose-quality-check,python-quality-check,release-note-workflow,security-check}/`
-- License: [MIT](https://github.com/aoirint/skills/blob/82fb9ef5149bf59721053fc881e499b7a67ac39b/LICENSE)
+  [`7ee24b75904233a42a7fc01d79c6dfc81ca36d7c`](https://github.com/aoirint/skills/tree/7ee24b75904233a42a7fc01d79c6dfc81ca36d7c)
+- Deployed paths: `.agents/skills/{apm-workflow,changelog-workflow,code-quality-check,commit-message-quality-check,docker-quality-check,git-worktree-workflow,github-workflow,gitignore-workflow,prose-quality-check,python-quality-check,release-note-workflow,security-check}/`
+- License: [MIT](https://github.com/aoirint/skills/blob/7ee24b75904233a42a7fc01d79c6dfc81ca36d7c/LICENSE)
 - Copyright: Copyright (c) 2026 aoirint

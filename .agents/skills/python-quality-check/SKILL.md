@@ -95,6 +95,10 @@ testing, coverage, or distribution rules.
 5. Align CI and distribution.
    - Read [ci-and-distribution.md](references/ci-and-distribution.md) before
      changing workflows, build metadata, wheels, sdists, executables, or releases.
+   - Use this Skill's `assets/github/actions/setup-python-locked` as the single
+     shared implementation for committed Python/uv resolution, cache setup,
+     lock verification, and synchronization. Domain Skills may compose the
+     installed local action but must not carry another editable copy.
    - Re-run the complete locked validation on pull requests and on the exact
      protected integration-branch commit.
    - Build applicable distributions from a clean reviewed commit. Inspect

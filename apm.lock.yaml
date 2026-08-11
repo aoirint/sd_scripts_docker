@@ -1,24 +1,22 @@
 lockfile_version: '1'
-generated_at: '2026-08-11T03:20:37.451201+00:00'
-apm_version: 0.26.0
+generated_at: '2026-08-11T06:02:42.555552+00:00'
+apm_version: 0.27.0
 dependencies:
 - repo_url: aoirint/skills
   name: skills
   host: github.com
-  resolved_commit: 82fb9ef5149bf59721053fc881e499b7a67ac39b
-  resolved_ref: 82fb9ef5149bf59721053fc881e499b7a67ac39b
+  resolved_commit: 7ee24b75904233a42a7fc01d79c6dfc81ca36d7c
+  resolved_ref: 7ee24b75904233a42a7fc01d79c6dfc81ca36d7c
   version: 0.0.0
   package_type: apm_package
   deployed_files:
-  - .agents/skills/apm-usage
-  - .agents/skills/apm-usage/README.md
-  - .agents/skills/apm-usage/SKILL.md
-  - .agents/skills/apm-usage/agents/openai.yaml
-  - .agents/skills/apm-usage/assets/check-apm-project/action.yml
-  - .agents/skills/apm-usage/references/apm-bootstrap.json
-  - .agents/skills/apm-usage/references/ci-guards.md
-  - .agents/skills/apm-usage/scripts/propose_bootstrap_update.py
-  - .agents/skills/apm-usage/scripts/propose_bootstrap_update.py.lock
+  - .agents/skills/apm-workflow
+  - .agents/skills/apm-workflow/README.md
+  - .agents/skills/apm-workflow/SKILL.md
+  - .agents/skills/apm-workflow/agents/openai.yaml
+  - .agents/skills/apm-workflow/references/apm-bootstrap.json
+  - .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py
+  - .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py.lock
   - .agents/skills/changelog-workflow
   - .agents/skills/changelog-workflow/README.md
   - .agents/skills/changelog-workflow/SKILL.md
@@ -35,7 +33,8 @@ dependencies:
   - .agents/skills/docker-quality-check/README.md
   - .agents/skills/docker-quality-check/SKILL.md
   - .agents/skills/docker-quality-check/agents/openai.yaml
-  - .agents/skills/docker-quality-check/assets/github/actions/lint-docker/action.yml
+  - .agents/skills/docker-quality-check/assets/github/actions/check-docker-source/action.yml
+  - .agents/skills/docker-quality-check/assets/github/actions/check-docker-source/install-hadolint.sh
   - .agents/skills/docker-quality-check/assets/github/workflows/main.yml
   - .agents/skills/docker-quality-check/assets/github/workflows/pull-request.yml
   - .agents/skills/docker-quality-check/references/ci-template-contract.md
@@ -61,6 +60,8 @@ dependencies:
   - .agents/skills/python-quality-check/README.md
   - .agents/skills/python-quality-check/SKILL.md
   - .agents/skills/python-quality-check/agents/openai.yaml
+  - .agents/skills/python-quality-check/assets/github/actions/setup-python-locked/action.yml
+  - .agents/skills/python-quality-check/assets/github/actions/setup-python-locked/resolve-python-contract.sh
   - .agents/skills/python-quality-check/references/ci-and-distribution.md
   - .agents/skills/python-quality-check/references/tooling-and-testing.md
   - .agents/skills/python-quality-check/scripts/check_project.py
@@ -80,14 +81,12 @@ dependencies:
   - .agents/skills/security-check/references/artifact-inspection.md
   - .agents/skills/security-check/references/external-code-execution.md
   deployed_file_hashes:
-    .agents/skills/apm-usage/README.md: sha256:70351aaebf54291433dfcff86280e87edc757ff4e93e506aa1e8f06a0b913f06
-    .agents/skills/apm-usage/SKILL.md: sha256:82bfde7980c17b69f043b62cb5669a42b1e65386f4a8476a224617285f33653e
-    .agents/skills/apm-usage/agents/openai.yaml: sha256:931ed250f3abe81dcad27da5b668d7546cd65f528cd37de754dee4c9df1905e0
-    .agents/skills/apm-usage/assets/check-apm-project/action.yml: sha256:108bc5e9964026880fb49086728f8458b16174f33636dea79276bd286505bbd4
-    .agents/skills/apm-usage/references/apm-bootstrap.json: sha256:f3b8921d2db8d6bfad9088657895b126ebd8d87b92133bd65331be4a8a0a515e
-    .agents/skills/apm-usage/references/ci-guards.md: sha256:7898244519895206b90713bdeb23d7bc8ba54437f8205944cdce98acf12fe1d1
-    .agents/skills/apm-usage/scripts/propose_bootstrap_update.py: sha256:9d7d3a4292a9ad4a833f970a51cce0202f3850503d39e410c1d2fccad5eb0b58
-    .agents/skills/apm-usage/scripts/propose_bootstrap_update.py.lock: sha256:016afc221516f1724533f1623ec77ef8a9a80c06a1ffae431f32f5e063e59986
+    .agents/skills/apm-workflow/README.md: sha256:e346edab06f5ec792cdb77edcaa8042f523af67753dc4fe72498ae1899b87c89
+    .agents/skills/apm-workflow/SKILL.md: sha256:4191b0fbc4ea9e832ecaede048693f280d36bead7c98276a2cdd0966edc3b88e
+    .agents/skills/apm-workflow/agents/openai.yaml: sha256:f3c083196472ec9253886b369202ddeb8eb2534fd2da9799798bae2eb33b2e55
+    .agents/skills/apm-workflow/references/apm-bootstrap.json: sha256:e0ebfd624fc79e35c5a5a305d77476860ff87019edc3afc0b37b5cd2884276b1
+    .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py: sha256:5c8d079ff9caa4175a971c5d231bc24d8143d47d238496cace60b1d91d8d00d8
+    .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py.lock: sha256:016afc221516f1724533f1623ec77ef8a9a80c06a1ffae431f32f5e063e59986
     .agents/skills/changelog-workflow/README.md: sha256:7ef8167d26522d95f62b9f11d752487d62b6bfdae05850315189fbe2a19fed83
     .agents/skills/changelog-workflow/SKILL.md: sha256:8d9de8e0e3c31c4a2c176a0d14e3f1a45daf3db364ede7dd86983c8c3f571f54
     .agents/skills/changelog-workflow/agents/openai.yaml: sha256:6264e6dbd0433ab63370e15033ecb94da8dd131c4edcb1d3f2b9abdeb4f680f1
@@ -98,12 +97,13 @@ dependencies:
     .agents/skills/commit-message-quality-check/SKILL.md: sha256:db272bb7467bcb6a6c3d837dec60a34f7081c135fcd40a9e00cf4a84e29ffabe
     .agents/skills/commit-message-quality-check/agents/openai.yaml: sha256:faffd948a0989dcfc87dcd3b0580c4a7003d01ef436e66dab9f280df57de652c
     .agents/skills/docker-quality-check/README.md: sha256:912a73d3de06babc6eed1ecdaf275139ae465797083dc5427affb54d00c57bf0
-    .agents/skills/docker-quality-check/SKILL.md: sha256:642f9fdb8d92170a51fdadd2c6fc98a154b1cfeda097c0c7b59bbb8307308069
+    .agents/skills/docker-quality-check/SKILL.md: sha256:1f63030c08c7c12ce586b5c759789da36f7cdc0957a5697545796dc7889c0edf
     .agents/skills/docker-quality-check/agents/openai.yaml: sha256:8abdaaa5a0458e86821080f50a2dfc34374c5c673a6c257fa351a2a96a16d064
-    .agents/skills/docker-quality-check/assets/github/actions/lint-docker/action.yml: sha256:9f9b507f64721d295ca96eabe440a73caed1d280ec42e7dd0f81ebc796a87ad3
-    .agents/skills/docker-quality-check/assets/github/workflows/main.yml: sha256:eb431cdcf975f9cbb42f2fce1a3b9afb11134f802d82ccac7d8d63946d050c4a
-    .agents/skills/docker-quality-check/assets/github/workflows/pull-request.yml: sha256:0ff5ebdc316889f7d295a22de2f24c2ad0307be5c8afb76cb1555d4ac3c05782
-    .agents/skills/docker-quality-check/references/ci-template-contract.md: sha256:91931e9e0d6bb3bd2291fde1b4f6159a8005100b8d8ac7666b65aa0a65403dd8
+    .agents/skills/docker-quality-check/assets/github/actions/check-docker-source/action.yml: sha256:d7aaecc6000e0fd8b5bc05c20226ff2772367d7442b28826b1008ad3f24456bd
+    .agents/skills/docker-quality-check/assets/github/actions/check-docker-source/install-hadolint.sh: sha256:1a2e0159029597ed5fc8c51759bfd784447cd5e1ffc3db17d3be36b9a11c2f74
+    .agents/skills/docker-quality-check/assets/github/workflows/main.yml: sha256:92ef7f067110e0403652b5096fe65b5ade523fa0c10fbe56bb555b0b2fb89f1a
+    .agents/skills/docker-quality-check/assets/github/workflows/pull-request.yml: sha256:78486f8ba5ca32f5e298cda33d2f553e3f7ec36b688929d01ba5369461f23ecb
+    .agents/skills/docker-quality-check/references/ci-template-contract.md: sha256:af78ac12c756d4901cf664bd1edf69c2425b56968ee477492b7ec5f5abe826ae
     .agents/skills/git-worktree-workflow/README.md: sha256:fa6483b5919a01b84fa0d6ffcbaae20b84ed3807e18029e8807e61b0ee4f9de9
     .agents/skills/git-worktree-workflow/SKILL.md: sha256:67e2474b9878cc6cb209ae30b19c233f65969abe5b5d543f0c9a16e46f1d40d2
     .agents/skills/git-worktree-workflow/agents/openai.yaml: sha256:3eb9da73e7a041e77d82f0d5c3a8c67e914575cff8651b71d077db30fe3da99a
@@ -119,8 +119,10 @@ dependencies:
     .agents/skills/prose-quality-check/SKILL.md: sha256:9ec45813d04382e04a3b504fd187e4151fc5198352564bd0bcb064f4eaf9a702
     .agents/skills/prose-quality-check/agents/openai.yaml: sha256:b83e0a5d151e6e20df6f7d97f268955c6abfd105d53820f6baad0de8403fc062
     .agents/skills/python-quality-check/README.md: sha256:20a23003a24a8caf2f03dd5a06bed99c81cf93ab53fe5a196c6a67ab59c53b0e
-    .agents/skills/python-quality-check/SKILL.md: sha256:8827207925dfe0648856628561433435a6c3bd3f27e8497a784b809e90c9441d
+    .agents/skills/python-quality-check/SKILL.md: sha256:201e37035213c33daf2e469c757a66a0414d7df6ec0c3778ae669d90c3b9a76d
     .agents/skills/python-quality-check/agents/openai.yaml: sha256:f0b4ad3807e177becec02271314fb32c1ec8d5a7682725ddd4a611a5381084d1
+    .agents/skills/python-quality-check/assets/github/actions/setup-python-locked/action.yml: sha256:fe8c80687def5eea23f9b49f2214cb7c1049813bb3af8b7c1b79da7a63f88e21
+    .agents/skills/python-quality-check/assets/github/actions/setup-python-locked/resolve-python-contract.sh: sha256:b766a0686b02370f4794d09b640b636e32d1f20b69fcb464b85134d2247dd068
     .agents/skills/python-quality-check/references/ci-and-distribution.md: sha256:e52aaf46c28816d6f6262a5421dba8de9f906d2b606987bedcda840d2e687281
     .agents/skills/python-quality-check/references/tooling-and-testing.md: sha256:8dd45ccbf2818d73c6497beec400567c294eec842199eaf329e856d40446e771
     .agents/skills/python-quality-check/scripts/check_project.py: sha256:8175b500198399a2ce8b79b4fc8d1902f791d163a0d6dfd35b5ce56b41c5ccc5
@@ -137,9 +139,9 @@ dependencies:
     .agents/skills/security-check/agents/openai.yaml: sha256:87edf0cc1e8717194d0c536f2d5ac0cc1ac9ec04402311d34e953d2e2b23fa19
     .agents/skills/security-check/references/artifact-inspection.md: sha256:9842555f4789e77e6cf3d22b000116497207ecf6fa5587f2b1fe0dc20e7dffda
     .agents/skills/security-check/references/external-code-execution.md: sha256:87ca817baa02ef6b955e5878f0cd79c875abdb0be6e0177cfce158968e628bc3
-  content_hash: sha256:6eec088c34d2f984e328d7c3521313313034d7d26cae6a190bf73ef58bbbf9fa
+  content_hash: sha256:9880f8b48160964a276f061840d95504326316fdbb1647f88b4ab8c16fed7f85
   skill_subset:
-  - apm-usage
+  - apm-workflow
   - changelog-workflow
   - code-quality-check
   - commit-message-quality-check
@@ -155,7 +157,7 @@ dependencies:
 deployments:
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage
+  value: .agents/skills/apm-workflow
   runtime: null
   scope: project
   owners:
@@ -164,70 +166,52 @@ deployments:
   content_hash: null
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage/README.md
+  value: .agents/skills/apm-workflow/README.md
   runtime: null
   scope: project
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:70351aaebf54291433dfcff86280e87edc757ff4e93e506aa1e8f06a0b913f06
+  content_hash: sha256:e346edab06f5ec792cdb77edcaa8042f523af67753dc4fe72498ae1899b87c89
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage/SKILL.md
+  value: .agents/skills/apm-workflow/SKILL.md
   runtime: null
   scope: project
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:82bfde7980c17b69f043b62cb5669a42b1e65386f4a8476a224617285f33653e
+  content_hash: sha256:4191b0fbc4ea9e832ecaede048693f280d36bead7c98276a2cdd0966edc3b88e
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage/agents/openai.yaml
+  value: .agents/skills/apm-workflow/agents/openai.yaml
   runtime: null
   scope: project
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:931ed250f3abe81dcad27da5b668d7546cd65f528cd37de754dee4c9df1905e0
+  content_hash: sha256:f3c083196472ec9253886b369202ddeb8eb2534fd2da9799798bae2eb33b2e55
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage/assets/check-apm-project/action.yml
+  value: .agents/skills/apm-workflow/references/apm-bootstrap.json
   runtime: null
   scope: project
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:108bc5e9964026880fb49086728f8458b16174f33636dea79276bd286505bbd4
+  content_hash: sha256:e0ebfd624fc79e35c5a5a305d77476860ff87019edc3afc0b37b5cd2884276b1
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage/references/apm-bootstrap.json
+  value: .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py
   runtime: null
   scope: project
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:f3b8921d2db8d6bfad9088657895b126ebd8d87b92133bd65331be4a8a0a515e
+  content_hash: sha256:5c8d079ff9caa4175a971c5d231bc24d8143d47d238496cace60b1d91d8d00d8
 - kind: project-relative
   target: codex
-  value: .agents/skills/apm-usage/references/ci-guards.md
-  runtime: null
-  scope: project
-  owners:
-  - aoirint/skills
-  active_owner: aoirint/skills
-  content_hash: sha256:7898244519895206b90713bdeb23d7bc8ba54437f8205944cdce98acf12fe1d1
-- kind: project-relative
-  target: codex
-  value: .agents/skills/apm-usage/scripts/propose_bootstrap_update.py
-  runtime: null
-  scope: project
-  owners:
-  - aoirint/skills
-  active_owner: aoirint/skills
-  content_hash: sha256:9d7d3a4292a9ad4a833f970a51cce0202f3850503d39e410c1d2fccad5eb0b58
-- kind: project-relative
-  target: codex
-  value: .agents/skills/apm-usage/scripts/propose_bootstrap_update.py.lock
+  value: .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py.lock
   runtime: null
   scope: project
   owners:
@@ -368,7 +352,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:642f9fdb8d92170a51fdadd2c6fc98a154b1cfeda097c0c7b59bbb8307308069
+  content_hash: sha256:1f63030c08c7c12ce586b5c759789da36f7cdc0957a5697545796dc7889c0edf
 - kind: project-relative
   target: codex
   value: .agents/skills/docker-quality-check/agents/openai.yaml
@@ -380,13 +364,22 @@ deployments:
   content_hash: sha256:8abdaaa5a0458e86821080f50a2dfc34374c5c673a6c257fa351a2a96a16d064
 - kind: project-relative
   target: codex
-  value: .agents/skills/docker-quality-check/assets/github/actions/lint-docker/action.yml
+  value: .agents/skills/docker-quality-check/assets/github/actions/check-docker-source/action.yml
   runtime: null
   scope: project
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:9f9b507f64721d295ca96eabe440a73caed1d280ec42e7dd0f81ebc796a87ad3
+  content_hash: sha256:d7aaecc6000e0fd8b5bc05c20226ff2772367d7442b28826b1008ad3f24456bd
+- kind: project-relative
+  target: codex
+  value: .agents/skills/docker-quality-check/assets/github/actions/check-docker-source/install-hadolint.sh
+  runtime: null
+  scope: project
+  owners:
+  - aoirint/skills
+  active_owner: aoirint/skills
+  content_hash: sha256:1a2e0159029597ed5fc8c51759bfd784447cd5e1ffc3db17d3be36b9a11c2f74
 - kind: project-relative
   target: codex
   value: .agents/skills/docker-quality-check/assets/github/workflows/main.yml
@@ -395,7 +388,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:eb431cdcf975f9cbb42f2fce1a3b9afb11134f802d82ccac7d8d63946d050c4a
+  content_hash: sha256:92ef7f067110e0403652b5096fe65b5ade523fa0c10fbe56bb555b0b2fb89f1a
 - kind: project-relative
   target: codex
   value: .agents/skills/docker-quality-check/assets/github/workflows/pull-request.yml
@@ -404,7 +397,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:0ff5ebdc316889f7d295a22de2f24c2ad0307be5c8afb76cb1555d4ac3c05782
+  content_hash: sha256:78486f8ba5ca32f5e298cda33d2f553e3f7ec36b688929d01ba5369461f23ecb
 - kind: project-relative
   target: codex
   value: .agents/skills/docker-quality-check/references/ci-template-contract.md
@@ -413,7 +406,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:91931e9e0d6bb3bd2291fde1b4f6159a8005100b8d8ac7666b65aa0a65403dd8
+  content_hash: sha256:af78ac12c756d4901cf664bd1edf69c2425b56968ee477492b7ec5f5abe826ae
 - kind: project-relative
   target: codex
   value: .agents/skills/git-worktree-workflow
@@ -602,7 +595,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:8827207925dfe0648856628561433435a6c3bd3f27e8497a784b809e90c9441d
+  content_hash: sha256:201e37035213c33daf2e469c757a66a0414d7df6ec0c3778ae669d90c3b9a76d
 - kind: project-relative
   target: codex
   value: .agents/skills/python-quality-check/agents/openai.yaml
@@ -612,6 +605,24 @@ deployments:
   - aoirint/skills
   active_owner: aoirint/skills
   content_hash: sha256:f0b4ad3807e177becec02271314fb32c1ec8d5a7682725ddd4a611a5381084d1
+- kind: project-relative
+  target: codex
+  value: .agents/skills/python-quality-check/assets/github/actions/setup-python-locked/action.yml
+  runtime: null
+  scope: project
+  owners:
+  - aoirint/skills
+  active_owner: aoirint/skills
+  content_hash: sha256:fe8c80687def5eea23f9b49f2214cb7c1049813bb3af8b7c1b79da7a63f88e21
+- kind: project-relative
+  target: codex
+  value: .agents/skills/python-quality-check/assets/github/actions/setup-python-locked/resolve-python-contract.sh
+  runtime: null
+  scope: project
+  owners:
+  - aoirint/skills
+  active_owner: aoirint/skills
+  content_hash: sha256:b766a0686b02370f4794d09b640b636e32d1f20b69fcb464b85134d2247dd068
 - kind: project-relative
   target: codex
   value: .agents/skills/python-quality-check/references/ci-and-distribution.md

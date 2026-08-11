@@ -1,0 +1,43 @@
+name: Set up locked Python environment
+description: Install reviewed uv/Python and synchronize the exact locked graph.
+
+outputs:
+  environment-owned:
+    description: Whether this action established ownership of the project environment.
+    value: ${{ steps.ownership.outputs.environment-owned }}
+  python_version:
+    description: Python version selected from .python-version.
+    value: ${{ steps.toolchain.outputs.python_version }}
+  uv_version:
+    description: Reviewed uv version used for the locked environment.
+    value: ${{ steps.toolchain.outputs.uv_version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Reserve the Python environment
+      id: ownership
+      shell: bash
+      run: |
+        test ! -e .venv
+        echo 'environment-owned=true' >>"$GITHUB_OUTPUT"
+
+    - name: Read committed toolchain versions
+      id: toolchain
+      shell: bash
+      run: bash "${{ github.action_path }}/resolve-python-contract.sh"
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+      with:
+        enable-cache: true
+        python-version: ${{ steps.toolchain.outputs.python_version }}
+        version: ${{ steps.toolchain.outputs.uv_version }}
+
+    - name: Verify the dependency lock
+      shell: bash
+      run: uv lock --check
+
+    - name: Synchronize locked dependencies
+      shell: bash
+      run: uv sync --locked --all-groups
