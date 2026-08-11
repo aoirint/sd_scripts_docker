@@ -42,7 +42,10 @@ description: >-
    release age, checksums, permissions, and runtime behavior. Pin GitHub Actions to
    full commit SHAs with accurate version comments. Use
    `github-actions-quality-check` for workflow structure, permissions, runners,
-   validation, and publication gates.
+   validation, and publication gates. For an APM-managed repository, apply
+   `apm-workflow` and keep `apm audit --ci` in the outer source-check action.
+   Keep Markdown source validation in that same action so container-only
+   changes cannot bypass the repository documentation gate.
 7. Summarize commands run, build and smoke-test results, and every skipped check with a
    concrete reason.
 
@@ -52,7 +55,7 @@ When a workflow installs hadolint, pin both the release version and the SHA-256 
 exact platform asset. Download over HTTPS, verify the hash before making the file
 executable, and install it only into the runner's temporary directory. Before changing
 a pin, verify the official release provenance and the repository's required adoption
-cooldown. Use the bundled `lint-docker` action when its single-Dockerfile contract fits.
+cooldown. Use the bundled `check-docker-source` action when its single-Dockerfile contract fits.
 
 Replace the version and checksum together only after independently verifying the
 official release asset. Do not use a floating download URL or skip hash verification.

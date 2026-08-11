@@ -31,13 +31,13 @@ def semver(tag: str) -> tuple[int, int, int]:
 
 
 def request_json(url: str) -> object:
-    request = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": "apm-usage-skill"})
+    request = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": "apm-workflow-skill"})
     with urllib.request.urlopen(request, timeout=30) as response:
         return json.load(response)
 
 
 def request_text(url: str) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": "apm-usage-skill"})
+    request = urllib.request.Request(url, headers={"User-Agent": "apm-workflow-skill"})
     with urllib.request.urlopen(request, timeout=30) as response:
         return response.read().decode("utf-8")
 

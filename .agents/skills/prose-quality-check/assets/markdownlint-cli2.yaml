@@ -1,0 +1,43 @@
+---
+# Lint every committed Markdown document by default so docs, release notes, and
+# GitHub templates follow one repository-wide style.
+globs:
+  - "**/*.md"
+
+# Exclude Agent-local work areas for the first Markdown lint rollout. Skill
+# Markdown can be included later with a narrower ignore that still excludes
+# transient .agents/worktrees content.
+ignores:
+  - ".agents/**"
+
+# Respect .gitignore so generated, local, or tool cache Markdown files do not
+# affect CI when they are intentionally outside version control.
+gitignore: true
+
+config:
+  # Start from markdownlint's recommended defaults, then document each local
+  # exception below instead of maintaining a broad custom rule set.
+  default: true
+
+  # Existing prose clusters around 118-120 columns. Keep code blocks, tables,
+  # and headings exempt unless examples/tables become intentionally wrapped.
+  MD013:
+    line_length: 120
+    code_blocks: false
+    headings: false
+    tables: false
+
+  # Use four-space nested list indentation for conservative renderer
+  # compatibility.
+  MD007:
+    indent: 4
+
+  # Changelogs intentionally repeat headings such as "Changed" and "Notes"
+  # under different release versions, so only duplicate sibling headings are
+  # suspicious.
+  MD024:
+    siblings_only: true
+
+  # PR-template guidance needs to appear before the first visible heading, so
+  # do not require the first line to be an H1.
+  MD041: false
