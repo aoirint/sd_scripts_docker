@@ -15,9 +15,8 @@ concurrency:
 jobs:
   check:
     name: Check
-    # Keep the lightweight gate independent from Docker daemon requirements.
-    runs-on: ubuntu-slim
-    timeout-minutes: 5
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Checkout integrated source
@@ -27,6 +26,16 @@ jobs:
 
       - name: Lint Docker source
         uses: ./.github/actions/check-docker-source
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+
+      - name: Check Docker build configuration
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          call: check
+          context: .
+          file: ./Dockerfile
 
   build:
     name: Build

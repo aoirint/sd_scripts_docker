@@ -1,8 +1,9 @@
 interface:
   display_name: "Security Check"
-  short_description: "Review security and supply-chain risks."
+  short_description: "Review security, supply-chain, and distribution risks."
   default_prompt: >-
     Use $security-check to review this repository work for security and supply-chain risks, including
     secrets, permissions, unsafe defaults, supply-chain-sensitive artifacts,
-    ad hoc executable tools, dependencies, CI actions, containers, and
-    reviewer-visible blockers or residual risk.
+    ad hoc executable tools, dependencies, CI actions, containers, compiled or
+    bundled software licensing, FFmpeg configurations, private-repository
+    disclosure boundaries, and reviewer-visible blockers or residual risk.

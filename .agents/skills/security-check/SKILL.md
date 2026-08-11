@@ -4,8 +4,10 @@ description: >-
   Review repository changes for practical security and supply-chain risks. Use
   when work touches secrets, permissions, untrusted input, dependencies,
   executable or downloaded artifacts, CI or deployment configuration,
-  containers, or vendored/generated files; skip documentation-only changes with
-  no security-sensitive surface.
+  containers, vendored/generated files, or compiled and bundled software whose
+  redistribution terms depend on build features or linked libraries, including
+  published content that could expose private resources; skip documentation-only
+  changes with no security-sensitive surface.
 ---
 
 # Security Check
@@ -101,6 +103,23 @@ description: >-
    - Follow-up issues for ecosystem-specific controls that exceed this
      general security skill.
 
+## Private Resource Disclosure Boundary
+
+- Do not expose identifiers or existence-inference for a private resource in an
+  artifact that is public or could be published later. Treat uncertain destination
+  visibility as public for this check; current restricted access is not a lasting
+  disclosure control.
+- Apply the boundary to the complete candidate and all attached, embedded, generated,
+  and logged derivatives. Access controls on the private source do not make its name,
+  locator, metadata, failure output, code name, or relationship safe to disclose.
+- Preserve only the least-identifying constraint or outcome needed by the audience.
+  Keep exact private evidence in an approved private channel or system outside the
+  publication destination.
+- Complete this inspection before the first publish or update operation. Post-write
+  read-back is useful for verification but cannot prevent an initial disclosure. If
+  useful context cannot be preserved safely, stop publication and request a secure
+  handoff channel.
+
 ## Supply-Chain Baseline
 
 - For tool-specific fixed-install and execution patterns, consult
@@ -109,6 +128,12 @@ description: >-
 - For archives, installers, bundles, release assets, or packaged applications,
   apply [artifact-inspection.md](references/artifact-inspection.md) to the final
   artifact rather than trusting the staging directory or build log.
+- For compiled or bundled software distributed in an image, installer, archive,
+  or release asset, apply
+  [distributed-software-licensing.md](references/distributed-software-licensing.md).
+  Review the final feature and dependency combination rather than inferring
+  redistributability from the upstream project's headline license. Use its FFmpeg
+  section whenever FFmpeg is built or redistributed.
 - Treat new or updated third-party packages, package-runner invocations,
   downloaded CLI tools, GitHub Actions, containers, vendored artifacts,
   generated code from external tools, copied files, and dependency lockfile
@@ -203,11 +228,18 @@ description: >-
 - Distributed artifacts were inspected as final containers, with unsafe member
   types and paths rejected and payload/provenance checked against an explicit
   contract, or the unverified scope was recorded.
+- Compiled or bundled software was checked for build-time license combinations,
+  final-artifact license evidence, required notices, and variant differences;
+  FFmpeg builds additionally passed the FFmpeg-specific checks, or the unverified
+  or non-redistributable scope was recorded.
 - Every third-party resolution, download, build, load, or execution path passed
   the mechanism-neutral execution gate; tool names and delivery channels were
   treated as examples, not exemptions.
 - Secrets, permissions, unsafe defaults, and untrusted input paths were checked
   when relevant.
+- Public or potentially public artifacts contain no private-resource identifiers or
+  existence disclosures; exact private evidence was reduced to non-identifying
+  outcomes and kept outside the publication destination.
 - Example hostnames and URLs name the intentional real service or use an
   RFC-reserved example domain without introducing accidental live traffic.
 - Suspected vulnerabilities were kept out of public channels when sensitive
