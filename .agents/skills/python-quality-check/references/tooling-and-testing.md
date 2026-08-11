@@ -190,18 +190,14 @@ configured development target.
 
 ## pytest and coverage policy
 
-- Require 100% statement and branch coverage for maintained first-party source.
-- Do not use broad omit rules, `pragma: no cover`, or import guards to
-  manufacture 100%.
+- Apply `test-quality-check` for test classification, behavioral oracles,
+  determinism, the shared 100% statement/branch policy, exclusions, and suite
+  overengineering audits.
+- Configure pytest and Coverage.py against the intended maintained first-party
+  source roots, enable branch measurement, and fail below the shared threshold.
 - Test module and console entry points without launching work at import time.
-- Fail on unknown markers/configuration and make clock, randomness, sleep,
-  filesystem, subprocess, and network behavior deterministic through seams.
-- Assert state, declared effects, boundary calls, failures, cleanup, and
-  user-observable outcomes; executing a line is not a sufficient assertion.
-- Keep ordinary tests offline and independent of user credentials.
-- Organize tests around contracts: domain values, application transitions,
-  presentation mapping, infrastructure boundaries, composition, entry points,
-  and artifact smoke behavior. Source-file mirroring alone is insufficient.
+- Fail on unknown pytest markers and configuration. Keep Python-specific
+  fixtures and plugins explicit in the development dependency group.
 
 ## Locked verification
 

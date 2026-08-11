@@ -2,7 +2,7 @@
 
 ## Overview
 
-Create and review GitHub Actions workflows, repository issues, and pull requests.
+Create and review GitHub repository issues, pull requests, and their comments.
 
 ## Install
 

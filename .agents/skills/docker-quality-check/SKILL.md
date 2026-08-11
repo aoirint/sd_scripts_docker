@@ -40,7 +40,9 @@ description: >-
 6. For newly introduced or updated external images, downloaded executables, or GitHub
    Actions, use `security-check` to assess provenance, version or digest pinning,
    release age, checksums, permissions, and runtime behavior. Pin GitHub Actions to
-   full commit SHAs with accurate version comments.
+   full commit SHAs with accurate version comments. Use
+   `github-actions-quality-check` for workflow structure, permissions, runners,
+   validation, and publication gates.
 7. Summarize commands run, build and smoke-test results, and every skipped check with a
    concrete reason.
 
@@ -50,13 +52,7 @@ When a workflow installs hadolint, pin both the release version and the SHA-256 
 exact platform asset. Download over HTTPS, verify the hash before making the file
 executable, and install it only into the runner's temporary directory. Before changing
 a pin, verify the official release provenance and the repository's required adoption
-cooldown.
-
-```shell
-curl -sSfLO https://github.com/hadolint/hadolint/releases/download/v2.14.0/hadolint-linux-x86_64
-echo "6bf226944684f56c84dd014e8b979d27425c0148f61b3bd99bcc6f39e9dc5a47  hadolint-linux-x86_64" | sha256sum -c -
-install -m 0755 hadolint-linux-x86_64 "$RUNNER_TEMP/bin/hadolint"
-```
+cooldown. Use the bundled `lint-docker` action when its single-Dockerfile contract fits.
 
 Replace the version and checksum together only after independently verifying the
 official release asset. Do not use a floating download URL or skip hash verification.
@@ -72,3 +68,11 @@ docker compose config
 Replace these examples with the repository's documented file paths, build targets, tags,
 and Compose files. Do not treat a successful syntax check as evidence that the image
 builds or starts correctly.
+
+## CI Templates
+
+Read [ci-template-contract.md](references/ci-template-contract.md) before creating or
+repairing Docker CI. The bundled files under `assets/github/` keep pull-request checks
+limited to lint and reserve image builds for the exact integrated main-branch commit.
+Apply `github-actions-quality-check` for shared event, permission, runner, pinning, and
+repository-enforcement policy.

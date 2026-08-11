@@ -3,13 +3,12 @@
 ## Contents
 
 - [CI parity](#ci-parity)
-- [Event and trust boundaries](#event-and-trust-boundaries)
 - [Distribution verification](#distribution-verification)
 - [Completion evidence](#completion-evidence)
 
 ## CI parity
 
-Use `github-workflow` and `security-check` while implementing CI.
+Use `github-actions-quality-check` and `security-check` while implementing CI.
 
 - Re-run lock verification, exact sync, Ruff lint, Ruff format, strict mypy,
   pytest, and coverage from a clean checkout.
@@ -22,25 +21,9 @@ Use `github-workflow` and `security-check` while implementing CI.
   local-only shortcuts are findings.
 - Install/select Python from `.python-version` or an explicit matrix consistent
   with `requires-python`.
-- Pin uv and every external action to reviewed immutable versions. Validate
-  action inputs against the exact pinned version.
+- Pin uv to a reviewed immutable version.
 - Bind dependency caches to `uv.lock`, runner, and Python identity. Do not cache
   `.venv`, secrets, credentials, or signing material.
-- Use repository-owned Composite Actions only for stable same-runner sequences.
-  Keep job runners, permissions, matrices, artifacts, and release gates in workflows.
-
-## Event and trust boundaries
-
-- Validate untrusted changes on `pull_request`, and `merge_group` when required.
-- Re-run the same required validation on the exact protected integration-branch
-  push; do not substitute a prior PR run or API polling.
-- Start permissions at `contents: read`. Do not use `pull_request_target` to
-  execute untrusted proposed source.
-- Keep publication/signing in protected jobs or environments after validation
-  and artifact creation for the same source commit.
-- Use direct `needs` dependencies so build and release consume the complete
-  lint/type/test result and the verified artifact.
-- Run actionlint, applicable ShellCheck, and pinact in addition to Python checks.
 
 ## Distribution verification
 
