@@ -2,9 +2,11 @@ name: Pull Request
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
   merge_group:
-    types: [checks_requested]
+    types:
+      - checks_requested
 
 permissions:
   contents: read
@@ -17,31 +19,12 @@ jobs:
   lint:
     runs-on: ubuntu-slim
     timeout-minutes: 5
+
     steps:
       - name: Checkout proposed source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
       - name: Lint Docker source
         uses: ./.github/actions/lint-docker
-
-  build:
-    needs: [lint]
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Free disk space for image build
-        run: |-
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY" /opt/google/chrome /opt/microsoft/msedge /opt/microsoft/powershell /opt/pipx /usr/lib/mono /usr/local/julia* /usr/local/lib/android /usr/local/lib/node_modules /usr/local/share/chromium /usr/local/share/powershell /usr/share/dotnet /usr/share/swift
-          df -h /
-      - name: Checkout proposed source
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
-      - name: Build Docker image without publishing
-        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false
