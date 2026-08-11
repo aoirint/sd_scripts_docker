@@ -30,10 +30,10 @@ releases.
 
 - Update the bundled Hugging Face runtime stack while keeping sd-scripts at
   v0.10.5:
-  - `transformers` 4.54.1 to 5.8.0.
-  - `diffusers` 0.32.1 to 0.38.0.
-  - `huggingface-hub` 0.34.3 to 1.14.0.
-  - `safetensors` 0.4.5 to the 0.8.0rc0 prerelease required by diffusers.
+    - `transformers` 4.54.1 to 5.8.0.
+    - `diffusers` 0.32.1 to 0.38.0.
+    - `huggingface-hub` 0.34.3 to 1.14.0.
+    - `safetensors` 0.4.5 to the 0.8.0rc0 prerelease required by diffusers.
 - Update the WD14 captioning dependency `onnx` from 1.18.0 to 1.21.0.
 - Update the HTTP client dependency `requests` from 2.32.4 to 2.33.0.
 - Update pinned Docker GitHub Actions.

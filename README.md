@@ -8,8 +8,8 @@ Dockerfile for [kohya-ss/sd-scripts](https://github.com/kohya-ss/sd-scripts).
 - [Docker Engine](https://docs.docker.com/engine/install/ubuntu/) 29 or later
 - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 - NVIDIA GeForce RTX 4000 series, 5000 series
-  - 1000 series does not work due to CUDA compatibility.
-  - 2000 series and 3000 series might work, but untested.
+    - 1000 series does not work due to CUDA compatibility.
+    - 2000 series and 3000 series might work, but untested.
 
 ## Usage
 
@@ -51,7 +51,10 @@ wget -O "animagineXL40_v4Zero.safetensors" "https://civitai.com/api/download/mod
 echo "f15812e65c2ea7f4e19ce37fb2a8445eb65c64da450a508dd9c8f237c73f6bb8  animagineXL40_v4Zero" | sha256sum -c -
 ```
 
-Prepare a dataset directory `work/my_dataset-20230715.1` and a config file `work/my_dataset-20230715.1/config.toml` following [train_README](https://github.com/kohya-ss/sd-scripts/blob/6721028c79ee85a78b3a06dfd8954dae310a1cce/docs/train_README-ja.md#dreambooth%E3%82%AD%E3%83%A3%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E6%96%B9%E5%BC%8F%E6%AD%A3%E5%89%87%E5%8C%96%E7%94%BB%E5%83%8F%E4%BD%BF%E7%94%A8%E5%8F%AF).
+Prepare a dataset directory `work/my_dataset-20230715.1` and a config file
+`work/my_dataset-20230715.1/config.toml` following [train_README].
+
+[train_README]: https://github.com/kohya-ss/sd-scripts/blob/6721028c79ee85a78b3a06dfd8954dae310a1cce/docs/train_README-ja.md#dreambooth%E3%82%AD%E3%83%A3%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E6%96%B9%E5%BC%8F%E6%AD%A3%E5%89%87%E5%8C%96%E7%94%BB%E5%83%8F%E4%BD%BF%E7%94%A8%E5%8F%AF
 
 Set file ownership `UID:GID = 1000:1000` (`sudo chown -R 1000:1000 "./work"`).
 
@@ -149,14 +152,19 @@ To update the bundled sd-scripts version before a release, follow
 [Updating sd-scripts](docs/update-sd-scripts.md) first.
 
 1. Update `VERSION` to the version to publish.
-   - Stable releases use SemVer without a prerelease suffix, such as `0.1.0`.
-   - Prereleases use SemVer with a prerelease suffix, such as `0.1.0-rc.1`.
+    - Stable releases use SemVer without a prerelease suffix, such as `0.1.0`.
+    - Prereleases use SemVer with a prerelease suffix, such as `0.1.0-rc.1`.
 2. Commit the `VERSION` change and merge it to `main`.
 3. The build workflow checks whether `v<VERSION>` already exists on GitHub.
-   - If the tag does not exist and `VERSION` is stable, it creates a latest GitHub Release and publishes Docker images tagged `v<VERSION>` and `latest`.
-   - If the tag does not exist and `VERSION` is a prerelease, it creates a prerelease GitHub Release and publishes the Docker image tagged `edge`.
-   - If `VERSION` is `0.0.0`, it is treated as an edge build and only the `edge` Docker image is updated.
-   - If the tag already exists, the push is treated as an edge build and only the `edge` Docker image is updated.
+    - If the tag does not exist and `VERSION` is stable, it creates a latest
+      GitHub Release and publishes Docker images tagged `v<VERSION>` and
+      `latest`.
+    - If the tag does not exist and `VERSION` is a prerelease, it creates a
+      prerelease GitHub Release and publishes the Docker image tagged `edge`.
+    - If `VERSION` is `0.0.0`, it is treated as an edge build and only the
+      `edge` Docker image is updated.
+    - If the tag already exists, the push is treated as an edge build and only
+      the `edge` Docker image is updated.
 
 ## License
 
