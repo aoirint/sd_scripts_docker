@@ -1,0 +1,94 @@
+name: Check APM project
+description: Check unpublished APM project and lock generator versions.
+
+inputs:
+  expected-apm-version:
+    description: Expected APM CLI version recorded by apm.lock.yaml.
+    required: true
+  expected-project-version:
+    description: Expected unpublished project version in apm.yml.
+    required: false
+    default: "0.0.0"
+
+runs:
+  using: composite
+  steps:
+    - name: Check APM project metadata
+      shell: bash
+      working-directory: ${{ github.workspace }}
+      env:
+        APM_GUARD_EXPECTED_APM_VERSION: ${{ inputs.expected-apm-version }}
+        APM_GUARD_EXPECTED_PROJECT_VERSION: ${{ inputs.expected-project-version }}
+      run: |
+        python3 - <<'PY'
+        import os
+        import re
+        import sys
+        from pathlib import Path
+
+        top_level_scalar = re.compile(
+            r"^([A-Za-z_][A-Za-z0-9_-]*):(?:[ \t]+(.*?))?[ \t]*$"
+        )
+
+
+        def read_top_level_scalar(path: Path, key: str) -> str:
+            matches = []
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line or line[0].isspace() or line.startswith("#"):
+                    continue
+                match = top_level_scalar.match(line)
+                if not match or match.group(1) != key:
+                    continue
+                value = (match.group(2) or "").strip()
+                if value.startswith(("\"", "'")):
+                    quote = value[0]
+                    end = value.find(quote, 1)
+                    suffix = value[end + 1 :].strip() if end >= 0 else "invalid"
+                    if end < 0 or (suffix and not suffix.startswith("#")):
+                        value = ""
+                    else:
+                        value = value[1:end]
+                else:
+                    value = re.split(r"[ \t]+#", value, maxsplit=1)[0].rstrip()
+                matches.append(value)
+
+            if len(matches) != 1 or not matches[0]:
+                raise ValueError(
+                    f"{path}: expected exactly one non-empty top-level {key!r}"
+                )
+            return matches[0]
+
+
+        root = Path.cwd().resolve()
+        checks = (
+            (
+                root / "apm.yml",
+                "version",
+                os.environ["APM_GUARD_EXPECTED_PROJECT_VERSION"],
+            ),
+            (
+                root / "apm.lock.yaml",
+                "apm_version",
+                os.environ["APM_GUARD_EXPECTED_APM_VERSION"],
+            ),
+        )
+        errors = []
+        for path, key, expected in checks:
+            try:
+                actual = read_top_level_scalar(path, key)
+            except (OSError, UnicodeError, ValueError) as error:
+                errors.append(str(error))
+                continue
+            if actual != expected:
+                errors.append(f"{path}: {key} is {actual!r}; expected {expected!r}")
+
+        if errors:
+            for error in errors:
+                print(f"error: {error}", file=sys.stderr)
+            raise SystemExit(1)
+
+        print(
+            "APM project metadata is valid "
+            f"(project {checks[0][2]}, APM {checks[1][2]})."
+        )
+        PY

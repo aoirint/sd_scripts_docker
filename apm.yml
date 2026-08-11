@@ -8,17 +8,18 @@ targets:
 dependencies:
   apm:
     - git: aoirint/skills
-      ref: 4361f1c00e419199803f6f88a760654f486f3ae4
+      ref: 329572438060c1b0c34882b2c3a8e388ae30cd1a
       skills:
+        - apm-usage
         - changelog-workflow
         - code-quality-check
         - commit-message-quality-check
+        - docker-quality-check
         - git-worktree-workflow
-        - github-actions-quality-check
+        - github-workflow
         - gitignore-workflow
-        - issue-quality-check
         - prose-quality-check
-        - pull-request-quality-check
+        - python-quality-check
         - release-note-workflow
         - security-check
   mcp: []
