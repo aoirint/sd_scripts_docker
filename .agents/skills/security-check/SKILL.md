@@ -6,7 +6,7 @@ description: >-
   executable or downloaded artifacts, CI or deployment configuration,
   containers, vendored/generated files, or compiled and bundled software whose
   redistribution terms depend on build features or linked libraries, including
-  GitHub content that could expose private repositories; skip documentation-only
+  published content that could expose private resources; skip documentation-only
   changes with no security-sensitive surface.
 ---
 
@@ -103,30 +103,22 @@ description: >-
    - Follow-up issues for ecosystem-specific controls that exceed this
      general security skill.
 
-## GitHub Private Repository Disclosure Boundary
+## Private Resource Disclosure Boundary
 
-- Do not mention or link to a private repository in content stored on GitHub when
-  the destination repository is public or could be made public later. Treat
-  uncertain future visibility as public for this check.
-- Protected identifiers include the private repository's owner/name, URL, issue or
-  pull-request references, branch names, private-only paths, code names, and wording
-  that reveals or makes its existence reasonably inferable. The prohibition applies
-  to commits, pull requests, issues, comments, reviews, release notes, documentation,
-  workflow output, badges, configuration, fixtures, screenshots, and generated files.
-- Do not copy access failures, policy-discovery warnings, API responses, or command
-  output into GitHub artifacts when they identify a private repository. Sanitize the
-  complete artifact, not only the surrounding prose.
-- When work depends on private evidence, describe only the non-identifying constraint
-  or outcome, such as `an internal policy source was unavailable`. Keep the exact
-  source and evidence in an approved non-GitHub private channel or system.
-- Do not add a private-repository reference merely because both repositories are
-  currently private. If the destination could later be published, the reference is
-  prohibited. When destination visibility or publication plans are unclear, omit the
-  reference and report the evidence boundary without identifying the source.
-- Before publishing or updating GitHub content, inspect the rendered body and every
-  attached or generated artifact for private-repository identifiers. If useful context
-  cannot be preserved without disclosure, stop the GitHub write and request a secure
-  handoff channel instead.
+- Do not expose identifiers or existence-inference for a private resource in an
+  artifact that is public or could be published later. Treat uncertain destination
+  visibility as public for this check; current restricted access is not a lasting
+  disclosure control.
+- Apply the boundary to the complete candidate and all attached, embedded, generated,
+  and logged derivatives. Access controls on the private source do not make its name,
+  locator, metadata, failure output, code name, or relationship safe to disclose.
+- Preserve only the least-identifying constraint or outcome needed by the audience.
+  Keep exact private evidence in an approved private channel or system outside the
+  publication destination.
+- Complete this inspection before the first publish or update operation. Post-write
+  read-back is useful for verification but cannot prevent an initial disclosure. If
+  useful context cannot be preserved safely, stop publication and request a secure
+  handoff channel.
 
 ## Supply-Chain Baseline
 
@@ -245,9 +237,9 @@ description: >-
   treated as examples, not exemptions.
 - Secrets, permissions, unsafe defaults, and untrusted input paths were checked
   when relevant.
-- Public or potentially public GitHub content and attached artifacts contain no
-  private-repository identifiers or existence disclosures; private evidence was
-  reduced to non-identifying outcomes and kept in an approved non-GitHub channel.
+- Public or potentially public artifacts contain no private-resource identifiers or
+  existence disclosures; exact private evidence was reduced to non-identifying
+  outcomes and kept outside the publication destination.
 - Example hostnames and URLs name the intentional real service or use an
   RFC-reserved example domain without introducing accidental live traffic.
 - Suspected vulnerabilities were kept out of public channels when sensitive

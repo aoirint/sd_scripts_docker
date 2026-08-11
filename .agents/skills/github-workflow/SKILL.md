@@ -3,8 +3,9 @@ name: github-workflow
 description: >-
   Quality-check GitHub repository issues, pull requests, reviews, replies,
   comments, and squash merges. Use when creating, editing, reviewing, or
-  publishing GitHub collaboration artifacts; use github-actions-quality-check
-  for workflows, local actions, Actions policy, and required-check design.
+  publishing GitHub collaboration artifacts, including preflight checks that
+  prevent private-repository disclosure; use github-actions-quality-check for
+  workflows, local actions, Actions policy, and required-check design.
 ---
 
 # GitHub Workflow
@@ -27,8 +28,43 @@ security-sensitive content and `prose-quality-check` for nuanced prose.
 - Disclose significant AI assistance consistently.
 - Preserve repository templates and policies without inventing requirements.
 - Validate exact stored text and squash-merge commit payloads.
+- Prevent private-repository identifiers from reaching public or potentially public
+  GitHub content by validating complete candidates before every write.
 
 ## Workflow
+
+### Private repository disclosure preflight
+
+Apply `security-check`'s private-resource disclosure boundary before every GitHub
+create, update, upload, push, or release operation.
+
+1. Determine the destination repository's current and possible future visibility.
+   Treat it as public when it is public, could later be published, or its future
+   visibility is uncertain. Current private-to-private access does not authorize a
+   private-repository reference in a potentially public destination.
+2. Protect the private repository's owner/name, URL, issue or pull-request reference,
+   branch or ref, private-only path, code name, and any wording or relationship that
+   makes its existence reasonably inferable. Authentication required to resolve or
+   execute a reference does not hide the reference itself.
+3. Inspect the exact complete candidate before the first GitHub write. Include titles,
+   body files, comments, reviews, commit and merge messages, repository diffs,
+   configuration and fixtures, workflow `uses:` references, copied command or API
+   output, annotations, SARIF, artifact and archive contents and filenames, badges,
+   screenshots, release notes, and generated metadata. Inspect the final rendered or
+   serialized form as well as source prose.
+4. Remove direct identifiers and indirect existence disclosures before calling `gh`,
+   an API, `git push`, an upload command, or another publishing tool. Keep only a
+   non-identifying requirement or outcome. Store the exact source and evidence in an
+   approved non-GitHub private channel or system; do not move it to another GitHub
+   issue, comment, private repository, attachment, hidden field, or code block.
+5. If any candidate or derivative cannot be inspected completely, or useful context
+   cannot be preserved without disclosure, stop before the write and request a secure
+   handoff. Do not publish first and plan to redact afterward.
+6. After a successful write, read back the complete stored artifact and verify it
+   against the approved candidate. This is a secondary integrity check, not a
+   substitute for preflight. For an existing disclosure, stop further publication,
+   inventory history, logs, artifacts, caches, notifications, and mirrors as
+   unverified exposure, and use a maintainer-approved cleanup process.
 
 ### Issues
 

@@ -1,12 +1,12 @@
 lockfile_version: '1'
-generated_at: '2026-08-11T14:59:34.939366+00:00'
+generated_at: '2026-08-11T15:13:25.420184+00:00'
 apm_version: 0.27.0
 dependencies:
 - repo_url: aoirint/skills
   name: skills
   host: github.com
-  resolved_commit: f97f2cf209112a3dfafff5618bd5466f6f502e72
-  resolved_ref: f97f2cf209112a3dfafff5618bd5466f6f502e72
+  resolved_commit: f4aa56f4abffb1448c24c04ea4ae4463f5721d10
+  resolved_ref: f4aa56f4abffb1448c24c04ea4ae4463f5721d10
   version: 0.0.0
   package_type: apm_package
   deployed_files:
@@ -110,8 +110,8 @@ dependencies:
     .agents/skills/git-worktree-workflow/SKILL.md: sha256:67e2474b9878cc6cb209ae30b19c233f65969abe5b5d543f0c9a16e46f1d40d2
     .agents/skills/git-worktree-workflow/agents/openai.yaml: sha256:3eb9da73e7a041e77d82f0d5c3a8c67e914575cff8651b71d077db30fe3da99a
     .agents/skills/github-workflow/README.md: sha256:381a6c5fee202282fe66b35070b605c2b344f718aa63cf9b91abeca1936ab2d2
-    .agents/skills/github-workflow/SKILL.md: sha256:d48216b0fb3656228d1af7689cd538303a3114bcc7e0b74f1404258b836f7412
-    .agents/skills/github-workflow/agents/openai.yaml: sha256:1d8dfa53b85500f8d112c039d1c522dde129d140208c65d7145aa55e70eae329
+    .agents/skills/github-workflow/SKILL.md: sha256:797c679a0198155c8dd67b0ddbde02a8653715ee4cf30c10e29e606eabac3e17
+    .agents/skills/github-workflow/agents/openai.yaml: sha256:4d769a54de16656654a451b99a68289d2cd1efc65c86f58904f3445339bd2b22
     .agents/skills/github-workflow/references/fallback-pr-body.md: sha256:b98239e7d4cdddd8e267ab155f4e4c38fcc514526d9a32f13fcd5b21a1c07eb2
     .agents/skills/github-workflow/scripts/check_llm_disclosure.py: sha256:bc9c5cbd8efa77095eac42e53da714ed8dff86fa3b0e7870fc3e7eca1ca36e20
     .agents/skills/gitignore-workflow/README.md: sha256:0de188ebcdd40ea1aec701410e1c2182049b66bc4ec4d83a3bf55685b4267d47
@@ -138,12 +138,12 @@ dependencies:
     .agents/skills/release-note-workflow/SKILL.md: sha256:518296cb00d1ef181785ea8abd0150b9704b5cdd05a48fc0390284c548ef421c
     .agents/skills/release-note-workflow/agents/openai.yaml: sha256:30cfe7d4520783cfc8c72f5f81cc3e7a5708a5827e691f0003a665d89558fda0
     .agents/skills/security-check/README.md: sha256:d321689b998388180ac852fdb6374ab3b79bec508a53d00461a9db79fb246d2e
-    .agents/skills/security-check/SKILL.md: sha256:e000b686cc36ae4308b502bdf3d89c287b27a62cc6d024e55ac72f04f8188013
+    .agents/skills/security-check/SKILL.md: sha256:658368991ef988551e192551e7e539a6801f74d587b95039bbc9b36c6ab75345
     .agents/skills/security-check/agents/openai.yaml: sha256:b1021ca2df7466813d0a376fc8bdff83603f568b02ef712e236fb2cfeef377c0
     .agents/skills/security-check/references/artifact-inspection.md: sha256:9842555f4789e77e6cf3d22b000116497207ecf6fa5587f2b1fe0dc20e7dffda
     .agents/skills/security-check/references/distributed-software-licensing.md: sha256:dce7c9fbfe665eb875388ab732b63b0226a5fd4592b12a62c42b6d1372c0d025
     .agents/skills/security-check/references/external-code-execution.md: sha256:87ca817baa02ef6b955e5878f0cd79c875abdb0be6e0177cfce158968e628bc3
-  content_hash: sha256:1bdde1f36202c833f222c7e38265999ab21e0d3ede12eae173718cd716e488c0
+  content_hash: sha256:157c9a36a0efd2a912881899bc1db19168a6c54511a7a62b106c23af0ed3d500
   skill_subset:
   - apm-workflow
   - changelog-workflow
@@ -473,7 +473,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:d48216b0fb3656228d1af7689cd538303a3114bcc7e0b74f1404258b836f7412
+  content_hash: sha256:797c679a0198155c8dd67b0ddbde02a8653715ee4cf30c10e29e606eabac3e17
 - kind: project-relative
   target: codex
   value: .agents/skills/github-workflow/agents/openai.yaml
@@ -482,7 +482,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:1d8dfa53b85500f8d112c039d1c522dde129d140208c65d7145aa55e70eae329
+  content_hash: sha256:4d769a54de16656654a451b99a68289d2cd1efc65c86f58904f3445339bd2b22
 - kind: project-relative
   target: codex
   value: .agents/skills/github-workflow/references/fallback-pr-body.md
@@ -770,7 +770,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:e000b686cc36ae4308b502bdf3d89c287b27a62cc6d024e55ac72f04f8188013
+  content_hash: sha256:658368991ef988551e192551e7e539a6801f74d587b95039bbc9b36c6ab75345
 - kind: project-relative
   target: codex
   value: .agents/skills/security-check/agents/openai.yaml
