@@ -1,12 +1,12 @@
 lockfile_version: '1'
-generated_at: '2026-08-11T07:12:25.413331+00:00'
+generated_at: '2026-08-11T08:23:16.372832+00:00'
 apm_version: 0.27.0
 dependencies:
 - repo_url: aoirint/skills
   name: skills
   host: github.com
-  resolved_commit: 6a1e6431bbaed762f55783c3dcd7dc4b07736596
-  resolved_ref: 6a1e6431bbaed762f55783c3dcd7dc4b07736596
+  resolved_commit: 2c77fb8583c437c7e47cd293f4bc703f410b9be0
+  resolved_ref: 2c77fb8583c437c7e47cd293f4bc703f410b9be0
   version: 0.0.0
   package_type: apm_package
   deployed_files:
@@ -141,7 +141,7 @@ dependencies:
     .agents/skills/security-check/agents/openai.yaml: sha256:87edf0cc1e8717194d0c536f2d5ac0cc1ac9ec04402311d34e953d2e2b23fa19
     .agents/skills/security-check/references/artifact-inspection.md: sha256:9842555f4789e77e6cf3d22b000116497207ecf6fa5587f2b1fe0dc20e7dffda
     .agents/skills/security-check/references/external-code-execution.md: sha256:87ca817baa02ef6b955e5878f0cd79c875abdb0be6e0177cfce158968e628bc3
-  content_hash: sha256:ac27952ee585df0cc8fdfb53d02e4681405ca7b5eebb80f2c2d1707342adaeef
+  content_hash: sha256:110695f3f8ab158f51ef37eb143f131dfed711dfab670460a377d517199bd723
   skill_subset:
   - apm-workflow
   - changelog-workflow
