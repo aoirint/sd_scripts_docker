@@ -61,6 +61,38 @@ hashes, and review for every changed third-party dependency.
 10. Treat the CLI and agent dependencies as supply-chain-sensitive code. Check the
    repository policy and any organization policy before proceeding.
 
+### 1.1 Regenerate a lockfile without losing deployment ownership
+
+When a CLI migration or ledger repair requires deleting and rebuilding the lockfile,
+preserve the old lockfile's ownership evidence before removing it. Generated target
+files can remain on disk after the ledger is gone; a new resolver may then classify
+them as unmanaged local content, skip the collision, and silently omit a requested
+Skill or resource from the new lockfile.
+
+1. From the old lockfile, record the selected packages and Skill subsets, deployment
+   owners, deployed paths, content hashes, target roots, and generator version. Compare
+   this snapshot with `apm.yml` and the filesystem before changing anything.
+2. Identify collisions in the actual target root. Distinguish paths owned by the old
+   APM ledger from project-authored Skills, files owned by another package, and unknown
+   local content. Never move or delete a path whose ownership is ambiguous.
+3. Before removing the old lockfile, move only the exact, verified APM-owned generated
+   collision paths to a task-specific temporary backup outside the repository. Preserve
+   relative paths and hashes so the old deployment can be restored. Do not use
+   `--force` to overwrite a collision or clear the entire agent target.
+4. Remove only the validated project lockfile, regenerate it with the selected CLI, and
+   run the frozen install. A skipped-file or collision warning is a blocker, even when
+   the command exits successfully.
+5. Compare the new package list, requested Skill subsets, deployed paths, and target
+   roots with the manifest and the old snapshot. Every removed or added path needs an
+   expected dependency or generator explanation; an unexpectedly missing selected
+   Skill is lock-generation failure.
+6. Run `apm audit --ci` and directly verify representative restored files and hashes.
+   If regeneration, installation, comparison, or audit fails, restore the old lockfile
+   and backed-up paths instead of accepting a partial deployment.
+7. Delete the temporary backup only after the new lockfile, deployed output, diff, and
+   audit all pass. Record any ownership ambiguity or tool collision behavior in the
+   handoff.
+
 ## 2. Obtain the selected eligible APM version safely
 
 Reuse an installed copy only when its exact version matches the selected
