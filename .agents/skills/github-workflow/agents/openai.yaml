@@ -1,4 +1,4 @@
 interface:
   display_name: "GitHub Workflow"
-  short_description: "Create and review GitHub artifacts."
-  default_prompt: "Use $github-workflow to create, review, or update a GitHub Actions workflow, issue, or pull request."
+  short_description: "Review GitHub issues and pull requests."
+  default_prompt: "Use $github-workflow to create, review, or update a GitHub issue or pull request."

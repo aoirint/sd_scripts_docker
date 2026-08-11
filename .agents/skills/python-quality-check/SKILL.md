@@ -32,8 +32,10 @@ description: >-
 
 Use `code-quality-check` for general readability and maintainability,
 `security-check` for dependency provenance, release age, build hooks, secrets,
-and external executables, and `github-workflow` for workflow triggers,
-permissions, runners, action pins, and repository enforcement.
+and external executables, and `github-actions-quality-check` for workflow triggers,
+permissions, runners, action pins, and repository enforcement. Use
+`test-quality-check` for language-independent test design, classification,
+coverage policy, and overengineering audits.
 
 This Skill owns the Python-specific baseline. Framework Skills should add only
 their framework contracts and should not redefine weaker uv, Ruff, typing,
@@ -86,13 +88,10 @@ testing, coverage, or distribution rules.
    - Fix lint and typing findings in code before adding a suppression. Every
      suppression must name the exact rule/code and a durable local reason.
 4. Align tests and coverage.
-   - Test behavior, state, effects, cleanup, errors, boundaries, and entry points;
-     do not assert only that lines executed.
-   - Inject deterministic seams for clocks, randomness, filesystems, network,
-     subprocesses, and sleeps. Do not hide flakiness with CI retries.
-   - Enforce both statement and branch coverage at 100% for maintained
-     first-party source, while separately recording any genuinely unreachable
-     generated/platform code and its alternative verification.
+   - Apply `test-quality-check` for behavioral scope, deterministic oracles,
+     suite auditing, and the shared 100% statement/branch policy.
+   - Configure pytest and Coverage.py for the selected Python source roots and
+     run them through the locked uv environment locally and in CI.
 5. Align CI and distribution.
    - Read [ci-and-distribution.md](references/ci-and-distribution.md) before
      changing workflows, build metadata, wheels, sdists, executables, or releases.
