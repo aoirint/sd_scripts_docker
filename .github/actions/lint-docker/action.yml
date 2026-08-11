@@ -17,7 +17,8 @@ runs:
           --output "${install_dir}/${asset}" \
           "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/${asset}"
         echo "${HADOLINT_SHA256}  ${install_dir}/${asset}" | sha256sum --check --strict
-        chmod 0755 "${install_dir}/${asset}"
+        mv "${install_dir}/${asset}" "${install_dir}/hadolint"
+        chmod 0755 "${install_dir}/hadolint"
         echo "${install_dir}" >> "${GITHUB_PATH}"
     - name: Lint Dockerfile
       shell: bash
