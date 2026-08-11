@@ -135,6 +135,6 @@ EOT
     chown -R trainer:trainer /huggingface /opt/sd-scripts
 SH
 
-USER trainer
+USER 1000:1000
 
 ENTRYPOINT ["accelerate", "launch"]
