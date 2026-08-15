@@ -1,12 +1,12 @@
 lockfile_version: '1'
-generated_at: '2026-08-11T15:13:25.420184+00:00'
-apm_version: 0.27.0
+generated_at: '2026-08-15T09:45:14.815466+00:00'
+apm_version: 0.28.0
 dependencies:
 - repo_url: aoirint/skills
   name: skills
   host: github.com
-  resolved_commit: f4aa56f4abffb1448c24c04ea4ae4463f5721d10
-  resolved_ref: f4aa56f4abffb1448c24c04ea4ae4463f5721d10
+  resolved_commit: 44b51eef2237a460a4d3bca423a675b1ffd09eda
+  resolved_ref: 44b51eef2237a460a4d3bca423a675b1ffd09eda
   version: 0.0.0
   package_type: apm_package
   deployed_files:
@@ -86,7 +86,7 @@ dependencies:
     .agents/skills/apm-workflow/README.md: sha256:e346edab06f5ec792cdb77edcaa8042f523af67753dc4fe72498ae1899b87c89
     .agents/skills/apm-workflow/SKILL.md: sha256:bbddd9935373713999b78e5390b3c38e0886299beeb410d6eb338d13e25154fa
     .agents/skills/apm-workflow/agents/openai.yaml: sha256:f3c083196472ec9253886b369202ddeb8eb2534fd2da9799798bae2eb33b2e55
-    .agents/skills/apm-workflow/references/apm-bootstrap.json: sha256:e0ebfd624fc79e35c5a5a305d77476860ff87019edc3afc0b37b5cd2884276b1
+    .agents/skills/apm-workflow/references/apm-bootstrap.json: sha256:ae425dc00b981c195e0664ad77b9fed8c4667a45efcdadd382e79fb572d7fc22
     .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py: sha256:5c8d079ff9caa4175a971c5d231bc24d8143d47d238496cace60b1d91d8d00d8
     .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py.lock: sha256:016afc221516f1724533f1623ec77ef8a9a80c06a1ffae431f32f5e063e59986
     .agents/skills/changelog-workflow/README.md: sha256:7ef8167d26522d95f62b9f11d752487d62b6bfdae05850315189fbe2a19fed83
@@ -143,7 +143,7 @@ dependencies:
     .agents/skills/security-check/references/artifact-inspection.md: sha256:9842555f4789e77e6cf3d22b000116497207ecf6fa5587f2b1fe0dc20e7dffda
     .agents/skills/security-check/references/distributed-software-licensing.md: sha256:dce7c9fbfe665eb875388ab732b63b0226a5fd4592b12a62c42b6d1372c0d025
     .agents/skills/security-check/references/external-code-execution.md: sha256:87ca817baa02ef6b955e5878f0cd79c875abdb0be6e0177cfce158968e628bc3
-  content_hash: sha256:157c9a36a0efd2a912881899bc1db19168a6c54511a7a62b106c23af0ed3d500
+  content_hash: sha256:4dd5a906943c218d3d61fad4e13de7618b61ce9643af1727db4a8f520938dd29
   skill_subset:
   - apm-workflow
   - changelog-workflow
@@ -203,7 +203,7 @@ deployments:
   owners:
   - aoirint/skills
   active_owner: aoirint/skills
-  content_hash: sha256:e0ebfd624fc79e35c5a5a305d77476860ff87019edc3afc0b37b5cd2884276b1
+  content_hash: sha256:ae425dc00b981c195e0664ad77b9fed8c4667a45efcdadd382e79fb572d7fc22
 - kind: project-relative
   target: codex
   value: .agents/skills/apm-workflow/scripts/propose_bootstrap_update.py
