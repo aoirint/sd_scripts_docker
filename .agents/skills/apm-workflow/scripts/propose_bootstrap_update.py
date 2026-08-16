@@ -1,5 +1,5 @@
 # /// script
-# requires-python = ">=3.11,<3.14"
+# requires-python = ">=3.11,<3.15"
 # dependencies = []
 # [tool.uv]
 # exclude-newer = "P7D"

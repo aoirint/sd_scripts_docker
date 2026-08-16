@@ -46,8 +46,11 @@ testing, coverage, or distribution rules.
 - Use PEP 621 metadata, a real build backend, and a `src/` package layout for an
   installable project. Do not use `pythonpath = ["src"]` to disguise a package
   that cannot be installed.
-- Commit `pyproject.toml`, `.python-version`, and `uv.lock`. Pin one development
-  Python minor unless a documented library matrix requires several.
+- Commit `pyproject.toml`, `.python-version`, and `uv.lock`. For a new
+  application, select the newest stable Python minor supported by every direct
+  runtime and build dependency; require a documented compatibility reason for
+  an older minor. Pin one development minor unless a documented library matrix
+  requires several.
 - Set `[tool.uv] exclude-newer = "P7D"` and review every dependency/lock delta
   with `security-check`.
 - Put Ruff, mypy, pytest, and pytest-cov in a development dependency group.
@@ -77,8 +80,10 @@ testing, coverage, or distribution rules.
    - Read [tooling-and-testing.md](references/tooling-and-testing.md) before
      editing Python metadata, Ruff, mypy, pytest, coverage, or test layout.
    - Keep runtime dependencies direct and development tools in a development
-     group. Update only intended packages, inspect the full lock delta, then
-     replay with `uv lock --check` and `uv sync --locked --all-groups`.
+     group. Verify the newest stable compatible Python minor and newest
+     cooldown-eligible uv release instead of copying an older peer value.
+     Update only intended packages, inspect the full lock delta, then replay
+     with `uv lock --check` and `uv sync --locked --all-groups`.
 3. Align source and API quality.
    - Keep entry points thin, package imports explicit, and external effects
      behind typed boundaries.

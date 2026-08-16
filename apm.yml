@@ -8,7 +8,7 @@ targets:
 dependencies:
   apm:
     - git: aoirint/skills
-      ref: 44b51eef2237a460a4d3bca423a675b1ffd09eda
+      ref: 0e41c088efb2bdf44ca58564bb5168d119ac9135
       skills:
         - apm-workflow
         - changelog-workflow

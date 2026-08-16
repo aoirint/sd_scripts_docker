@@ -16,8 +16,10 @@
   package into the uv environment instead of relying on an injected test path.
 - Keep distribution name, import package, console/module entry points, artifact
   identity, and version source intentionally mapped.
-- Pin one development Python minor in `.python-version`. Set
-  `requires-python` to the supported range and test every advertised minor.
+- For a new application, verify and pin the newest stable Python minor that all
+  direct runtime and build dependencies support. Use an older minor only for a
+  documented compatibility requirement. Set `requires-python` to the supported
+  range and test every advertised minor.
 - Declare only direct runtime dependencies in `[project].dependencies`. Put
   Ruff, mypy, pytest, and pytest-cov in `[dependency-groups].dev`.
 - Commit `uv.lock`; treat it as the reviewed graph across supported markers.
