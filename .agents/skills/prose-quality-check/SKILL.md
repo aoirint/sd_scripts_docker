@@ -5,7 +5,7 @@ description: >-
   audience fit, and preserved nuance. Use for wording in documentation,
   comments, release notes, issues, pull requests, changelogs, handoff notes,
   and Agent Skills after the document's purpose and factual ownership are known.
-  Use software-documentation-maintenance instead for repository-wide document
+  Use domain-architecture-docs-workflow instead for repository-wide document
   maps, canonical ownership, technical evidence, coverage, or migration.
 ---
 
@@ -24,7 +24,7 @@ description: >-
 Use this skill when the destination document, factual source, and ownership are already known and
 the task is to improve how the text communicates. Do not use it to decide which repository
 documents should exist, where a technical fact belongs, whether evidence is sufficient, or how a
-documentation migration should preserve coverage. Use `software-documentation-maintenance` for
+documentation migration should preserve coverage. Use `domain-architecture-docs-workflow` for
 those decisions, then return here to refine the resulting prose.
 
 Do not silently repair unsupported technical claims while copyediting. Flag the evidence gap and

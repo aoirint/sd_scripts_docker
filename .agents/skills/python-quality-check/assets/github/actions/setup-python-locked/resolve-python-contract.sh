@@ -16,7 +16,7 @@ main() {
 
   {
     printf 'python_version=%s\n' "$python_version"
-    printf 'uv_version=0.11.21\n'
+    printf 'uv_version=0.12.3\n'
   } >>"$GITHUB_OUTPUT"
 }
 
