@@ -9,6 +9,22 @@ releases.
 
 ## [Unreleased]
 
+## [v0.3.2] - 2026-08-20 UTC
+
+### Changed
+
+- Update the runtime CA certificate bundle to the current Ubuntu 24.04
+  security-update version.
+- Update the locked `charset-normalizer` dependency from 3.4.9 to 3.5.0.
+- Document the NVIDIA CUDA container license included in the published image.
+
+### Notes
+
+- Continue to bundle sd-scripts v0.11.1 with Python 3.10 and the CUDA 12.9
+  dependency stack.
+- GitHub Actions, uv, Python, CUDA, hadolint, and APM remain at their latest
+  reviewed versions that completed the seven-day cooldown.
+
 ## [v0.3.1] - 2026-07-26 UTC
 
 ### Fixed
@@ -238,7 +254,9 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.2...HEAD
+[v0.3.2]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.1...v0.3.2
+[v0.3.1]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v0.1.0

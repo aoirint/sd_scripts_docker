@@ -177,3 +177,11 @@ specified by `SD_SCRIPTS_VERSION` in the Dockerfile. sd-scripts is primarily
 licensed under the Apache License 2.0, with some portions under separate license
 terms. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the upstream
 license information for details.
+
+The image also uses the
+[NVIDIA CUDA container image](https://hub.docker.com/r/nvidia/cuda) specified by
+`CUDA_RUNTIME_IMAGE` in the Dockerfile. Its container license is included at
+`/NGC-DL-CONTAINER-LICENSE` in the published image. See
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the
+NVIDIA Deep Learning Container License:
+<https://developer.download.nvidia.com/licenses/NVIDIA_Deep_Learning_Container_License.pdf>.

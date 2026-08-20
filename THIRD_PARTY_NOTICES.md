@@ -2,6 +2,15 @@
 
 This project builds Docker images that include third-party software.
 
+## NVIDIA CUDA container image
+
+- Source: <https://hub.docker.com/r/nvidia/cuda>
+- Base image: see `CUDA_RUNTIME_IMAGE` in `Dockerfile`
+- Bundled location in image: `/usr/local/cuda-12.9`
+- License: NVIDIA Deep Learning Container License
+  <https://developer.download.nvidia.com/licenses/NVIDIA_Deep_Learning_Container_License.pdf>
+- License file in image: `/NGC-DL-CONTAINER-LICENSE`
+
 ## kohya-ss/sd-scripts
 
 - Source: <https://github.com/kohya-ss/sd-scripts>
