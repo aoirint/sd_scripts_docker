@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:13.3.1-cudnn-runtime-ubuntu24.04@sha256:2c9730db1d78ce3a7503a2f4ff2d64add3e7d1a47d57da504376192dda335242
+ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04@sha256:d02c4310b6d57ca0b16cd80298bdb33a74187baafe2eccd8a6a16180ddc90802
 ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.12.3@sha256:2d890623d310b57771ce840f0da5eed5fc6d657da05ffaa45d82797b53fa3abc
 ARG PYTHON_VERSION=3.10.19
 ARG SD_SCRIPTS_URL=https://github.com/kohya-ss/sd-scripts
@@ -91,8 +91,8 @@ WORKDIR /opt/sd-scripts
 # https://github.com/aoirint/sd-scripts-docker/issues/19
 RUN <<'SH'
     ln -s \
-        /usr/local/cuda-13.3/targets/x86_64-linux/lib/libnvrtc.so.13 \
-        /usr/local/cuda-13.3/targets/x86_64-linux/lib/libnvrtc.so
+        /usr/local/cuda-12.9/targets/x86_64-linux/lib/libnvrtc.so.12 \
+        /usr/local/cuda-12.9/targets/x86_64-linux/lib/libnvrtc.so
 SH
 
 # Install project and Pre-compile Python bytecode

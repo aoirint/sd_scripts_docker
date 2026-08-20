@@ -170,6 +170,14 @@ curl -fsSL https://download.pytorch.org/whl/cu130/xformers/ | \
 If the upstream README recommends a different CUDA line, replace `cu130`,
 package versions, and the `pytorch-cu130` index name consistently.
 
+Do not assume that the CUDA runtime base image must use the same CUDA release
+as the PyTorch wheel index. PyTorch wheels bundle their CUDA user-space
+libraries, while the PyPI ONNX Runtime GPU wheel can require an older CUDA
+major version from the base image. Verify both stacks on a GPU before changing
+the runtime base. A mixed setup is acceptable when PyTorch, xformers, and ONNX
+Runtime all execute successfully and the reason is recorded in the changelog
+and pull request.
+
 ## 5. Update The Dockerfile
 
 Set `SD_SCRIPTS_VERSION` to the selected upstream commit:
@@ -317,6 +325,24 @@ docker run --rm --gpus all --entrypoint python sd-scripts:update-test -c \
   'import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else "no cuda")'
 ```
 
+For PyTorch-stack updates, exercise CUDA kernels instead of relying on imports
+or `torch.cuda.is_available()` alone. At minimum, run a PyTorch tensor
+operation, xformers memory-efficient attention, and a bitsandbytes operation.
+For ONNX Runtime updates, create an inference session with
+`CUDAExecutionProvider`, run a small model, and confirm that the session did
+not fall back to `CPUExecutionProvider`.
+
+Also run the WD14 ONNX captioning path with an actual image and model. This
+loads the full accelerate, timm, ONNX, and ONNX Runtime path that previously
+passed import-only checks but failed at startup:
+
+```shell
+docker run --rm --gpus all -v /path/to/smoke-data:/work \
+  sd-scripts:update-test \
+  finetune/tag_images_by_wd14_tagger.py --onnx --batch_size 1 \
+  --model_dir /work/model /work/images
+```
+
 For a release that changes PyTorch, CUDA, xformers, or sd-scripts training
 behavior, run at least one small project-specific training or captioning
 workflow before merging when practical.
@@ -383,6 +409,8 @@ Confirm:
 - `uv.lock` resolves the selected PyTorch CUDA index.
 - Local extras are intentionally kept, updated, or removed.
 - Upstream sd-scripts pytest release tests passed in the built image.
+- PyTorch, xformers, bitsandbytes, and ONNX Runtime executed GPU operations,
+  and the WD14 ONNX captioning path completed without provider fallback.
 - Every explicit pytest path in `scripts/run-sd-scripts-release-tests.sh`
   exists in the selected upstream checkout.
 - Upstream inpainting shell tests were run, or GPU/checkpoint coverage was

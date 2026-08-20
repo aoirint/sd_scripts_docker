@@ -13,7 +13,6 @@ releases.
 
 ### Changed
 
-- Update the NVIDIA CUDA runtime image from 12.9.1 to 13.3.1.
 - Update the PyTorch stack from PyTorch 2.8.0, torchvision 0.23.0, and
   xformers 0.0.32.post2 on CUDA 12.9 to PyTorch 2.13.0, torchvision 0.28.0,
   and xformers 0.0.35 on CUDA 13.0.
@@ -30,8 +29,9 @@ releases.
 
 ### Notes
 
-- Continue to bundle sd-scripts v0.11.1 with Python 3.10 and the refreshed
-  CUDA 13 dependency stack.
+- Continue to bundle sd-scripts v0.11.1 with Python 3.10. Retain the CUDA
+  12.9.1 base image for ONNX Runtime GPU compatibility while PyTorch and
+  xformers use their CUDA 13.0 wheel builds.
 - GitHub Actions, uv, Python, CUDA, hadolint, and APM remain at their latest
   reviewed versions that completed the seven-day cooldown.
 
