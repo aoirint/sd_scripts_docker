@@ -9,7 +9,7 @@ releases.
 
 ## [Unreleased]
 
-## [v0.3.2] - 2026-08-20 UTC
+## [v0.4.0] - 2026-08-20 UTC
 
 ### Changed
 
@@ -264,8 +264,8 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.2...HEAD
-[v0.3.2]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.1...v0.3.2
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.1...v0.4.0
 [v0.3.1]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...v0.2.0
