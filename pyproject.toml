@@ -31,7 +31,7 @@ dependencies = [
   "timm==0.6.12",
   "fairscale==0.4.13",
   # for WD14 captioning (onnx)
-  "onnx==1.21.0",
+  "onnx==1.22.0",
   "onnxruntime-gpu==1.23.2",
   # open clip for SDXL
   "open-clip-torch==2.26.1",
@@ -40,9 +40,9 @@ dependencies = [
   # for T5XXL tokenizer (SD3/FLUX)
   "sentencepiece==0.2.1",
   # PyTorch
-  "torch==2.8.0+cu129",
-  "torchvision==0.23.0+cu129",
-  "xformers==0.0.32.post2",
+  "torch==2.13.0+cu130",
+  "torchvision==0.28.0+cu130",
+  "xformers==0.0.35",
   # Additional bundle
   # https://github.com/KohakuBlueleaf/LyCORIS
   "lycoris-lora==3.1.1.post1",
@@ -53,14 +53,14 @@ package = false
 exclude-newer = "P7D"
 
 [[tool.uv.index]]
-name = "pytorch-cu129"
-url = "https://download.pytorch.org/whl/cu129"
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
 explicit = true
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu129" }
-torchvision = { index = "pytorch-cu129" }
-xformers = { index = "pytorch-cu129" }
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+xformers = { index = "pytorch-cu130" }
 
 [dependency-groups]
 dev = [

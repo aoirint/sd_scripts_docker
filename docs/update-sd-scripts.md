@@ -131,44 +131,44 @@ wheel depends on the CUDA target. Read the selected upstream README and choose
 the PyTorch stack that matches this image's supported GPU generation.
 
 For RTX 50 series support, use the upstream-recommended PyTorch and CUDA line
-when available. For example, PyTorch 2.8.0 with CUDA 12.9 uses:
+when available. For example, PyTorch 2.13.0 with CUDA 13.0 uses:
 
 ```toml
-"torch==2.8.0+cu129",
-"torchvision==0.23.0+cu129",
-"xformers==0.0.32.post2",
+"torch==2.13.0+cu130",
+"torchvision==0.28.0+cu130",
+"xformers==0.0.35",
 ```
 
 and:
 
 ```toml
 [[tool.uv.index]]
-name = "pytorch-cu129"
-url = "https://download.pytorch.org/whl/cu129"
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
 explicit = true
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu129" }
-torchvision = { index = "pytorch-cu129" }
-xformers = { index = "pytorch-cu129" }
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+xformers = { index = "pytorch-cu130" }
 ```
 
 Before locking, confirm that the selected wheels exist for Python 3.10 and
 Linux x86_64:
 
 ```shell
-curl -fsSL https://download.pytorch.org/whl/cu129/torch/ | \
-  rg 'torch-2\.8\.0\+cu129-cp310-cp310-.*x86_64'
+curl -fsSL https://download.pytorch.org/whl/cu130/torch/ | \
+  rg 'torch-2\.13\.0\+cu130-cp310-cp310-.*x86_64'
 
-curl -fsSL https://download.pytorch.org/whl/cu129/torchvision/ | \
-  rg 'torchvision-0\.23\.0\+cu129-cp310-cp310-.*x86_64'
+curl -fsSL https://download.pytorch.org/whl/cu130/torchvision/ | \
+  rg 'torchvision-0\.28\.0\+cu130-cp310-cp310-.*x86_64'
 
-curl -fsSL https://download.pytorch.org/whl/cu129/xformers/ | \
-  rg 'xformers-0\.0\.32\.post2-.*x86_64'
+curl -fsSL https://download.pytorch.org/whl/cu130/xformers/ | \
+  rg 'xformers-0\.0\.35-.*x86_64'
 ```
 
-If the upstream README recommends a different CUDA line, replace `cu129`,
-package versions, and the `pytorch-cu129` index name consistently.
+If the upstream README recommends a different CUDA line, replace `cu130`,
+package versions, and the `pytorch-cu130` index name consistently.
 
 ## 5. Update The Dockerfile
 

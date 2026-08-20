@@ -13,15 +13,25 @@ releases.
 
 ### Changed
 
+- Update the NVIDIA CUDA runtime image from 12.9.1 to 13.3.1.
+- Update the PyTorch stack from PyTorch 2.8.0, torchvision 0.23.0, and
+  xformers 0.0.32.post2 on CUDA 12.9 to PyTorch 2.13.0, torchvision 0.28.0,
+  and xformers 0.0.35 on CUDA 13.0.
+- Update ONNX from 1.21.0 to 1.22.0.
 - Update the runtime CA certificate bundle to the current Ubuntu 24.04
   security-update version.
 - Update the locked `charset-normalizer` dependency from 3.4.9 to 3.5.0.
 - Document the NVIDIA CUDA container license included in the published image.
 
+### Security
+
+- Update ONNX and PyTorch to versions containing the available fixes for the
+  repository's current Dependabot advisories.
+
 ### Notes
 
-- Continue to bundle sd-scripts v0.11.1 with Python 3.10 and the CUDA 12.9
-  dependency stack.
+- Continue to bundle sd-scripts v0.11.1 with Python 3.10 and the refreshed
+  CUDA 13 dependency stack.
 - GitHub Actions, uv, Python, CUDA, hadolint, and APM remain at their latest
   reviewed versions that completed the seven-day cooldown.
 
