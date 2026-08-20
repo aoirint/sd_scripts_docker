@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update
 
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
+        ca-certificates=20260601~24.04.1 \
         git=1:2.43.0-1ubuntu7.3
 SH
 
@@ -74,7 +74,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update
 
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
+        ca-certificates=20260601~24.04.1 \
         libgl1=1.7.0-1build1 \
         libglib2.0-0t64=2.80.0-6ubuntu3.8 \
         tk=8.6.14build1

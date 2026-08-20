@@ -131,44 +131,52 @@ wheel depends on the CUDA target. Read the selected upstream README and choose
 the PyTorch stack that matches this image's supported GPU generation.
 
 For RTX 50 series support, use the upstream-recommended PyTorch and CUDA line
-when available. For example, PyTorch 2.8.0 with CUDA 12.9 uses:
+when available. For example, PyTorch 2.13.0 with CUDA 13.0 uses:
 
 ```toml
-"torch==2.8.0+cu129",
-"torchvision==0.23.0+cu129",
-"xformers==0.0.32.post2",
+"torch==2.13.0+cu130",
+"torchvision==0.28.0+cu130",
+"xformers==0.0.35",
 ```
 
 and:
 
 ```toml
 [[tool.uv.index]]
-name = "pytorch-cu129"
-url = "https://download.pytorch.org/whl/cu129"
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
 explicit = true
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu129" }
-torchvision = { index = "pytorch-cu129" }
-xformers = { index = "pytorch-cu129" }
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+xformers = { index = "pytorch-cu130" }
 ```
 
 Before locking, confirm that the selected wheels exist for Python 3.10 and
 Linux x86_64:
 
 ```shell
-curl -fsSL https://download.pytorch.org/whl/cu129/torch/ | \
-  rg 'torch-2\.8\.0\+cu129-cp310-cp310-.*x86_64'
+curl -fsSL https://download.pytorch.org/whl/cu130/torch/ | \
+  rg 'torch-2\.13\.0\+cu130-cp310-cp310-.*x86_64'
 
-curl -fsSL https://download.pytorch.org/whl/cu129/torchvision/ | \
-  rg 'torchvision-0\.23\.0\+cu129-cp310-cp310-.*x86_64'
+curl -fsSL https://download.pytorch.org/whl/cu130/torchvision/ | \
+  rg 'torchvision-0\.28\.0\+cu130-cp310-cp310-.*x86_64'
 
-curl -fsSL https://download.pytorch.org/whl/cu129/xformers/ | \
-  rg 'xformers-0\.0\.32\.post2-.*x86_64'
+curl -fsSL https://download.pytorch.org/whl/cu130/xformers/ | \
+  rg 'xformers-0\.0\.35-.*x86_64'
 ```
 
-If the upstream README recommends a different CUDA line, replace `cu129`,
-package versions, and the `pytorch-cu129` index name consistently.
+If the upstream README recommends a different CUDA line, replace `cu130`,
+package versions, and the `pytorch-cu130` index name consistently.
+
+Do not assume that the CUDA runtime base image must use the same CUDA release
+as the PyTorch wheel index. PyTorch wheels bundle their CUDA user-space
+libraries, while the PyPI ONNX Runtime GPU wheel can require an older CUDA
+major version from the base image. Verify both stacks on a GPU before changing
+the runtime base. A mixed setup is acceptable when PyTorch, xformers, and ONNX
+Runtime all execute successfully and the reason is recorded in the changelog
+and pull request.
 
 ## 5. Update The Dockerfile
 
@@ -317,6 +325,24 @@ docker run --rm --gpus all --entrypoint python sd-scripts:update-test -c \
   'import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else "no cuda")'
 ```
 
+For PyTorch-stack updates, exercise CUDA kernels instead of relying on imports
+or `torch.cuda.is_available()` alone. At minimum, run a PyTorch tensor
+operation, xformers memory-efficient attention, and a bitsandbytes operation.
+For ONNX Runtime updates, create an inference session with
+`CUDAExecutionProvider`, run a small model, and confirm that the session did
+not fall back to `CPUExecutionProvider`.
+
+Also run the WD14 ONNX captioning path with an actual image and model. This
+loads the full accelerate, timm, ONNX, and ONNX Runtime path that previously
+passed import-only checks but failed at startup:
+
+```shell
+docker run --rm --gpus all -v /path/to/smoke-data:/work \
+  sd-scripts:update-test \
+  finetune/tag_images_by_wd14_tagger.py --onnx --batch_size 1 \
+  --model_dir /work/model /work/images
+```
+
 For a release that changes PyTorch, CUDA, xformers, or sd-scripts training
 behavior, run at least one small project-specific training or captioning
 workflow before merging when practical.
@@ -383,6 +409,8 @@ Confirm:
 - `uv.lock` resolves the selected PyTorch CUDA index.
 - Local extras are intentionally kept, updated, or removed.
 - Upstream sd-scripts pytest release tests passed in the built image.
+- PyTorch, xformers, bitsandbytes, and ONNX Runtime executed GPU operations,
+  and the WD14 ONNX captioning path completed without provider fallback.
 - Every explicit pytest path in `scripts/run-sd-scripts-release-tests.sh`
   exists in the selected upstream checkout.
 - Upstream inpainting shell tests were run, or GPU/checkpoint coverage was

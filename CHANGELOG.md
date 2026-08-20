@@ -9,6 +9,32 @@ releases.
 
 ## [Unreleased]
 
+## [v0.4.0] - 2026-08-20 UTC
+
+### Changed
+
+- Update the PyTorch stack from PyTorch 2.8.0, torchvision 0.23.0, and
+  xformers 0.0.32.post2 on CUDA 12.9 to PyTorch 2.13.0, torchvision 0.28.0,
+  and xformers 0.0.35 on CUDA 13.0.
+- Update ONNX from 1.21.0 to 1.22.0.
+- Update the runtime CA certificate bundle to the current Ubuntu 24.04
+  security-update version.
+- Update the locked `charset-normalizer` dependency from 3.4.9 to 3.5.0.
+- Document the NVIDIA CUDA container license included in the published image.
+
+### Security
+
+- Update ONNX and PyTorch to versions containing the available fixes for the
+  repository's current Dependabot advisories.
+
+### Notes
+
+- Continue to bundle sd-scripts v0.11.1 with Python 3.10. Retain the CUDA
+  12.9.1 base image for ONNX Runtime GPU compatibility while PyTorch and
+  xformers use their CUDA 13.0 wheel builds.
+- GitHub Actions, uv, Python, CUDA, hadolint, and APM remain at their latest
+  reviewed versions that completed the seven-day cooldown.
+
 ## [v0.3.1] - 2026-07-26 UTC
 
 ### Fixed
@@ -238,7 +264,9 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.1...v0.4.0
+[v0.3.1]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/aoirint/sd_scripts_docker/releases/tag/v0.1.0
