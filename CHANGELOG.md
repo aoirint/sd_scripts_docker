@@ -9,6 +9,36 @@ releases.
 
 ## [Unreleased]
 
+### Changed
+
+- Update the bundled sd-scripts checkout from v0.11.1 to v0.12.0 and align
+  the runtime dependencies with its requirements.
+- Update Python from 3.10.19 to 3.12.15 so the image can use the supported
+  Pillow 13 and filelock security fixes.
+- Refresh the Python lockfile, uv to 0.13.1, Ubuntu CA certificates, Git,
+  GLib, and the Docker build/setup GitHub Actions.
+
+### Security
+
+- Update Pillow, certifi, filelock, and setuptools to releases containing
+  the fixes identified by the dependency advisory audit.
+- Remove the compromised emSign CA from the system and Python CA bundles.
+
+### Notes
+
+- Retain the CUDA 12.9.1 base image for ONNX Runtime GPU and the existing
+  PyTorch 2.13.0 / xformers 0.0.35 CUDA 13.0 wheels.
+- The maintainer authorized cooldown exceptions for trusted security
+  advisories. Apply narrow exceptions for certifi 2026.10.19
+  ([GHSA-6q48-6c7w-9gw2](https://github.com/certifi/python-certifi/security/advisories/GHSA-6q48-6c7w-9gw2)),
+  filelock 4.2.1
+  ([GHSA-2g95-wg33-c5x2](https://github.com/tox-dev/filelock/security/advisories/GHSA-2g95-wg33-c5x2)),
+  setuptools 84.1.0
+  ([GHSA-xmj3-9gf7-h52w](https://github.com/pypa/setuptools/security/advisories/GHSA-xmj3-9gf7-h52w)),
+  and Ubuntu ca-certificates 20260816ubuntu0.24.04.1
+  ([USN-8944-1](https://ubuntu.com/security/notices/USN-8944-1)).
+  Review the temporary Python exceptions after 2026-10-27 UTC.
+
 ## [v0.4.0] - 2026-08-20 UTC
 
 ### Changed
