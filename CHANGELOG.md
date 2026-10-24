@@ -9,6 +9,8 @@ releases.
 
 ## [Unreleased]
 
+## [v0.5.0] - 2026-10-24 UTC
+
 ### Changed
 
 - Update the bundled sd-scripts checkout from v0.11.1 to v0.12.0 and align
@@ -294,7 +296,8 @@ releases.
 - Add the first GitHub Actions build workflow and disk cleanup step.
 - Add initial ignore rules for local work directories.
 
-[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/aoirint/sd_scripts_docker/compare/v0.5.0...HEAD
+[v0.5.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.1...v0.4.0
 [v0.3.1]: https://github.com/aoirint/sd_scripts_docker/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/aoirint/sd_scripts_docker/compare/v0.2.0...v0.3.0
