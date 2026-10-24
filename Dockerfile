@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
 
 ARG CUDA_RUNTIME_IMAGE=nvidia/cuda:12.9.1-cudnn-runtime-ubuntu24.04@sha256:d02c4310b6d57ca0b16cd80298bdb33a74187baafe2eccd8a6a16180ddc90802
-ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.12.3@sha256:2d890623d310b57771ce840f0da5eed5fc6d657da05ffaa45d82797b53fa3abc
-ARG PYTHON_VERSION=3.10.19
+ARG UV_IMAGE=ghcr.io/astral-sh/uv:0.13.1@sha256:4a1f3666816dafadd20ceb71eac9a7d56d7ef30279f7d64048519ab901ada336
+ARG PYTHON_VERSION=3.12.15
 ARG SD_SCRIPTS_URL=https://github.com/kohya-ss/sd-scripts
-ARG SD_SCRIPTS_VERSION=6721028c79ee85a78b3a06dfd8954dae310a1cce
+ARG SD_SCRIPTS_VERSION=690ea7f96c23182352ec63def76d431c6120bd2f
 
 FROM ${UV_IMAGE} AS uv
 
@@ -30,8 +30,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update
 
     apt-get install -y --no-install-recommends \
-        ca-certificates=20260601~24.04.1 \
-        git=1:2.43.0-1ubuntu7.3
+        ca-certificates=20260816ubuntu0.24.04.1 \
+        git=1:2.43.0-1ubuntu7.4
 SH
 
 COPY --from=uv /uv /usr/local/bin/uv
@@ -74,9 +74,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update
 
     apt-get install -y --no-install-recommends \
-        ca-certificates=20260601~24.04.1 \
+        ca-certificates=20260816ubuntu0.24.04.1 \
         libgl1=1.7.0-1build1 \
-        libglib2.0-0t64=2.80.0-6ubuntu3.8 \
+        libglib2.0-0t64=2.80.0-6ubuntu3.10 \
         tk=8.6.14build1
 SH
 
@@ -97,7 +97,7 @@ SH
 
 # Install project and Pre-compile Python bytecode
 RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked <<'SH'
-    uv pip install --editable .
+    uv pip install --no-deps --no-build-isolation --editable .
     python -m compileall .
 SH
 

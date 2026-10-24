@@ -153,15 +153,15 @@ torchvision = { index = "pytorch-cu130" }
 xformers = { index = "pytorch-cu130" }
 ```
 
-Before locking, confirm that the selected wheels exist for Python 3.10 and
+Before locking, confirm that the selected wheels exist for Python 3.12 and
 Linux x86_64:
 
 ```shell
 curl -fsSL https://download.pytorch.org/whl/cu130/torch/ | \
-  rg 'torch-2\.13\.0\+cu130-cp310-cp310-.*x86_64'
+  rg 'torch-2\.13\.0\+cu130-cp312-cp312-.*x86_64'
 
 curl -fsSL https://download.pytorch.org/whl/cu130/torchvision/ | \
-  rg 'torchvision-0\.28\.0\+cu130-cp310-cp310-.*x86_64'
+  rg 'torchvision-0\.28\.0\+cu130-cp312-cp312-.*x86_64'
 
 curl -fsSL https://download.pytorch.org/whl/cu130/xformers/ | \
   rg 'xformers-0\.0\.35-.*x86_64'

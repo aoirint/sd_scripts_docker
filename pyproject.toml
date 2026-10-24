@@ -1,28 +1,29 @@
 [project]
 name = "sd-scripts-docker"
 version = "0.0.0"
-requires-python = "==3.10.*"
+requires-python = "==3.12.*"
 
 # Originally copied from kohya-ss/sd-scripts
-# https://github.com/kohya-ss/sd-scripts/blob/6721028c79ee85a78b3a06dfd8954dae310a1cce/requirements.txt
+# https://github.com/kohya-ss/sd-scripts/blob/690ea7f96c23182352ec63def76d431c6120bd2f/requirements.txt
 dependencies = [
-  "accelerate==1.6.0",
-  "transformers==5.8.0",
-  "diffusers[torch]==0.38.0",
+  "accelerate==1.15.0",
+  "transformers==5.17.0",
+  "diffusers[torch]==0.40.0",
   "ftfy==6.3.1",
-  "opencv-python==4.10.0.84",
+  'opencv-python==4.10.0.84; platform_machine != "ARM64"',
   "einops==0.7.0",
   "bitsandbytes",
   "lion-pytorch==0.2.3",
-  "schedulefree==1.4",
+  "schedulefree==1.4.1",
   "pytorch-optimizer==3.10.0",
   "prodigy-plus-schedule-free==1.9.2",
   "prodigyopt==1.1.2",
-  "tensorboard",
-  "safetensors==0.8.0rc0",
+  'tensorboard; platform_machine != "ARM64"',
+  'tensorboardX; platform_machine == "ARM64"',
+  "safetensors==0.8.0",
   "toml==0.10.2",
   "voluptuous==0.15.2",
-  "huggingface-hub==1.14.0",
+  "huggingface-hub==1.32.0",
   # for Image utils
   "imagesize==1.4.1",
   "numpy",
@@ -51,6 +52,17 @@ dependencies = [
 [tool.uv]
 package = false
 exclude-newer = "P7D"
+# Temporary exceptions for upstream security fixes; remove after 2026-10-27 UTC.
+# https://github.com/certifi/python-certifi/security/advisories/GHSA-6q48-6c7w-9gw2
+# https://github.com/tox-dev/filelock/security/advisories/GHSA-2g95-wg33-c5x2
+# https://github.com/pypa/setuptools/security/advisories/GHSA-xmj3-9gf7-h52w
+exclude-newer-package = { certifi = "2026-10-21T00:00:00Z", filelock = "2026-10-18T00:00:00Z", setuptools = "2026-10-20T00:00:00Z" }
+constraint-dependencies = [
+  "certifi>=2026.10.19",
+  "filelock>=4.2.1",
+  "setuptools==84.1.0",
+  "pillow>=13.0.0",
+]
 
 [[tool.uv.index]]
 name = "pytorch-cu130"

@@ -54,7 +54,7 @@ echo "f15812e65c2ea7f4e19ce37fb2a8445eb65c64da450a508dd9c8f237c73f6bb8  animagin
 Prepare a dataset directory `work/my_dataset-20230715.1` and a config file
 `work/my_dataset-20230715.1/config.toml` following [train_README].
 
-[train_README]: https://github.com/kohya-ss/sd-scripts/blob/6721028c79ee85a78b3a06dfd8954dae310a1cce/docs/train_README-ja.md#dreambooth%E3%82%AD%E3%83%A3%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E6%96%B9%E5%BC%8F%E6%AD%A3%E5%89%87%E5%8C%96%E7%94%BB%E5%83%8F%E4%BD%BF%E7%94%A8%E5%8F%AF
+[train_README]: https://github.com/kohya-ss/sd-scripts/blob/690ea7f96c23182352ec63def76d431c6120bd2f/docs/train_README-ja.md#dreambooth%E3%82%AD%E3%83%A3%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E6%96%B9%E5%BC%8F%E6%AD%A3%E5%89%87%E5%8C%96%E7%94%BB%E5%83%8F%E4%BD%BF%E7%94%A8%E5%8F%AF
 
 Set file ownership `UID:GID = 1000:1000` (`sudo chown -R 1000:1000 "./work"`).
 
