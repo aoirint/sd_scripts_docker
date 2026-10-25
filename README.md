@@ -47,8 +47,8 @@ sudo chown -R 1000:1000 "./base_model" "./work" "./cache/huggingface/hub"
 Download `animagineXL40_v4Zero.safetensors` from [Animagine XL 4.0 Zero](https://civitai.com/models/1188071?modelVersionId=1409042).
 
 ```shell
-wget -O "animagineXL40_v4Zero.safetensors" "https://civitai.com/api/download/models/1409042?type=Model&format=SafeTensor&size=full&fp=fp16"
-echo "f15812e65c2ea7f4e19ce37fb2a8445eb65c64da450a508dd9c8f237c73f6bb8  animagineXL40_v4Zero" | sha256sum -c -
+wget -O "./base_model/animagineXL40_v4Zero.safetensors" "https://civitai.com/api/download/models/1409042?type=Model&format=SafeTensor&size=full&fp=fp16"
+echo "f15812e65c2ea7f4e19ce37fb2a8445eb65c64da450a508dd9c8f237c73f6bb8  ./base_model/animagineXL40_v4Zero.safetensors" | sha256sum -c -
 ```
 
 Prepare a dataset directory `work/my_dataset-20230715.1` and a config file
