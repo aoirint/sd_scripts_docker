@@ -7,7 +7,7 @@ runs:
     - name: Set up reviewed APM CLI
       uses: microsoft/apm-action@d723bb64ed70c135bbaf87d126b721dd2dae0439 # v1.10.0
       with:
-        apm-version: "0.28.0"
+        apm-version: "0.34.0"
         setup-only: "true"
 
     - name: Audit APM deployment

@@ -17,6 +17,7 @@ description: >-
 - Avoid comment noise that repeats obvious code behavior.
 - Run the smallest meaningful executable checks first, then widen only when needed.
 - Keep verification notes concise and reusable for commit summaries, PR bodies, or handoff notes.
+- Pair with `test-quality-check` for test design, coverage policy, or suite-maintenance decisions.
 - Pair with `skill-quality-check` for Agent Skill changes and `security-check` for security- or
   supply-chain-sensitive paths.
 
@@ -25,14 +26,17 @@ description: >-
 1. Read the changed files and nearby call sites, not just the patch.
 2. Identify code that is hard to scan, overly nested, duplicated, misleadingly named, or coupled to
    hidden assumptions.
-3. Make safe local readability refactors where practical.
-4. Add or update comments only when the design intent is not obvious from the code and cannot be
+3. When a change adds future-facing structure, abstraction, validation, dependencies, tests, or
+   defensive behavior, use [avoiding overengineering](references/avoiding-overengineering.md) to
+   check that each addition has a current consumer, contract, failure mode, or evidenced risk.
+4. Make safe local readability refactors where practical.
+5. Add or update comments only when the design intent is not obvious from the code and cannot be
    made obvious with a small refactor.
-5. Remove stale, redundant, and misleading comments.
-6. Use `prose-quality-check` for documentation, comments, release notes, PR text, issue text,
+6. Remove stale, redundant, and misleading comments.
+7. Use `prose-quality-check` for documentation, comments, release notes, PR text, issue text,
    and other explanatory prose that needs readability or wording changes.
-7. Re-run the project's language-specific quality checks after edits.
-8. Summarize which checks ran, which passed, and why any relevant check was skipped.
+8. Re-run the project's language-specific quality checks after edits.
+9. Summarize which checks ran, which passed, and why any relevant check was skipped.
 
 When reviewing an abstract scenario or a proposed change without concrete files, produce a review
 plan instead of pretending to inspect code. State the assumptions, the readability changes you would
@@ -148,6 +152,9 @@ notes, also update the appropriate docs or changelog.
 - If verification is still impossible after setup, state the concrete blocker and the command that
   could not run.
 - Keep verification consistent across local fixes, commits, and review or handoff preparation.
+- Report serious findings discovered during normal review even when their repair is outside the
+  requested change. Distinguish the observed defect and any verification or release blocker from
+  a proposed unrelated repair; reporting the finding does not expand the implementation scope.
 - Record skipped checks with a concrete reason, not a generic "not run" note.
 
 ## Supply-Chain Baseline

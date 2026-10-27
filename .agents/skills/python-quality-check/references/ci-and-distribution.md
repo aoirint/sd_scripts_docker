@@ -3,6 +3,7 @@
 ## Contents
 
 - [CI parity](#ci-parity)
+- [Applicability](#applicability)
 - [Distribution verification](#distribution-verification)
 - [Completion evidence](#completion-evidence)
 
@@ -16,7 +17,8 @@ Use `github-actions-quality-check` and `security-check` while implementing CI.
   complete lint, format, strict-mypy, coverage, and build gate on the pinned
   development minor; repeat a gate across the matrix when its result can vary
   with syntax, typing, dependency markers, native packages, or build output.
-- Clean-install and import the built wheel on every advertised Python minor.
+- For a current wheel deliverable, clean-install and import the built wheel on
+  every advertised Python minor.
 - Keep CI commands equal to documented local commands. Hidden CI-only flags and
   local-only shortcuts are findings.
 - Install/select Python from `.python-version` or an explicit matrix consistent
@@ -25,9 +27,26 @@ Use `github-actions-quality-check` and `security-check` while implementing CI.
 - Bind dependency caches to `uv.lock`, runner, and Python identity. Do not cache
   `.venv`, secrets, credentials, or signing material.
 
+## Applicability
+
+Apply distribution verification when publication, deployment, or external
+installation makes a wheel, sdist, executable, or installer a current deliverable.
+Record that consumer and artifact target during the Python contract inventory.
+Preserve an existing distribution contract even when the requested source change
+does not edit packaging files. Missing evidence of a known distribution target is
+a blocker, not a reason to mark its checks not applicable.
+
+For a local application operated only through its locked project environment,
+verify that environment and actual application or CLI behavior. A `src/` layout
+or configured build backend alone does not require adding wheel installation or
+import-only checks. Use `code-quality-check` for the consumer and risk review
+before adding verification machinery.
+The strict tooling, coverage, and CI-parity baseline still applies to the
+installable project.
+
 ## Distribution verification
 
-For installable applications, libraries, or CLIs:
+For applications, libraries, or CLIs with a current distribution deliverable:
 
 1. Run `uv build` from a clean reviewed commit. `uv.lock` does not by itself
    lock isolated PEP 517 build requirements: review `[build-system].requires`,

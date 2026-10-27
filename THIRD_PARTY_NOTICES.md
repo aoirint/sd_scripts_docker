@@ -27,7 +27,11 @@ that are present in that checkout.
 - Source: [aoirint/skills](https://github.com/aoirint/skills), selected from
   `.apm/skills/`
 - Pinned commit:
-  [`0e41c088efb2bdf44ca58564bb5168d119ac9135`](https://github.com/aoirint/skills/tree/0e41c088efb2bdf44ca58564bb5168d119ac9135)
+  [`22fe4f84018358059adcf7709cb9df28d1260fd8`](https://github.com/aoirint/skills/tree/22fe4f84018358059adcf7709cb9df28d1260fd8)
 - Deployed paths: `.agents/skills/{apm-workflow,changelog-workflow,code-quality-check,commit-message-quality-check,docker-quality-check,git-worktree-workflow,github-workflow,gitignore-workflow,prose-quality-check,python-quality-check,release-note-workflow,security-check}/`
-- License: [MIT](https://github.com/aoirint/skills/blob/0e41c088efb2bdf44ca58564bb5168d119ac9135/LICENSE)
+- License: [MIT](https://github.com/aoirint/skills/blob/22fe4f84018358059adcf7709cb9df28d1260fd8/LICENSE)
 - Copyright: Copyright (c) 2026 aoirint
+
+- Cooldown: the maintainer requested immediate adoption of this exact direct
+  `aoirint/skills` commit. This exception waives only its waiting period;
+  dependencies remain subject to independent review and cooldown.
