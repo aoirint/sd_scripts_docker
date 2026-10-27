@@ -94,6 +94,9 @@ description: >-
 7. Inspect repository scripts,
    lockfiles, and tool configuration so the recommendation is grounded in the
    project instead of inventing a new ad hoc path.
+   Use `mise-workflow` when the reviewed surface includes `mise.toml`,
+   `mise.lock`, mise-managed tool artifacts, or mise tasks; retain this Skill as
+   the owner of cooldown, provenance, integrity, secret, and execution findings.
 8. Record what was checked:
    - Sources consulted and why they were sufficient or insufficient.
    - Exact versions, refs, tags, digests, hashes, or lockfile entries reviewed.

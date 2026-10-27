@@ -1,40 +1,40 @@
 {
-  "version": "v0.28.0",
-  "published_at": "2026-08-06T09:29:03Z",
+  "version": "v0.34.0",
+  "published_at": "2026-10-19T12:00:55Z",
   "cooldown_days": 7,
-  "eligible_on": "2026-08-13T09:29:03Z",
-  "release_url": "https://github.com/microsoft/apm/releases/tag/v0.28.0",
+  "eligible_on": "2026-10-26T12:00:55Z",
+  "release_url": "https://github.com/microsoft/apm/releases/tag/v0.34.0",
   "download_url_template": "https://github.com/microsoft/apm/releases/download/{version}/{asset}",
   "assets": [
     {
       "platform": "macos-arm64",
       "archive": "apm-darwin-arm64.tar.gz",
       "extracted_directory": "apm-darwin-arm64",
-      "sha256": "9676a6e7bf2bcb3966538a7130faea14ba030baa45f678597cc3fa15c902cb0a"
+      "sha256": "030b381825799333ac60a369aaf021ffc9f9e92558b375feec656c42e50e8e5a"
     },
     {
       "platform": "macos-x86_64",
       "archive": "apm-darwin-x86_64.tar.gz",
       "extracted_directory": "apm-darwin-x86_64",
-      "sha256": "a8397925d45edc3dd666ec80c634f09eb9e5030328288aa0b0ca13c31608f0e0"
+      "sha256": "55b4ab44eaca6f3a56f59a8e9ca84082c9ed3333a76fe255d6bc62c2a14678a9"
     },
     {
       "platform": "linux-arm64",
       "archive": "apm-linux-arm64.tar.gz",
       "extracted_directory": "apm-linux-arm64",
-      "sha256": "0b3a644d6073106d1a06623e0baa0c4d75a5ae5ffe55c30eed927bba48600119"
+      "sha256": "bf355449cbb74b960e3a6ebe851a35ec2c1df6f5178fbb36b90c5a3a015d2c2a"
     },
     {
       "platform": "linux-x86_64",
       "archive": "apm-linux-x86_64.tar.gz",
       "extracted_directory": "apm-linux-x86_64",
-      "sha256": "7edab3baba96658a20120fc8f3012e3223da7924937a8cbf169bf9805853b8d7"
+      "sha256": "4487af55604b4fa6f4587f3ee6e833b44ce99c491f11069790e4e13e297cde8c"
     },
     {
       "platform": "windows-x86_64",
       "archive": "apm-windows-x86_64.zip",
       "extracted_directory": "apm-windows-x86_64",
-      "sha256": "b7085454956a8fa60aa61c062c566095bffe6bc1d6c0902f3a6657b1d1d7fc85"
+      "sha256": "e9b3dd16b8533af681ea70128ceb8baed983c47cd73d0488ff28dbd5df85def0"
     }
   ]
 }

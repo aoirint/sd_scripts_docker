@@ -37,8 +37,10 @@ use the applicable documentation-system or domain-specific skill.
    - User-facing.
    - Maintainer-facing.
    - External-contract text.
-2. Confirm the intended claim and factual source are known. If ownership or evidence is disputed,
-   stop prose-only revision at that boundary and report the gap.
+2. Confirm the purpose, intended claim, factual source, and destination for this edit.
+   Reuse context already supplied by the request or document; resolve only missing context that
+   could change the edit. If ownership or evidence is disputed, stop prose-only revision at that
+   boundary and report the gap.
 3. Identify overloaded prose:
    - Sentences carrying multiple ideas, conditions, time references, confidence levels, or
      relationships.
@@ -62,22 +64,37 @@ use the applicable documentation-system or domain-specific skill.
      code comments harder to read.
    - Do not change wording strength, modality, tense, or voice only to make sentence wrapping work.
      Keep wording unchanged unless an independent readability issue justifies rewriting it.
-6. Preserve the nuance that made the original wording important:
+6. Remove negative-space explanations that do not help the reader act or decide.
+   - Prefer the current valid instruction or example when it is sufficient on its own.
+   - Do not add a disclaimer that an old or omitted form is rejected merely because the
+     implementation no longer accepts it.
+   - Retain compatibility or migration context when the document owns that history or the audience
+     needs it to update existing usage, interpret a release, or avoid a concrete transition risk.
+7. Preserve the nuance that made the original wording important:
    - Certainty or confidence level.
    - Scope and applicability.
    - Timing and sequence.
    - Exception or limitation status.
    - Dependency or compatibility relationships.
+   - Attribution and upstream relationships. Avoid a bare "official" when it
+     could transfer authority from one project to another. For example,
+     [uv documents](https://docs.astral.sh/uv/guides/install-python/) that it
+     uses Astral's `python-build-standalone` distributions because Python does
+     not publish official distributable binaries. Describe those artifacts as
+     "Astral-published Python distributions used by uv," not as "official
+     Python distributions" or "uv's official Python distributions."
    - Whether a statement is original, backfilled, inferred, superseded, withdrawn, or still
      unconfirmed.
-7. Use as many short sentences or nested bullets as needed. Do not force a fixed sentence count
+8. Use as many short sentences or nested bullets as needed. Do not force a fixed sentence count
    when the content needs a different shape.
-8. Re-read the result as a whole and use the domain-specific skill when one owns the document type.
+9. Re-read the result as a whole and use the domain-specific skill when one owns the document type.
+   - Compare the actual edited destination and scope with the request and any wording or meaning
+     the user asked to retain.
    - Confirm it still answers the same question as the original wording.
    - Confirm each list or paragraph has one clear job.
    - Confirm the structure did not imply a stronger, weaker, broader, or narrower claim than the
      source material supports.
-9. When establishing repository-wide Markdown validation, copy
+10. When establishing repository-wide Markdown validation, copy
    `assets/markdownlint-cli2.yaml` to `.markdownlint-cli2.yaml` without
    deleting its rationale comments or changing its rule baseline. Add a local
    ignore or exception only for an evidenced generated, vendored, submodule,
@@ -87,11 +104,18 @@ use the applicable documentation-system or domain-specific skill.
    recreating its exceptions in the consumer. Use `github-actions-quality-check`
    to wire the repository-owned configuration into CI.
 
+## Optional handoff notes
+
+For a requested resumable handoff, use [handoff-notes.md](references/handoff-notes.md) to select the
+decisions and open questions the next reader needs. Keep the existing factual-ownership boundary
+and preserve the user's choice of destination and level of detail.
+
 ## Output checklist
 
 - Audience and document type were considered before rewriting.
 - Factual ownership and evidence gaps were not silently decided through wording changes.
 - Enumerations are lists unless inline prose is clearer for the local context.
 - Dense paragraphs or list items were split or intentionally left intact.
+- Current instructions do not narrate irrelevant rejected or legacy alternatives.
 - Important certainty, scope, timing, relationship, and status nuances were preserved.
 - The final text is easier to scan and still communicates the same claim.

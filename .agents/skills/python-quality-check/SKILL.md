@@ -17,6 +17,10 @@ description: >-
 - Use for installable Python applications, libraries, and CLIs managed with uv
   in GitHub-hosted repositories.
 - Use when establishing or reviewing a repository-wide Python quality baseline.
+- For a standalone one-off helper outside an installable project, use
+  `code-quality-check`, `test-quality-check`, and `security-check` for the
+  applicable code, behavioral, and execution checks. A helper alone does not
+  require creating an installable project or distribution pipeline.
 - Pair with a framework-specific Skill for framework architecture, lifecycle,
   UI, protocol, or target-packaging requirements. The stricter applicable
   requirement wins.
@@ -36,7 +40,10 @@ and external executables, and `github-actions-quality-check` for workflow
 triggers, workflow-level `permissions:` declarations, runners, and action pins.
 Use `github-workflow` for repository settings and enforcement. Use
 `test-quality-check` for language-independent test design, classification,
-coverage policy, and overengineering audits.
+coverage policy, and overengineering audits. When the repository uses mise,
+use `mise-workflow` for mise's own version, managed tool pins, `mise.lock`, and
+task composition; this Skill continues to own Python compatibility and the uv,
+Ruff, mypy, pytest, coverage, and distribution commands behind those tasks.
 
 This Skill owns the Python-specific baseline. Framework Skills should add only
 their framework contracts and should not redefine weaker uv, Ruff, typing,
@@ -72,6 +79,10 @@ testing, coverage, or distribution rules.
      source, tests, scripts, workflows, build metadata, and release configuration.
    - Record project type, supported Python range, distribution/import/entry-point
      identities, build backend, dependency groups, and artifact targets.
+   - Establish whether publication, deployment, or external installation makes a
+     distribution a current deliverable. An installable layout or build backend
+     alone does not establish that requirement. Keep an existing distribution
+     obligation and its verification gates in scope.
    - Mark unavailable facts `blocked`; do not copy values from another project.
    - Run
      `uv run --no-config --locked --script <skill-root>/scripts/check_project.py <repository-root>`
@@ -107,7 +118,9 @@ testing, coverage, or distribution rules.
      installed local action but must not carry another editable copy.
    - Re-run the complete locked validation on pull requests and on the exact
      protected integration-branch commit.
-   - Build applicable distributions from a clean reviewed commit. Inspect
+   - When a distribution is a current deliverable, follow the complete
+     [distribution verification](references/ci-and-distribution.md#distribution-verification)
+     procedure from a clean reviewed commit. Inspect
      archive paths, metadata, entry points, contents, permissions, licenses,
      and absence of secrets, caches, tests, and unrelated development files.
 6. Verify and report.
@@ -125,7 +138,10 @@ testing, coverage, or distribution rules.
 
    - Add `uv build`, safe archive inspection with
      `scripts/inspect_distribution.py`, and clean-environment install/import
-     checks for installable distributions.
+     checks when distributions are current deliverables. For a local application
+     with no distribution consumer, verify its locked environment and actual
+     application or CLI behavior instead; report artifact checks as not applicable
+     with the concrete reason.
    - Report exact commands/results, dependency review scope, coverage statements
      and branches, artifact evidence, blockers, and every skipped check.
 

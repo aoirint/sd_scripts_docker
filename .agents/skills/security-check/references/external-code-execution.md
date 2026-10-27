@@ -16,6 +16,17 @@ replace provenance review, immutable pinning, or the seven-day cooldown.
 candidate distributions by upload time; keep the policy in PEP 723 metadata so
 the script carries it with the lock.
 
+## mise
+
+Use `mise-workflow` for repository configuration, exact tool selection,
+platform locks, and task composition. Reproduce reviewed tools with
+`mise install --locked`; do not use `mise up`, `mise upgrade`, a floating tool
+selector, or an unreviewed `mise self-update` during ordinary execution.
+
+Review both the logical tool release and the final artifact selected by the
+mise backend. A checksum-pinned runtime bundle can be newer than the language
+release it contains and remains subject to cooldown and artifact inspection.
+
 ## Poetry
 
 1. Require a reviewed `poetry.lock`. Run `poetry check --lock` before install.

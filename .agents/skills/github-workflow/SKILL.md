@@ -171,17 +171,17 @@ create, update, upload, push, or release operation.
    against the candidate, allowing only terminal-newline normalization. In
    PowerShell, do not assign line-oriented `--jq` output when verifying
    multiline bodies. Remove temporary files.
-9. Before `gh pr merge` creates a squash or merge commit, resolve and pass the
-   exact head SHA with `--match-head-commit`. Build and validate the exact
-   multiline candidate commit message in a file with
-   `git interpret-trailers --parse`, require each expected trailer exactly
-   once, test the stored-message JSON parser with a fixture, merge with the
-   same body file, then verify `commit.message` from
-   `repos/{owner}/{repo}/commits/{sha}` using raw JSON. Treat post-merge
-   verification as secondary to pre-mutation validation.
+9. Before a squash merge, another PR merge, or other remote commit creation,
+   read [the remote commit contract](references/remote-commit.md). Confirm the
+   authorized target, exact head, validated payload and complete attribution,
+   private-resource preflight, and active-worktree cleanup guard before the
+   irreversible operation. Read back the stored commit afterward; inspect
+   remote state before retrying an uncertain outcome.
 
 ## Resources
 
+- [remote-commit.md](references/remote-commit.md): required payload, attribution,
+  exact-head, cleanup, and read-back contract for remote commit operations.
 - [fallback-pr-body.md](references/fallback-pr-body.md): fallback PR template
   when no repository template applies.
 - [repository-settings.md](references/repository-settings.md): repository
