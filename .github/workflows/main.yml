@@ -32,22 +32,13 @@ jobs:
     runs-on: ubuntu-slim
     timeout-minutes: 5
     outputs:
-      publish_application: ${{ steps.scope.outputs.publish_application }}
       release_mode: ${{ steps.version.outputs.release_mode }}
       tag: ${{ steps.version.outputs.tag }}
     steps:
       - name: Checkout integrated source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
           persist-credentials: false
-      - name: Classify application changes
-        id: scope
-        env:
-          BEFORE_SHA: ${{ github.event.before }}
-          AFTER_SHA: ${{ github.sha }}
-        run: bash .github/scripts/application-change-scope.sh
-
       - name: Read release version
         id: version
         run: |-
@@ -68,8 +59,6 @@ jobs:
           echo "release_mode=${release_mode}" >> "$GITHUB_OUTPUT"
 
   build:
-    # APM maintenance still runs Check; image publishing needs application changes.
-    if: needs.plan.outputs.publish_application == 'true'
     needs: [check, plan]
     runs-on: ubuntu-24.04
     permissions:

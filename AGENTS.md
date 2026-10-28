@@ -37,10 +37,3 @@ A maintainer may explicitly waive the normal seven-day wait for the latest
 `aoirint/skills` main commit. Record the waiver and exact full commit SHA in
 the pull request. That waiver applies only to the `aoirint/skills` commit; it
 does not waive review or cooldown requirements for any of its dependencies.
-
-## APM-only maintenance in CI
-
-Main retains source checks for APM-only pin, ledger, generated Skill, guide,
-and validation-CI changes, while skipping image build and publication. Other
-application or workflow-input changes retain the publishing path. An unavailable
-push comparison fails closed instead of publishing an unclassified change.
