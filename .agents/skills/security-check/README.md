@@ -2,7 +2,8 @@
 
 ## Overview
 
-Review repository changes for practical security and supply-chain risks.
+Review repository and development-environment changes for practical security
+and supply-chain risks.
 
 ## Install
 

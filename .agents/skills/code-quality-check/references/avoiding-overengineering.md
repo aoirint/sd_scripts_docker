@@ -1,5 +1,14 @@
 # Avoiding overengineering
 
+## Contents
+
+- [Purpose](#purpose)
+- [Decision rule](#decision-rule)
+- [Migration and backward compatibility](#migration-and-backward-compatibility)
+- [Common review examples](#common-review-examples)
+- [Boundaries that justify structure](#boundaries-that-justify-structure)
+- [Review outcome](#review-outcome)
+
 ## Purpose
 
 Use this reference when a change introduces structure or safeguards beyond the direct feature edit.
@@ -56,6 +65,41 @@ Ask these questions during review:
 
 An unclear answer is a reason to defer or narrow the addition, not proof that it is unnecessary.
 Investigate high-impact correctness and security uncertainty before removing a safeguard.
+
+## Migration and backward compatibility
+
+Before adding migration code, compatibility shims, legacy formats, or upgrade
+instructions, establish the transition that actually needs support:
+
+- Which released behavior, persisted data, deployed configuration, external
+  caller, or user workflow must continue to work or move to the new state?
+- What breaks under a direct change, and what evidence establishes the affected
+  consumers and the supported old-to-new boundary?
+- Does that boundary need automated conversion, temporary compatibility, a
+  later user/operator action, or only a coordinated change within this task?
+
+A rename, internal refactor, or new feature does not establish a migration
+requirement by itself. When no supported old state or consumer needs a
+transition, update the current implementation and its canonical documentation
+without inventing legacy readers, version switches, upgrade machinery, or a
+permanent migration guide. Keep transient implementation steps and migration
+history in the PR when no later reader needs a procedure. Preserve rationale
+needed to understand or maintain current behavior in canonical architecture
+docs or nearby comments.
+
+When a real transition exists, choose the smallest path that preserves the
+required contract and data. Keep migration or compatibility support, focused
+verification, and instructions for affected users/operators when they will need
+them after the PR. A migration performed once by each installation can still
+need lasting upgrade documentation. Use `domain-architecture-docs-workflow` to
+choose the maintained document and audience; link rather than duplicate it in
+the PR. Bound compatibility support to the supported versions or formats and
+record a removal condition only when the support policy establishes one.
+
+Unknown deployment, data, or caller state is a reason to investigate, not proof
+that a direct breaking change or data reset is safe. Preserve existing migration
+and recovery safeguards while investigating their consumers and retirement
+conditions. Do not remove protection merely because it looks old or costly.
 
 ## Common review examples
 

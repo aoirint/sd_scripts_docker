@@ -2,7 +2,8 @@
 
 ## Overview
 
-Review implementation changes for readability, maintainability, and verification.
+Review implementation changes for readability, maintainability, verification,
+and evidence-backed migration or compatibility needs.
 
 ## Install
 

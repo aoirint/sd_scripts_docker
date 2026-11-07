@@ -1,7 +1,8 @@
 ---
 name: security-check
 description: >-
-  Review repository changes for practical security and supply-chain risks. Use
+  Review repository and development-environment changes for practical security
+  and supply-chain risks. Use
   when work touches secrets, permissions, untrusted input, dependencies,
   executable or downloaded artifacts, CI or deployment configuration,
   containers, vendored/generated files, or compiled and bundled software whose
@@ -14,7 +15,7 @@ description: >-
 
 ## Goals
 
-- Provide a single repository-local security reference point for agents and
+- Provide a single security reference point for agents and
   maintainers.
 - Treat this guidance as a practical project baseline, not permission to take a
   less safe path than a tool, platform, organization policy, package manager, or
@@ -94,6 +95,11 @@ description: >-
 7. Inspect repository scripts,
    lockfiles, and tool configuration so the recommendation is grounded in the
    project instead of inventing a new ad hoc path.
+   For development-environment work, inspect the relevant installed package and
+   tool inventory, sources, and update commands as well as affected repository
+   requirements. Use `development-environment-update-workflow`, when available,
+   for host/package-manager scope and operational verification; this Skill
+   retains the security findings and adoption gates.
    Use `mise-workflow` when the reviewed surface includes `mise.toml`,
    `mise.lock`, mise-managed tool artifacts, or mise tasks; retain this Skill as
    the owner of cooldown, provenance, integrity, secret, and execution findings.
@@ -125,6 +131,12 @@ description: >-
 
 ## Supply-Chain Baseline
 
+- For dependency adoption, updates, or vulnerability assessment, use
+  [advisory-review.md](references/advisory-review.md) to identify trustworthy
+  advisory sources for the actual package, distribution, or artifact and assess
+  applicability. `dependency-update-workflow`, when available, coordinates
+  repository inventory and update candidates; this Skill owns security findings
+  and exception requirements. An update workflow does not replace these gates.
 - For tool-specific fixed-install and execution patterns, consult
   [external-code-execution.md](references/external-code-execution.md) when the
   listed tool applies.
