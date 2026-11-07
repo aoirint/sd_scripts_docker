@@ -23,7 +23,11 @@ their own workflows; they do not require merge preparation.
    private-resource identifiers or existence disclosures to a public or
    potentially public destination.
 3. For a GitHub PR squash merge, obtain the canonical PR title and number from
-   GitHub. Require the subject to be exactly `<pull request title> (#<number>)`.
+   GitHub and review its wording with `commit-message-quality-check` before
+   freezing the merge payload. If it needs correction, update the PR title
+   within the authorized scope and read it back first; do not silently diverge
+   the squash subject from the PR title. Require the subject to be exactly
+   `<pull request title> (#<number>)`.
    Pass that exact value through the merge command's `--subject` option; a
    candidate file or CLI default is insufficient.
 4. Resolve the exact PR head SHA and pass it with `--match-head-commit` when

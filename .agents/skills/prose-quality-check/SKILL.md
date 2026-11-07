@@ -3,7 +3,8 @@ name: prose-quality-check
 description: >-
   Review or revise explanatory prose for readability, local structure,
   audience fit, self-contained context, and preserved nuance. Use for wording
-  in documentation, comments, release notes, issues, pull requests, changelogs, handoff notes,
+  in documentation, comments, release notes, issues, pull requests, commit messages,
+  changelogs, handoff notes,
   and Agent Skills after the document's purpose and factual ownership are known.
   Use domain-architecture-docs-workflow instead for repository-wide document
   maps, canonical ownership, technical evidence, coverage, or migration.
@@ -122,7 +123,8 @@ For the rationale and limits of external guidance, consult
      history or readers need it to update usage, interpret a release, or avoid
      a concrete transition risk.
 3. Assess status and process wording by the information it adds in context.
-   This applies to body text, headings, names, filenames, and version labels.
+   This applies to body text, headings, PR titles, commit subjects, names,
+   filenames, and version labels.
    - Treat "verified," "reviewed," "approved," "adopted," "adapted," and
      equivalents in other languages as review cues, not banned words or
      interchangeable states. Omit a label that adds no useful distinction,
