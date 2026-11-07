@@ -30,7 +30,7 @@ directly.
 
 ### Approved cooldown exception
 
-Use APM CLI 0.34.0 for lock operations. It is the newest reviewed release
+Use APM CLI 0.35.0 for lock operations. It is the newest reviewed release
 that satisfies the normal seven-day cooldown; using it is not an exception.
 
 A maintainer may explicitly waive the normal seven-day wait for the latest

@@ -26,9 +26,10 @@ description: >-
 1. Read the changed files and nearby call sites, not just the patch.
 2. Identify code that is hard to scan, overly nested, duplicated, misleadingly named, or coupled to
    hidden assumptions.
-3. When a change adds future-facing structure, abstraction, validation, dependencies, tests, or
-   defensive behavior, use [avoiding overengineering](references/avoiding-overengineering.md) to
-   check that each addition has a current consumer, contract, failure mode, or evidenced risk.
+3. When a change adds future-facing structure, abstraction, validation, dependencies, tests,
+   compatibility layers, migration paths, or defensive behavior, use
+   [avoiding overengineering](references/avoiding-overengineering.md) to check that each addition has
+   a current consumer, contract, failure mode, or evidenced risk.
 4. Make safe local readability refactors where practical.
 5. Add or update comments only when the design intent is not obvious from the code and cannot be
    made obvious with a small refactor.

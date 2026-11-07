@@ -27,9 +27,9 @@ that are present in that checkout.
 - Source: [aoirint/skills](https://github.com/aoirint/skills), selected from
   `.apm/skills/`
 - Pinned commit:
-  [`22fe4f84018358059adcf7709cb9df28d1260fd8`](https://github.com/aoirint/skills/tree/22fe4f84018358059adcf7709cb9df28d1260fd8)
+  [`1bbdf247da61492e8c1531f341aae400a04b9503`](https://github.com/aoirint/skills/tree/1bbdf247da61492e8c1531f341aae400a04b9503)
 - Deployed paths: `.agents/skills/{apm-workflow,changelog-workflow,code-quality-check,commit-message-quality-check,docker-quality-check,git-worktree-workflow,github-workflow,gitignore-workflow,prose-quality-check,python-quality-check,release-note-workflow,security-check}/`
-- License: [MIT](https://github.com/aoirint/skills/blob/22fe4f84018358059adcf7709cb9df28d1260fd8/LICENSE)
+- License: [MIT](https://github.com/aoirint/skills/blob/1bbdf247da61492e8c1531f341aae400a04b9503/LICENSE)
 - Copyright: Copyright (c) 2026 aoirint
 
 - Cooldown: the maintainer requested immediate adoption of this exact direct
