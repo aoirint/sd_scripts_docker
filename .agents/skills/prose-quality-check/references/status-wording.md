@@ -25,6 +25,11 @@ not the presence of a particular word.
   Use the version or proposed change, or state the pending decision when
   readers need it. Preserve an actual approval of the same revision when
   supported and relevant.
+- A PR title or commit subject such as "update reviewed dependencies" usually
+  needs only "update dependencies." Put relevant review evidence in the body
+  or review record rather than decorating the change summary. Retain status
+  when changing it is the work itself, such as "mark release as approved,"
+  and preserve required `Reviewed-by` trailers.
 - "Get approval before publishing" needs an approver if readers cannot tell
   whose decision is required. "Ask the user to review the draft. Publish only
   after approval" already identifies the approver; repeating "by the user"

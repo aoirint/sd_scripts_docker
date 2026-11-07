@@ -25,7 +25,9 @@ Reference:
 ## Workflow
 
 1. Read the proposed message and, when available, the staged diff or
-   commit diff it describes.
+   commit diff it describes. Use `prose-quality-check` for the complete subject
+   and body, including wording reused from templates, earlier attempts, or a
+   PR. Format and payload parity do not establish wording quality.
 2. For a GitHub squash-merge message, require the exact canonical PR title and
    number suffix in the subject and verify it is passed to the merge operation.
    Before any squash merge or other remote commit creation, use
