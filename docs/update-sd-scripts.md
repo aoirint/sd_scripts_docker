@@ -45,9 +45,9 @@ The validation commands below assume the image name
 `sd-scripts:update-test`. Use another temporary tag if that tag is already
 meaningful in your local environment.
 
-## 1. Prepare The Update Worktree
+## 1. Prepare the worktree
 
-Start from the latest `main` branch and create a focused update worktree:
+Fetch `main` and create a focused update worktree:
 
 ```shell
 git fetch origin main
@@ -67,7 +67,7 @@ documentation changes needed for the selected version. Do not update `VERSION`
 in the same PR unless the PR is intentionally publishing a Docker image
 release.
 
-## 2. Select The Target Version
+## 2. Select the version
 
 List upstream version tags:
 
@@ -84,13 +84,13 @@ git -C /tmp/sd-scripts-upstream show --no-patch --format='%H %ci %s' vX.Y.Z
 ```
 
 Only adopt an sd-scripts release after the repository cooldown window has
-passed. The current baseline is a minimum of 7 days after the upstream release
+passed. Wait at least 7 days after the upstream release
 timestamp or tag commit timestamp.
 
 Record the selected commit SHA. Prefer the tag commit for released versions
 instead of a branch name.
 
-## 3. Read Upstream Requirements
+## 3. Read upstream requirements
 
 Print the upstream requirements and relevant installation notes for the
 selected version:
@@ -124,7 +124,7 @@ When translating requirements:
   compatible newer version of the local extra over dropping the feature.
 - Preserve `[tool.uv] exclude-newer = "P7D"`.
 
-## 4. Choose PyTorch, CUDA, And xformers
+## 4. Choose PyTorch, CUDA, and xformers
 
 sd-scripts does not list PyTorch in `requirements.txt` because the correct
 wheel depends on the CUDA target. Read the selected upstream README and choose
@@ -178,7 +178,7 @@ the runtime base. A mixed setup is acceptable when PyTorch, xformers, and ONNX
 Runtime all execute successfully and the reason is recorded in the changelog
 and pull request.
 
-## 5. Update The Dockerfile
+## 5. Update the Dockerfile
 
 Set `SD_SCRIPTS_VERSION` to the selected upstream commit:
 
@@ -252,7 +252,7 @@ Pay special attention to:
   not support the selected version.
 - Local extras that disappeared because upstream commented them out.
 
-## 7. Update README Links
+## 7. Update README links
 
 If README links point at upstream sd-scripts documentation by commit SHA,
 update those links to the selected commit. For example:
@@ -264,7 +264,7 @@ https://github.com/kohya-ss/sd-scripts/blob/<commit-sha>/docs/train_README-ja.md
 If the update changes the image's supported GPU, CUDA, Python, or Docker
 requirements, update the README requirements section in the same PR.
 
-## 8. Run Static Checks
+## 8. Run static checks
 
 Run Dockerfile linting:
 
@@ -284,7 +284,7 @@ If `hadolint` reports `DL3008`, pin the affected apt package versions. If it
 reports `DL3003` or `SC2164` around a `cd`, prefer `git -C` or `WORKDIR`
 instead of changing directories inside a shell block.
 
-## 9. Build The Image
+## 9. Build the image
 
 Build the image:
 
@@ -299,7 +299,7 @@ If the build fails while pulling `ghcr.io/astral-sh/uv`, check local Docker
 authentication state first. The image may still be publicly readable even when
 an expired local credential causes Docker to fail.
 
-## 10. Run Smoke Tests
+## 10. Run smoke tests
 
 Check that core Python packages import and report the expected versions:
 
@@ -347,7 +347,7 @@ For a release that changes PyTorch, CUDA, xformers, or sd-scripts training
 behavior, run at least one small project-specific training or captioning
 workflow before merging when practical.
 
-## 11. Run Upstream Release Tests
+## 11. Run upstream release tests
 
 The Docker image includes the selected upstream sd-scripts checkout under
 `/opt/sd-scripts`, including the upstream `tests/` directory. Install the
@@ -389,7 +389,7 @@ docker run --rm --gpus all --entrypoint bash \
 If GPU or checkpoint coverage is skipped, record the exact reason in the pull
 request.
 
-## 12. Review And Record The Change
+## 12. Review the change
 
 Review the diff:
 
@@ -417,7 +417,7 @@ Confirm:
   explicitly skipped.
 - Verification commands and any skipped GPU tests are documented in the PR.
 
-## 13. Open The Pull Request
+## 13. Open the pull request
 
 Create a focused commit, push the branch, and open a pull request.
 
